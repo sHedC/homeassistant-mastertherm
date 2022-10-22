@@ -1,10 +1,11 @@
 {
-    "name": "Integration blueprint",
+    "name": "Mastertherm",
     "hacs": "1.6.0",
     "domains": [
         "binary_sensor",
         "sensor",
         "switch"
     ],
-    "homeassistant": "0.118.0"
+    "homeassistant": "2022.10.5",
+    "iot_class": "Cloud Polling"
 }

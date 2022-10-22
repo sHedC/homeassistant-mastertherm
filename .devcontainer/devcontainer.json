@@ -1,7 +1,7 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
 	"image": "ghcr.io/ludeeus/devcontainer/integration:stable",
-	"name": "Blueprint integration development",
+	"name": "Mastertherm Integration Development",
 	"context": "..",
 	"appPort": [
 		"9123:8123"
@@ -26,5 +26,12 @@
 		"editor.formatOnSave": true,
 		"editor.formatOnType": true,
 		"files.trimTrailingWhitespace": true
-	}
+	},
+	"remoteUser": "vscode",
+	// Resolve access problems for PODMAN
+	"containerUser": "vscode",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
+	"runArgs": [
+		"--userns=keep-id"
+	]
 }
