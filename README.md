@@ -63,7 +63,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [buymecoffee]: https://www.buymeacoffee.com/shedc
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/shedc/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/shedc/mastertherm/commits/main
+[commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
@@ -74,4 +74,4 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [license-shield]: https://img.shields.io/github/license/shedc/blueprint.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/shedc/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/shedc/mastertherm/releases
+[releases]: https://github.com/shedc/homeassistant-mastertherm/releases
