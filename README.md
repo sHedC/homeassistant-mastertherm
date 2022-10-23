@@ -14,6 +14,8 @@ _Component to integrate with [mastertherm][mastertherm]._
 
 **This component will set up the following platforms.**
 
+To Be Complete!!!
+
 Platform | Description
 -- | --
 `binary_sensor` | Show something `True` or `False`.

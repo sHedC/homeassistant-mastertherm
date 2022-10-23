@@ -6,12 +6,14 @@
 	"appPort": [
 		"9123:8123"
 	],
-	"postCreateCommand": "container install",
+	"initializeCommand": "[ ! -f ./local.env ] && cp ./.devcontainer/sample.env ./local.env || echo 'Already Exists'",
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
 	"extensions": [
 		"ms-python.python",
 		"github.vscode-pull-request-github",
 		"ryanluker.vscode-coverage-gutters",
-		"ms-python.vscode-pylance"
+		"ms-python.vscode-pylance",
+		"mikestead.dotenv"
 	],
 	"settings": {
 		"files.eol": "\n",
@@ -27,11 +29,13 @@
 		"editor.formatOnType": true,
 		"files.trimTrailingWhitespace": true
 	},
-	"remoteUser": "vscode",
 	// Resolve access problems for PODMAN
+	"remoteUser": "vscode",
 	"containerUser": "vscode",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
 	"runArgs": [
-		"--userns=keep-id"
+		"--userns=keep-id",
+		"--env-file",
+		"./local.env"
 	]
 }
