@@ -6,7 +6,6 @@
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
-**[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]**
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
