@@ -8,7 +8,6 @@ from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SOURCE,
-    CONF_TOKEN,
     CONF_USERNAME,
 )
 
@@ -24,15 +23,13 @@ async def test_setup_with_no_config(hass: HomeAssistant):
     assert hass.data[DOMAIN] == {}
 
 
-async def test_setup_valid(
-    hass: HomeAssistant, mock_configdata, mock_authresult, mock_moduledata
-):
+async def test_setup_valid(hass: HomeAssistant, mock_configdata):
     """Test a Configured Instance that Logs In and Updates."""
 
     # Patch the Autentication and setup the entry.
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
-        return_value=({"status": "success"}, mock_authresult),
+        return_value={"status": "success"},
     ):
         assert (
             await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
@@ -53,15 +50,13 @@ async def test_setup_valid(
         found_entry.title == mock_configdata[DOMAIN][CONF_USERNAME]
     ), "Entry is not setup."
     assert found_entry.data[CONF_USERNAME] == mock_configdata[DOMAIN][CONF_USERNAME]
-    assert found_entry.data[CONF_TOKEN] == mock_authresult[CONF_TOKEN]
-    assert found_entry.data["modules"] == mock_moduledata
 
 
 async def test_setup_authenticationerror(hass: HomeAssistant, mock_configdata: dict):
     """Test a Configured Instance where Invalid Authentication is returned."""
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
-        return_value=({"status": "authentication_error"}, {}),
+        return_value={"status": "authentication_error"},
     ) as mock_validation:
         assert (
             await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
@@ -99,13 +94,11 @@ async def test_unload_entry(
     assert entry.state == ConfigEntryState.NOT_LOADED
 
 
-async def test_setup_twovalidentries(
-    hass: HomeAssistant, mock_configdata: dict, mock_authresult: dict
-):
+async def test_setup_twovalidentries(hass: HomeAssistant, mock_configdata: dict):
     """Test two valid configurations, two user accounts."""
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
-        return_value=({"status": "success"}, mock_authresult),
+        return_value={"status": "success"},
     ):
         await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
         await hass.config_entries.flow.async_init(

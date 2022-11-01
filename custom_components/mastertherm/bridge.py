@@ -134,16 +134,13 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         )
 
 
-async def authenticate(
-    hass: HomeAssistant, username: str, password: str
-) -> tuple[dict, dict]:
+async def authenticate(hass: HomeAssistant, username: str, password: str) -> dict:
     """Validate the user input by connecting."""
-    info = {}
     auth_result = {}
     websession = aiohttp_client.async_get_clientsession(hass)
     try:
         controller = MasterThermController(websession, username, password)
-        info = await controller.connect()
+        await controller.connect(update_data=False)
         auth_result["status"] = "success"
     except MasterThermAuthenticationError as ex:
         _LOGGER.error("Invalid credentials: %s", ex)
@@ -161,4 +158,4 @@ async def authenticate(
         auth_result["error_code"] = ex.status
         auth_result["error_message"] = ex.message
 
-    return auth_result, info
+    return auth_result

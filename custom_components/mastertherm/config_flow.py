@@ -3,7 +3,7 @@ import logging
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.const import CONF_PASSWORD, CONF_TOKEN, CONF_USERNAME
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 
 from .const import DOMAIN
 from .bridge import authenticate
@@ -44,7 +44,7 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             return await self._show_config_form(user_input)
 
-        auth_result, info = await authenticate(
+        auth_result = await authenticate(
             self.hass, user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
         )
 
@@ -56,12 +56,6 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         # Setup the Unique ID and check if already configured
         await self.async_set_unique_id(user_input[CONF_USERNAME])
         self._abort_if_unique_id_configured()
-
-        # Return the Token and Expiry and Modules
-        user_input[CONF_TOKEN] = info[CONF_TOKEN]
-        user_input["expires"] = info["expires"]
-        user_input["modules"] = info["modules"]
-        user_input["role"] = info["role"]
 
         return self.async_create_entry(title=user_input[CONF_USERNAME], data=user_input)
 

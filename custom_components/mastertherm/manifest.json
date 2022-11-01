@@ -1,6 +1,6 @@
 {
   "domain": "mastertherm",
-  "name": "Mastertherm Component",
+  "name": "Mastertherm",
   "documentation": "https://github.com/shedc/homeassistant_mastertherm",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/shedc/homeassistant_mastertherm/issues",
