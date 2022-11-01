@@ -8,5 +8,8 @@
   "config_flow": true,
   "codeowners": [
     "@shedc"
+  ],
+  "requirements": [
+    "masterthermconnect==0.1.0"
   ]
 }
