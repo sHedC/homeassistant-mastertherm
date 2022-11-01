@@ -2,5 +2,6 @@
     "name": "Mastertherm",
     "hacs": "1.6.0",
     "homeassistant": "2022.10.5",
-    "iot_class": "Cloud Polling"
+    "country": "UK",
+    "hide_default_branch": true
 }
