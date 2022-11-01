@@ -1,1 +1,2 @@
+masterthermconnect
 pytest-homeassistant-custom-component

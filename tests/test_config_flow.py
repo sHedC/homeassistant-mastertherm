@@ -1,110 +1,168 @@
-"""Test integration_blueprint config flow."""
+"""Test mastertherm config flow."""
 from unittest.mock import patch
+import pytest
 
 from homeassistant import config_entries, data_entry_flow
-import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.const import CONF_PASSWORD, CONF_TOKEN, CONF_USERNAME
 
-from custom_components.integration_blueprint.const import (
-    BINARY_SENSOR,
-    DOMAIN,
-    PLATFORMS,
-    SENSOR,
-    SWITCH,
-)
-
-from .const import MOCK_CONFIG
+from custom_components.mastertherm.const import DOMAIN
 
 
-# This fixture bypasses the actual setup of the integration
-# since we only want to test the config flow. We test the
-# actual functionality of the integration in other test modules.
 @pytest.fixture(autouse=True)
 def bypass_setup_fixture():
-    """Prevent setup."""
-    with patch(
-        "custom_components.integration_blueprint.async_setup",
-        return_value=True,
-    ), patch(
-        "custom_components.integration_blueprint.async_setup_entry",
+    """This fixture bypasses the actual setup of the integration
+    since we only want to test the config flow. We test the
+    actual functionality of the integration in other test modules."""
+    with patch("custom_components.mastertherm.async_setup", return_value=True,), patch(
+        "custom_components.mastertherm.async_setup_entry",
         return_value=True,
     ):
         yield
 
 
-# Here we simiulate a successful config flow from the backend.
-# Note that we use the `bypass_get_data` fixture here because
-# we want the config flow validation to succeed during the test.
-async def test_successful_config_flow(hass, bypass_get_data):
-    """Test a successful config flow."""
-    # Initialize a config flow
+async def test_form_success(
+    hass: HomeAssistant, mock_authresult: tuple[dict, dict], mock_moduledata: dict
+):
+    """Test setting up the form and configuring."""
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_USER}
+    )
+    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["errors"] == {}
+
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ) as mock_authenticate:
+        setup_result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+        )
+        await hass.async_block_till_done()
+
+    assert setup_result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
+    assert setup_result["title"] == "user.name"
+    assert setup_result["data"][CONF_TOKEN] == mock_authresult[CONF_TOKEN]
+    assert setup_result["data"]["expires"] == mock_authresult["expires"]
+    assert setup_result["data"]["modules"] == mock_moduledata
+
+    assert len(mock_authenticate.mock_calls) == 1
+
+
+async def test_form_invalid_auth(hass: HomeAssistant):
+    """Test Form Login with Invalid Authentication."""
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_USER}
+    )
+    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["errors"] == {}
+
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "authentication_error"}, {}),
+    ) as mock_authenticate:
+        setup_result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+        )
+        await hass.async_block_till_done()
+
+    assert setup_result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert setup_result["step_id"] == "user"
+    assert setup_result["errors"] == {"base": "authentication_error"}
+
+    assert len(mock_authenticate.mock_calls) == 1
+
+
+async def test_form_cannot_connect(hass: HomeAssistant):
+    """Test Form Login where connection is not avaialble."""
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_USER}
+    )
+    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["errors"] == {}
+
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "connection_error"}, {}),
+    ) as mock_authenticate:
+        setup_result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+        )
+        await hass.async_block_till_done()
+
+    assert setup_result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert setup_result["step_id"] == "user"
+    assert setup_result["errors"] == {"base": "connection_error"}
+
+    assert len(mock_authenticate.mock_calls) == 1
+
+
+async def test_form_duplicate(hass: HomeAssistant, mock_authresult: dict):
+    """Test Form Login with user already set up."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
 
-    # Check that the config flow shows the user form as the first step
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["step_id"] == "user"
+    # Setup the User first Time
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ), patch("custom_components.mastertherm.async_setup", return_value=True), patch(
+        "custom_components.mastertherm.async_setup_entry", return_value=True
+    ):
+        setup_result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+        )
+        await hass.async_block_till_done()
 
-    # If a user were to enter `test_username` for username and `test_password`
-    # for password, it would result in this function call
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=MOCK_CONFIG
-    )
+    assert setup_result["title"] == "user.name"
 
-    # Check that the config flow is complete and a new entry is created with
-    # the input data
-    assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
-    assert result["data"] == MOCK_CONFIG
-    assert result["result"]
-
-
-# In this case, we want to simulate a failure during the config flow.
-# We use the `error_on_get_data` mock instead of `bypass_get_data`
-# (note the function parameters) to raise an Exception during
-# validation of the input config.
-async def test_failed_config_flow(hass, error_on_get_data):
-    """Test a failed config flow due to credential validation failure."""
-    result = await hass.config_entries.flow.async_init(
+    # Setup the User second Time
+    result2 = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
 
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["step_id"] == "user"
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ):
+        setup_result2 = await hass.config_entries.flow.async_configure(
+            result2["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+        )
+        await hass.async_block_till_done()
 
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=MOCK_CONFIG
-    )
-
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["errors"] == {"base": "auth"}
+    assert setup_result2["type"] == data_entry_flow.RESULT_TYPE_ABORT
+    assert setup_result2["reason"] == "already_configured"
 
 
-# Our config flow also has an options flow, so we must test it as well.
-async def test_options_flow(hass):
-    """Test an options flow."""
-    # Create a new MockConfigEntry and add to HASS (we're bypassing config
-    # flow entirely)
-    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    entry.add_to_hass(hass)
+async def test_import_config(
+    hass: HomeAssistant,
+    mock_configdata: dict,
+    mock_authresult: dict,
+    mock_moduledata: dict,
+):
+    """Peform an import flow setup."""
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ) as mock_authenticate, patch(
+        "custom_components.mastertherm.async_setup", return_value=True
+    ) as mock_setup, patch(
+        "custom_components.mastertherm.async_setup_entry", return_value=True
+    ) as mock_setup_entry:
+        result = await hass.config_entries.flow.async_init(
+            DOMAIN,
+            context={"source": config_entries.SOURCE_IMPORT},
+            data=mock_configdata[DOMAIN],
+        )
+        await hass.async_block_till_done()
 
-    # Initialize an options flow
-    result = await hass.config_entries.options.async_init(entry.entry_id)
-
-    # Verify that the first options step is a user form
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["step_id"] == "user"
-
-    # Enter some fake data into the form
-    result = await hass.config_entries.options.async_configure(
-        result["flow_id"],
-        user_input={platform: platform != SENSOR for platform in PLATFORMS},
-    )
-
-    # Verify that the flow finishes
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
+    assert result["title"] == "user.name"
+    assert result["data"][CONF_TOKEN] == mock_authresult[CONF_TOKEN]
+    assert result["data"]["expires"] == mock_authresult["expires"]
+    assert result["data"]["modules"] == mock_moduledata
 
-    # Verify that the options were updated
-    assert entry.options == {BINARY_SENSOR: True, SENSOR: False, SWITCH: True}
+    assert len(mock_authenticate.mock_calls) == 1
+    assert len(mock_setup.mock_calls) == 1
+    assert len(mock_setup_entry.mock_calls) == 1

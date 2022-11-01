@@ -2,8 +2,8 @@
     "config": {
         "step": {
             "user": {
-                "title": "Blueprint",
-                "description": "If you need help with the configuration have a look here: https://github.com/custom-components/integration_blueprint",
+                "title": "Mastertherm",
+                "description": "This integration is to communicate with Matertherm Heat Pumps",
                 "data": {
                     "username": "Username",
                     "password": "Password"
@@ -11,10 +11,9 @@
             }
         },
         "error": {
-            "auth": "Username/Password is wrong."
-        },
-        "abort": {
-            "single_instance_allowed": "Only a single instance is allowed."
+            "authentication_error": "Username/ Password is incorrect.",
+            "connection_error": "Error connecting to the Mastertherm servers.",
+            "unsupported_role": "Error System Role is not suppored by this integration."
         }
     },
     "options": {

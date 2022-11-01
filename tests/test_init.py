@@ -1,56 +1,129 @@
-"""Test integration_blueprint setup process."""
-from homeassistant.exceptions import ConfigEntryNotReady
-import pytest
+"""Test mastertherm setup process."""
+from unittest.mock import patch
+
+from homeassistant.core import HomeAssistant
+from homeassistant.setup import async_setup_component
+from homeassistant.config_entries import ConfigEntryState
+from homeassistant.config_entries import SOURCE_IMPORT
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_SOURCE,
+    CONF_TOKEN,
+    CONF_USERNAME,
+)
+
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.integration_blueprint import (
-    BlueprintDataUpdateCoordinator,
-    async_reload_entry,
-    async_setup_entry,
-    async_unload_entry,
-)
-from custom_components.integration_blueprint.const import DOMAIN
-
-from .const import MOCK_CONFIG
+from custom_components.mastertherm.const import DOMAIN
 
 
-# We can pass fixtures as defined in conftest.py to tell pytest to use the fixture
-# for a given test. We can also leverage fixtures and mocks that are available in
-# Home Assistant using the pytest_homeassistant_custom_component plugin.
-# Assertions allow you to verify that the return value of whatever is on the left
-# side of the assertion matches with the right side.
-async def test_setup_unload_and_reload_entry(hass, bypass_get_data):
-    """Test entry setup and unload."""
-    # Create a mock entry so we don't have to go through config flow
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
+async def test_setup_with_no_config(hass: HomeAssistant):
+    """Test the component gets setup without config."""
+    assert await async_setup_component(hass, domain=DOMAIN, config={}) is True
+    assert len(hass.config_entries.flow.async_progress()) == 0
+    assert hass.data[DOMAIN] == {}
 
-    # Set up the entry and assert that the values set during setup are where we expect
-    # them to be. Because we have patched the BlueprintDataUpdateCoordinator.async_get_data
-    # call, no code from custom_components/integration_blueprint/api.py actually runs.
-    assert await async_setup_entry(hass, config_entry)
-    assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
+
+async def test_setup_valid(
+    hass: HomeAssistant, mock_configdata, mock_authresult, mock_moduledata
+):
+    """Test a Configured Instance that Logs In and Updates."""
+
+    # Patch the Autentication and setup the entry.
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ):
+        assert (
+            await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
+            is True
+        ), "Setup Component Failed."
+        await hass.async_block_till_done()
+
     assert (
-        type(hass.data[DOMAIN][config_entry.entry_id]) == BlueprintDataUpdateCoordinator
-    )
+        len(hass.config_entries.flow.async_progress()) == 0
+    ), "Flow is in Progress it should not be."
 
-    # Reload the entry and assert that the data from above is still there
-    assert await async_reload_entry(hass, config_entry) is None
-    assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
+    # Locate the Config Entry and check the results
+    for entry in hass.config_entries.async_entries(DOMAIN):
+        if mock_configdata[DOMAIN][CONF_USERNAME] == entry.title:
+            found_entry = entry
+
     assert (
-        type(hass.data[DOMAIN][config_entry.entry_id]) == BlueprintDataUpdateCoordinator
-    )
+        found_entry.title == mock_configdata[DOMAIN][CONF_USERNAME]
+    ), "Entry is not setup."
+    assert found_entry.data[CONF_USERNAME] == mock_configdata[DOMAIN][CONF_USERNAME]
+    assert found_entry.data[CONF_TOKEN] == mock_authresult[CONF_TOKEN]
+    assert found_entry.data["modules"] == mock_moduledata
 
-    # Unload the entry and verify that the data has been removed
-    assert await async_unload_entry(hass, config_entry)
-    assert config_entry.entry_id not in hass.data[DOMAIN]
+
+async def test_setup_authenticationerror(hass: HomeAssistant, mock_configdata: dict):
+    """Test a Configured Instance where Invalid Authentication is returned."""
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "authentication_error"}, {}),
+    ) as mock_validation:
+        assert (
+            await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
+            is True
+        )
+
+    assert len(mock_validation.mock_calls) == 1, "Mock Validation Failed"
+    assert not hass.data.get(DOMAIN)
 
 
-async def test_setup_entry_exception(hass, error_on_get_data):
-    """Test ConfigEntryNotReady when API raises an exception during entry setup."""
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
+async def test_unload_entry(
+    hass: HomeAssistant, mock_configdata: dict, mock_entitydata: dict
+):
+    """Test being able to unload an entry, may fail is PLATFORM is setup and
+    sensors fail to set up."""
+    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata, entry_id="test")
+    entry.add_to_hass(hass)
 
-    # In this case we are testing the condition where async_setup_entry raises
-    # ConfigEntryNotReady using the `error_on_get_data` fixture which simulates
-    # an error.
-    with pytest.raises(ConfigEntryNotReady):
-        assert await async_setup_entry(hass, config_entry)
+    # Check the Config is initiated
+    with patch(
+        "custom_components.mastertherm.bridge.MasterthermDataUpdateCoordinator._async_update_data",
+        return_value=mock_entitydata,
+    ) as mock_updater:
+        assert (
+            await hass.config_entries.async_setup(entry.entry_id) is True
+        ), "Component did not setup correctly."
+        await hass.async_block_till_done()
+
+    assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
+
+    # Perform and Check Unload Config
+    assert (
+        await hass.config_entries.async_unload(entry.entry_id) is True
+    ), "Component Config Unload Failed."
+    assert entry.state == ConfigEntryState.NOT_LOADED
+
+
+async def test_setup_twovalidentries(
+    hass: HomeAssistant, mock_configdata: dict, mock_authresult: dict
+):
+    """Test two valid configurations, two user accounts."""
+    with patch(
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value=({"status": "success"}, mock_authresult),
+    ):
+        await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
+        await hass.config_entries.flow.async_init(
+            DOMAIN,
+            context={CONF_SOURCE: SOURCE_IMPORT},
+            data={
+                CONF_USERNAME: "user.name2",
+                CONF_PASSWORD: "hash2",
+            },
+        )
+        await hass.async_block_till_done()
+
+    # Locate our Entries
+    for entry in hass.config_entries.async_entries(DOMAIN):
+        if mock_configdata[DOMAIN][CONF_USERNAME] == entry.title:
+            first_entry = entry
+        if "user.name2" == entry.title:
+            second_entry = entry
+
+    assert first_entry.title == mock_configdata[DOMAIN][CONF_USERNAME]
+    assert second_entry.title == "user.name2"

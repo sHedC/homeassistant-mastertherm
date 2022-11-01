@@ -1,63 +1,107 @@
-"""Global fixtures for integration_blueprint integration."""
-# Fixtures allow you to replace functions with a Mock object. You can perform
-# many options via the Mock to reflect a particular behavior from the original
-# function that you want to see without going through the function's actual logic.
-# Fixtures can either be passed into tests as parameters, or if autouse=True, they
-# will automatically be used across all tests.
-#
-# Fixtures that are defined in conftest.py are available across all tests. You can also
-# define fixtures within a particular test file to scope them locally.
-#
-# pytest_homeassistant_custom_component provides some fixtures that are provided by
-# Home Assistant core. You can find those fixture definitions here:
-# https://github.com/MatthewFlamm/pytest-homeassistant-custom-component/blob/master/pytest_homeassistant_custom_component/common.py
-#
-# See here for more info: https://docs.pytest.org/en/latest/fixture.html (note that
-# pytest includes fixtures OOB which you can use as defined on this page)
+"""Global fixtures for mastertherm integration."""
 from unittest.mock import patch
 
 import pytest
 
-pytest_plugins = "pytest_homeassistant_custom_component"
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_TOKEN,
+    CONF_USERNAME,
+)
+
+from custom_components.mastertherm.const import DOMAIN
+
+TEST_MODULES = [
+    {
+        "id": "1234",
+        "module_name": "MasterTherm_1234",
+        "config": [
+            {
+                "mb_addr": "1",
+                "mb_name": "Module_Board_1",
+            },
+        ],
+    },
+]
+TEST_AUTHRESULT = {
+    CONF_TOKEN: "token",
+    "expires": "yyyy-mm-dd hh:mm:ss ZZZ",
+    "modules": TEST_MODULES,
+    "role": "400",
+}
+
+TEST_CONFIGDATA = {
+    DOMAIN: {
+        CONF_USERNAME: "user.name",
+        CONF_PASSWORD: "hash",
+    }
+}
+
+TEST_ENTITIES = {
+    "modules": {
+        "1234_1": {
+            "info": {
+                "module_id": "1234",
+                "user_name": "UserName",
+                "module_name": "1234_Serial_UserName_XX_CC_Thermal",
+                "serial_number": "Serial",
+                "module_type": "Thermal",
+                "location": "XX",
+                "country": "CC",
+                "mb_addr": "1",
+                "mb_name": "Module_Board_1",
+            },
+            "entities": {
+                "outside_temp": {
+                    "type": "temperature",
+                    "name": "Outside Temperature",
+                    "state": 8.4,
+                }
+            },
+        }
+    }
+}
 
 
-# This fixture enables loading custom integrations in all tests.
-# Remove to enable selective use of this fixture
 @pytest.fixture(autouse=True)
-def auto_enable_custom_integrations(enable_custom_integrations):
+def auto_enable_custom_integrations(
+    enable_custom_integrations,
+):  # pylint: disable=unused-argument
+    """This ficture enables loading custom integrations in all tess."""
     yield
+
+
+@pytest.fixture
+def mock_configdata():
+    """Return a default mock configuration."""
+    return TEST_CONFIGDATA
+
+
+@pytest.fixture
+def mock_authresult():
+    """Return a default mock authentication result."""
+    return TEST_AUTHRESULT
+
+
+@pytest.fixture
+def mock_moduledata():
+    """Return a default mock module data."""
+    return TEST_MODULES
+
+
+@pytest.fixture
+def mock_entitydata():
+    """Returns a default set of Entities."""
+    return TEST_ENTITIES
 
 
 # This fixture is used to prevent HomeAssistant from attempting to create and dismiss persistent
 # notifications. These calls would fail without this fixture since the persistent_notification
 # integration is never loaded during a test.
-@pytest.fixture(name="skip_notifications", autouse=True)
-def skip_notifications_fixture():
-    """Skip notification calls."""
-    with patch("homeassistant.components.persistent_notification.async_create"), patch(
-        "homeassistant.components.persistent_notification.async_dismiss"
-    ):
-        yield
-
-
-# This fixture, when used, will result in calls to async_get_data to return None. To have the call
-# return a value, we would add the `return_value=<VALUE_TO_RETURN>` parameter to the patch call.
-@pytest.fixture(name="bypass_get_data")
-def bypass_get_data_fixture():
-    """Skip calls to get data from API."""
-    with patch(
-        "custom_components.integration_blueprint.IntegrationBlueprintApiClient.async_get_data"
-    ):
-        yield
-
-
-# In this fixture, we are forcing calls to async_get_data to raise an Exception. This is useful
-# for exception handling.
-@pytest.fixture(name="error_on_get_data")
-def error_get_data_fixture():
-    """Simulate error when retrieving data from API."""
-    with patch(
-        "custom_components.integration_blueprint.IntegrationBlueprintApiClient.async_get_data",
-        side_effect=Exception,
-    ):
-        yield
+# @pytest.fixture(name="skip_notifications", autouse=True)
+# def skip_notifications_fixture():
+#    """Skip notification calls."""
+#    with patch("homeassistant.components.persistent_notification.async_create"), patch(
+#        "homeassistant.components.persistent_notification.async_dismiss"
+#    ):
+#        yield
