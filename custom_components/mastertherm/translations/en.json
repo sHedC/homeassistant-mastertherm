@@ -2,8 +2,8 @@
     "config": {
         "step": {
             "user": {
-                "title": "Mastertherm",
-                "description": "This integration is to communicate with Matertherm Heat Pumps",
+                "title": "Cloud Service Login",
+                "description": "Login to the Mastertherm cloud service",
                 "data": {
                     "username": "Username",
                     "password": "Password"
