@@ -3,7 +3,6 @@
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
-[![workflow-status]][workflow]]
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
@@ -11,7 +10,8 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [mastertherm][mastertherm]._
+_Component to integrate with [mastertherm][mastertherm]. [![workflow-status]][workflow]_
+
 
 **This component will set up the following platforms.**
 
