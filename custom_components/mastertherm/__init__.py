@@ -18,8 +18,10 @@ SCAN_INTERVAL = timedelta(seconds=30)
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup(hass: HomeAssistant, config: Config):
-    """Set up this integration using YAML is not supported."""
+async def async_setup(
+    hass: HomeAssistant, config: Config
+):  # pylint: disable=unused-argument
+    """Set up this integration using YAML."""
     conf = config.get(DOMAIN)
     hass.data[DOMAIN] = {}
 
@@ -29,41 +31,36 @@ async def async_setup(hass: HomeAssistant, config: Config):
                 DOMAIN, context={"source": SOURCE_IMPORT}, data=conf
             )
         )
-
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MasterTherm integration from a config entry."""
-    config = entry.data
+    hass.data.setdefault(DOMAIN, {})
+    if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
+        # Initiate the Coordinator
+        coordinator = MasterthermDataUpdateCoordinator(hass)
+        hass.data[DOMAIN][entry.entry_id] = coordinator
 
-    # Initiate the Coordinator
-    coordinator = MasterthermDataUpdateCoordinator(hass, config_entry=config)
-    await coordinator.async_refresh()
-
+    await coordinator.async_config_entry_first_refresh()
     if not coordinator.data:
         raise ConfigEntryNotReady
 
-    hass.data[DOMAIN][entry.entry_id] = {
-        "coordinator": coordinator,
-    }
-
-    for platform in PLATFORMS:
-        hass.async_create_task(
-            hass.config_entries.async_forward_entry_setup(entry, platform)
-        )
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    coordinator.platforms.append(PLATFORMS)
 
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     unload_ok = all(
         await asyncio.gather(
             *[
                 hass.config_entries.async_forward_entry_unload(entry, platform)
                 for platform in PLATFORMS
+                if platform in coordinator.platforms
             ]
         )
     )

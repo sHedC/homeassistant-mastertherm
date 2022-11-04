@@ -43,8 +43,8 @@ TEST_ENTITIES = {
             "info": {
                 "module_id": "1234",
                 "user_name": "UserName",
-                "module_name": "1234_Serial_UserName_XX_CC_Thermal",
-                "serial_number": "Serial",
+                "module_name": "1234_AQI4434344_UserName_XX_CC_Thermal",
+                "serial_number": "AQI4434344",
                 "module_type": "Thermal",
                 "location": "XX",
                 "country": "CC",

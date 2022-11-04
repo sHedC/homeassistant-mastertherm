@@ -2,24 +2,14 @@
 from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
+from homeassistant.const import Platform
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.mastertherm.const import DOMAIN
 
 
-async def test_no_sensors(hass: HomeAssistant):
-    """Tests when No Sensors are Configured."""
-    entry = MockConfigEntry(domain=DOMAIN, data={})
-    entry.add_to_hass(hass)
-
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
-
-    assert hass.states.async_entity_ids_count("sensor") == 0
-
-
-async def test_sensors(
+async def test_sensor_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
     mock_entitydata: dict,
@@ -37,9 +27,12 @@ async def test_sensors(
         await hass.async_block_till_done()
 
     # Check we called the Mock and we have a Sensor.
+    sensors = hass.states.async_entity_ids(Platform.SENSOR)
     assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
+    assert (
+        hass.states.async_entity_ids_count(Platform.SENSOR) > 0
+    ), "Sensors Failed to Create"
 
     # Check the Temperature Sensor, TODO: Fix Not Working
-    # state = hass.states.get("sensor.mt_1234_1_outside_temp")
     # assert state.state == "8.4"
     # assert state.name == "MasterTherm Serial Outside Temperature"

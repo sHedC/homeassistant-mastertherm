@@ -30,7 +30,7 @@ _LOGGER = logging.getLogger(__name__)
 class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
 
-    def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry):
+    def __init__(self, hass: HomeAssistant):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
@@ -39,15 +39,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.config_entry = config_entry
-        self.hass = hass
+        self.platforms = []
         self.api = None
 
     async def _async_update_data(self):
         """Fetch data from API endpoint."""
-        if self.config_entry == {}:
-            return {}
-
         return {
             "modules": {
                 "1234_1": {
@@ -74,7 +70,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         }
 
 
-class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
+class MasterthermEntityOld(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
     """Represents a MasterTherm Device."""
 
     def __init__(
@@ -92,34 +88,9 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         )
 
     @property
-    def get_module(self) -> dict:
-        """Get the data for this module"""
-        return self.coordinator.data["modules"][self._module_key]
-
-    @property
-    def get_moduleinfo(self) -> dict:
-        """Get the Information for this Module"""
-        return self.get_module["info"]
-
-    @property
-    def get_entity(self):
-        """Get the specifi Entity data"""
-        return self.get_module[CONF_ENTITIES][self._entity_key]
-
-    @property
     def unique_id(self):
         """Return a unique_id for this entity."""
-        return f"mastertherm-{self._module_key}-{self._entity_key}".lower()
-
-    @property
-    def name(self):
-        """Return the Entity Friendly Name."""
-        return (
-            "Mastertherm "
-            + self.get_moduleinfo["serial_number"]
-            + " "
-            + self.get_entity["name"]
-        )
+        return self.entity_id
 
     @property
     def device_info(self):
