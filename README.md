@@ -3,6 +3,7 @@
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
+[![workflow-status]][workflow]]
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
@@ -60,10 +61,10 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 ***
 
-[mastertherm]: https://github.com/shedc/homeassistant-mastertherm
+[mastertherm]: https://github.com/sHedC/homeassistant-mastertherm
 [buymecoffee]: https://www.buymeacoffee.com/shedc
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/shedc/blueprint.svg?style=for-the-badge
+[commits-shield]: https://img.shields.io/github/commit-activity/y/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
 [commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
@@ -72,7 +73,9 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [masterthermimg]: mastertherm.png
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/shedc/blueprint.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/shedc/blueprint.svg?style=for-the-badge
 [releases]: https://github.com/shedc/homeassistant-mastertherm/releases
+[workflow-status]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
+[workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml
