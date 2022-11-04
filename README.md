@@ -10,7 +10,7 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [mastertherm][mastertherm]. [![workflow-status]][workflow]_
+_Component to integrate with [mastertherm][mastertherm]. [workflow-status][workflows]_
 
 
 **This component will set up the following platforms.**
