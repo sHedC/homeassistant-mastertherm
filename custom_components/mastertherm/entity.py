@@ -41,10 +41,8 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
     def device_info(self):
         """Return the device_info of the device."""
         return DeviceInfo(
-            identifiers={{DOMAIN, "test2"}},
+            identifiers={(DOMAIN, self._module_key)},
+            name=self.get_moduleinfo["module_name"],
             manufacturer="Mastertherm",
-            model="TBD",
-            name="Matertherm Device",
-            sw_version="TBD",
-            configuration_url="TBD",
+            suggested_area=self.get_moduleinfo["country"],
         )
