@@ -10,17 +10,9 @@ from masterthermconnect import (
     MasterThermUnsupportedRole,
 )
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.entity import DeviceInfo
-from homeassistant.const import CONF_ENTITIES
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import (
-    aiohttp_client,
-)
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+from homeassistant.helpers import aiohttp_client
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
 
@@ -68,41 +60,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 }
             }
         }
-
-
-class MasterthermEntityOld(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
-    """Represents a MasterTherm Device."""
-
-    def __init__(
-        self,
-        coordinator: MasterthermDataUpdateCoordinator,
-        module_key: str,
-        entity_type: str,
-        entity_key: str = None,
-    ):
-        super().__init__(coordinator)
-        self._module_key = module_key
-        self._entity_key = entity_key
-        self.entity_id = (
-            f"{entity_type}.mt-{self._module_key}-{self._entity_key}".lower()
-        )
-
-    @property
-    def unique_id(self):
-        """Return a unique_id for this entity."""
-        return self.entity_id
-
-    @property
-    def device_info(self):
-        """Return the device_info of the device."""
-        return DeviceInfo(
-            identifiers={{DOMAIN, "test2"}},
-            manufacturer="Mastertherm",
-            model="TBD",
-            name="Matertherm Device",
-            sw_version="TBD",
-            configuration_url="TBD",
-        )
 
 
 async def authenticate(hass: HomeAssistant, username: str, password: str) -> dict:

@@ -3,7 +3,7 @@ from homeassistant.const import CONF_ENTITIES
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .bridge import MasterthermDataUpdateCoordinator
+from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN
 
 

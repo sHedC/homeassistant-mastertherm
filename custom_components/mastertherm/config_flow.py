@@ -6,7 +6,7 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 
 from .const import DOMAIN
-from .bridge import authenticate
+from .coordinator import authenticate
 
 _LOGGER = logging.getLogger(__name__)
 

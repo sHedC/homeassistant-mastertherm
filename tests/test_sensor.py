@@ -20,14 +20,13 @@ async def test_sensor_setup(
 
     # Patch the Autentication and setup the entry.
     with patch(
-        "custom_components.mastertherm.bridge.MasterthermDataUpdateCoordinator._async_update_data",
+        "custom_components.mastertherm.coordinator.MasterthermDataUpdateCoordinator._async_update_data",
         return_value=mock_entitydata,
     ) as mock_updater:
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
     # Check we called the Mock and we have a Sensor.
-    sensors = hass.states.async_entity_ids(Platform.SENSOR)
     assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
     assert (
         hass.states.async_entity_ids_count(Platform.SENSOR) > 0

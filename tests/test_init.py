@@ -77,7 +77,10 @@ async def test_unload_entry(
 
     # Check the Config is initiated
     with patch(
-        "custom_components.mastertherm.bridge.MasterthermDataUpdateCoordinator._async_update_data",
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
         return_value=mock_entitydata,
     ) as mock_updater:
         assert (
