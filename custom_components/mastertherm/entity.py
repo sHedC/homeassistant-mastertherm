@@ -18,8 +18,10 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
     ):
         """Initialisation for all Mastertherm Entities"""
         super().__init__(coordinator)
+
         self._module_key = module_key
         self._entity_key = entity_key
+        self._attr_unique_id = f"mt_{module_key}_{entity_key}".replace(" ", "_").lower()
         self._attr_name = f"Mastertherm {self._module_key} {self._entity_key}"
 
     @property
@@ -44,5 +46,6 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             identifiers={(DOMAIN, self._module_key)},
             name=self.get_moduleinfo["module_name"],
             manufacturer="Mastertherm",
-            suggested_area=self.get_moduleinfo["country"],
+            model=self.get_moduleinfo["module_type"],
+            configuration_url="https://mastertherm.vip-it.cz/",
         )

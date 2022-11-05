@@ -20,7 +20,10 @@ async def test_sensor_setup(
 
     # Patch the Autentication and setup the entry.
     with patch(
-        "custom_components.mastertherm.coordinator.MasterthermDataUpdateCoordinator._async_update_data",
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
         return_value=mock_entitydata,
     ) as mock_updater:
         await hass.config_entries.async_setup(entry.entry_id)

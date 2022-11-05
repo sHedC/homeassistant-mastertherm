@@ -1,6 +1,5 @@
 """Helper and wrapper classes for MasterTherm module."""
 import logging
-import random
 
 from datetime import timedelta
 from masterthermconnect import (
@@ -12,7 +11,10 @@ from masterthermconnect import (
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import aiohttp_client
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.update_coordinator import (
+    DataUpdateCoordinator,
+    UpdateFailed,
+)
 
 from .const import DOMAIN
 
@@ -22,7 +24,7 @@ _LOGGER = logging.getLogger(__name__)
 class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
 
-    def __init__(self, hass: HomeAssistant):
+    def __init__(self, hass: HomeAssistant, username: str, password: str):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
@@ -31,35 +33,16 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
+        websession = aiohttp_client.async_get_clientsession(hass)
+        self._api: MasterThermController = MasterThermController(
+            websession=websession, username=username, password=password
+        )
         self.platforms = []
-        self.api = None
 
     async def _async_update_data(self):
-        """Fetch data from API endpoint."""
-        return {
-            "modules": {
-                "1234_1": {
-                    "info": {
-                        "module_id": "1234",
-                        "user_name": "BLABLA",
-                        "module_name": "1234_AQI4434344_BlaBla_EE_UK_Thermal",
-                        "serial_number": "AQI4434344",
-                        "module_type": "Thermal",
-                        "location": "EE",
-                        "country": "UK",
-                        "mb_addr": "1",
-                        "mb_name": "unknown",
-                    },
-                    "entities": {
-                        "outside_temp": {
-                            "type": "temperature",
-                            "name": "Outside Temperature",
-                            "state": round(random.uniform(-10.00, 30.00), 2),
-                        }
-                    },
-                }
-            }
-        }
+        """Refresh the data from the API endpoint and process."""
+        raise UpdateFailed("Connection Error")
+        return {}
 
 
 async def authenticate(hass: HomeAssistant, username: str, password: str) -> dict:

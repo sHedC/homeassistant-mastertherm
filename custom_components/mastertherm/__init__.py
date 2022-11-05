@@ -5,6 +5,7 @@ import logging
 
 from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -39,7 +40,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
         # Initiate the Coordinator
-        coordinator = MasterthermDataUpdateCoordinator(hass)
+        username = entry.data[DOMAIN].get(CONF_USERNAME)
+        password = entry.data[DOMAIN].get(CONF_PASSWORD)
+        coordinator = MasterthermDataUpdateCoordinator(hass, username, password)
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await coordinator.async_config_entry_first_refresh()
