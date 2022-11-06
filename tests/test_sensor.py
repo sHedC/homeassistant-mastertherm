@@ -15,7 +15,7 @@ async def test_sensor_setup(
     mock_entitydata: dict,
 ):
     """Test Sensors are Created and Updated."""
-    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata)
+    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
     # Patch the Autentication and setup the entry.

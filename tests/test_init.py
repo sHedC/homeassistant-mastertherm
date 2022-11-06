@@ -23,13 +23,19 @@ async def test_setup_with_no_config(hass: HomeAssistant):
     assert hass.data[DOMAIN] == {}
 
 
-async def test_setup_valid(hass: HomeAssistant, mock_configdata):
+async def test_setup_valid(hass: HomeAssistant, mock_configdata, mock_entitydata):
     """Test a Configured Instance that Logs In and Updates."""
 
     # Patch the Autentication and setup the entry.
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
         return_value={"status": "success"},
+    ), patch(
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
+        return_value=mock_entitydata,
     ):
         assert (
             await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
@@ -72,7 +78,9 @@ async def test_unload_entry(
 ):
     """Test being able to unload an entry, may fail is PLATFORM is setup and
     sensors fail to set up."""
-    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata, entry_id="test")
+    entry = MockConfigEntry(
+        domain=DOMAIN, data=mock_configdata[DOMAIN], entry_id="test"
+    )
     entry.add_to_hass(hass)
 
     # Check the Config is initiated

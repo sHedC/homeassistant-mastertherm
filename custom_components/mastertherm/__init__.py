@@ -23,15 +23,16 @@ async def async_setup(
     hass: HomeAssistant, config: Config
 ):  # pylint: disable=unused-argument
     """Set up this integration using YAML."""
-    conf = config.get(DOMAIN)
+    # init storage for registries
     hass.data[DOMAIN] = {}
 
-    if conf is not None:
+    if DOMAIN in config:
         hass.async_create_task(
             hass.config_entries.flow.async_init(
-                DOMAIN, context={"source": SOURCE_IMPORT}, data=conf
+                DOMAIN, context={"source": SOURCE_IMPORT}, data=config[DOMAIN]
             )
         )
+
     return True
 
 
@@ -40,8 +41,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
         # Initiate the Coordinator
-        username = entry.data[DOMAIN].get(CONF_USERNAME)
-        password = entry.data[DOMAIN].get(CONF_PASSWORD)
+        username = entry.data.get(CONF_USERNAME)
+        password = entry.data.get(CONF_PASSWORD)
         coordinator = MasterthermDataUpdateCoordinator(hass, username, password)
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
