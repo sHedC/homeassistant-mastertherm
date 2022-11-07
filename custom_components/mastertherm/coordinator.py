@@ -10,6 +10,7 @@ from masterthermconnect import (
 )
 
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers import aiohttp_client
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
@@ -38,10 +39,15 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             websession=websession, username=username, password=password
         )
         self.platforms = []
+        self._modules = []
 
     async def _async_update_data(self):
         """Refresh the data from the API endpoint and process."""
-        raise UpdateFailed("Connection Error")
+
+        raise ConfigEntryAuthFailed("User Password no longer valid.")
+        self._api.connect()
+        devices = self._api.get_devices()
+
         return {}
 
 

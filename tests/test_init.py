@@ -105,11 +105,19 @@ async def test_unload_entry(
     assert entry.state == ConfigEntryState.NOT_LOADED
 
 
-async def test_setup_twovalidentries(hass: HomeAssistant, mock_configdata: dict):
+async def test_setup_twovalidentries(
+    hass: HomeAssistant, mock_configdata: dict, mock_entitydata: dict
+):
     """Test two valid configurations, two user accounts."""
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
         return_value={"status": "success"},
+    ), patch(
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
+        return_value=mock_entitydata,
     ):
         await async_setup_component(hass, domain=DOMAIN, config=mock_configdata)
         await hass.config_entries.flow.async_init(
