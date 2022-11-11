@@ -1,6 +1,7 @@
 """Global fixtures for mastertherm integration."""
+import json
+import os
 from unittest.mock import patch
-
 import pytest
 
 from homeassistant.const import (
@@ -45,7 +46,7 @@ TEST_ENTITIES = {
                 "user_name": "UserName",
                 "module_name": "1234_AQI4434344_UserName_XX_CC_Thermal",
                 "serial_number": "AQI4434344",
-                "module_type": "Thermal",
+                "hp_type": "Thermal",
                 "location": "XX",
                 "country": "CC",
                 "mb_addr": "1",
@@ -63,12 +64,57 @@ TEST_ENTITIES = {
 }
 
 
+def load_fixture(folder, filename):
+    """Load a JSON fixture for testing."""
+    try:
+        path = os.path.join(os.path.dirname(__file__), "fixtures", folder, filename)
+        with open(path, encoding="utf-8") as fptr:
+            return fptr.read()
+    except OSError:
+        return None
+
+
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(
     enable_custom_integrations,
 ):  # pylint: disable=unused-argument
     """This ficture enables loading custom integrations in all tess."""
     yield
+
+
+class APIMock:
+    """Mock up the API responses."""
+
+    def __init__(self):
+        """Initialize the Mock API"""
+
+    async def connect(self, updata_data=True):
+        """Simulate the Connect and Update method"""
+        return True
+
+    async def refresh(self, full_load=False):
+        """Mock the Refresh Method"""
+        return True
+
+    def get_devices(self):
+        """Return a list of devices."""
+        info = json.loads(load_fixture("masterthermconnect", "device_list.json"))
+        if info is None:
+            info = {}
+
+        return info
+
+    def get_device_data(self, module_id: str, device_id: str):
+        """Return the data for the device."""
+        info = json.loads(
+            load_fixture(
+                "masterthermconnect", f"device_data_{module_id}_{device_id}.json"
+            )
+        )
+        if info is None:
+            info = {}
+
+        return info
 
 
 @pytest.fixture

@@ -1,0 +1,51 @@
+{
+    "on": true,
+    "heating": false,
+    "compressor_running": false,
+    "circulation_pump_running": false,
+    "defrost_mode": false,
+    "outside_temp": 11.7,
+    "requested_temp": 32.2,
+    "actual_temp": 23.3,
+    "compressor_run_time": 990,
+    "compressor_start_counter": 1993,
+    "pump_runtime": 12790,
+    "heating_curve": {
+        "setpoint_a_outside": 20.0,
+        "setpoint_a_requested": 27.0,
+        "setpoint_b_outside": -5.0,
+        "setpoint_b_requested": 40.0
+    },
+    "pads": {
+        "pada": {
+            "enabled": false,
+            "name": "HW-ANN",
+            "on": false,
+            "pump_running": false,
+            "water_temp": 23.3,
+            "ambient_temp": 0.0,
+            "ambient_requested": 0.0,
+            "control_curve": {
+                "setpoint_a_outside": 20.0,
+                "setpoint_a_requested": 20.0,
+                "setpoint_b_outside": -15.0,
+                "setpoint_b_requested": 20.0
+            }
+        },
+        "padb": {
+            "enabled": false,
+            "name": "HW-HOU",
+            "on": false,
+            "pump_running": false,
+            "water_temp": 19.8,
+            "ambient_temp": 0.0,
+            "ambient_requested": 0.0,
+            "control_curve": {
+                "setpoint_a_outside": 20.0,
+                "setpoint_a_requested": 20.0,
+                "setpoint_b_outside": -15.0,
+                "setpoint_b_requested": 20.0
+            }
+        }
+    }
+}

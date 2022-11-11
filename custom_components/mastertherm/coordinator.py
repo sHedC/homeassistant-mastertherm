@@ -21,11 +21,19 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
+# TODO: Build Data Mapping Structure
+
 
 class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
 
-    def __init__(self, hass: HomeAssistant, username: str, password: str):
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        websession: aiohttp_client,
+        username: str,
+        password: str,
+    ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
@@ -34,21 +42,61 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        websession = aiohttp_client.async_get_clientsession(hass)
-        self._api: MasterThermController = MasterThermController(
+        self.mt_controller: MasterThermController = MasterThermController(
             websession=websession, username=username, password=password
         )
         self.platforms = []
         self._modules = []
 
-    async def _async_update_data(self):
+    async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
+        # Try to refresh, check for refresh issues
+        try:
+            if self.data is None:
+                connected = await self.mt_controller.connect()
+            else:
+                connected = await self.mt_controller.refresh()
 
-        raise ConfigEntryAuthFailed("User Password no longer valid.")
-        self._api.connect()
-        devices = self._api.get_devices()
+            if not connected:
+                _LOGGER.error("Update Failed for unknown reason")
+                raise UpdateFailed("unknown_reason")
 
-        return {}
+        except MasterThermAuthenticationError as ex:
+            _LOGGER.error("Invalid credentials: %s", ex)
+            raise ConfigEntryAuthFailed("authentication_error") from ex
+        except MasterThermConnectionError as ex:
+            _LOGGER.error("Unable to communicate with MasterTherm API: %s", ex)
+            raise UpdateFailed("connection_error") from ex
+        except MasterThermUnsupportedRole as ex:
+            _LOGGER.error("Unsupported role: %s", ex)
+            raise UpdateFailed("unsupported_role") from ex
+
+        # If first run then populate the Modules.
+        result_data = self.data
+        if result_data is None:
+            result_data = {"modules": {}}
+            devices = self.mt_controller.get_devices()
+            for device_id, device in devices.items():
+                result_data["modules"][device_id] = {"info": device}
+
+        # Retrieve the data and merge into the current data set based
+        # based on the sensor configuration.
+        for device_id, device in result_data["modules"].items():
+            device_data = self.mt_controller.get_device_data(
+                device["info"]["module_id"], device["info"]["device_id"]
+            )
+
+            # Process Device Data, to pick up entities. Probably end up mapping it?
+            # Short term adding just the outside temperature.
+            result_data["modules"][device_id]["entities"] = {
+                "outside_temp": {
+                    "type": "temperature",
+                    "name": "Outside Temperature",
+                    "state": device_data["outside_temp"],
+                }
+            }
+
+        return result_data
 
 
 async def authenticate(hass: HomeAssistant, username: str, password: str) -> dict:

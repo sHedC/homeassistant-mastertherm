@@ -1,0 +1,24 @@
+{
+    "modules": {
+        "1234_1": {
+            "info": {
+                "module_id": "1234",
+                "user_name": "UserName",
+                "module_name": "1234_AQI4434344_UserName_XX_CC_Thermal",
+                "serial_number": "AQI4434344",
+                "module_type": "Thermal",
+                "location": "XX",
+                "country": "CC",
+                "mb_addr": "1",
+                "mb_name": "Module_Board_1"
+            },
+            "entities": {
+                "outside_temp": {
+                    "type": "temperature",
+                    "name": "Outside Temperature",
+                    "state": 8.4
+                }
+            }
+        }
+    }
+}

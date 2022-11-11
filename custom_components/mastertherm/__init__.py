@@ -8,7 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers import aiohttp_client
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -19,9 +19,7 @@ SCAN_INTERVAL = timedelta(seconds=30)
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup(
-    hass: HomeAssistant, config: Config
-):  # pylint: disable=unused-argument
+async def async_setup(hass: HomeAssistant, config: Config):
     """Set up this integration using YAML."""
     # init storage for registries
     hass.data[DOMAIN] = {}
@@ -40,10 +38,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MasterTherm integration from a config entry."""
     hass.data.setdefault(DOMAIN, {})
     if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
-        # Initiate the Coordinator
+        # Initiate the Coordinator, not sure if I will need separate session for separate users
         username = entry.data.get(CONF_USERNAME)
         password = entry.data.get(CONF_PASSWORD)
-        coordinator = MasterthermDataUpdateCoordinator(hass, username, password)
+        websession = aiohttp_client.async_get_clientsession(hass)
+        coordinator = MasterthermDataUpdateCoordinator(
+            hass, websession, username, password
+        )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await coordinator.async_config_entry_first_refresh()
