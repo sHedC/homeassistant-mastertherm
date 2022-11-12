@@ -40,16 +40,20 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.__websession = ClientSession(timeout=60)
+        self.session = ClientSession(timeout=60)
         self.mt_controller: MasterThermController = MasterThermController(
-            websession=self.__websession, username=username, password=password
+            websession=self.session, username=username, password=password
         )
         self.platforms = []
         self._modules = []
 
-    def __del__(self):
-        """Close any Open Sessions."""
-        self.__websession.close()
+    async def __aenter__(self):
+        """Return Self."""
+        return self
+
+    async def __aexit__(self, *excinfo):
+        """Close Session before class is destroyed."""
+        await self.session.close()
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
@@ -126,6 +130,6 @@ async def authenticate(username: str, password: str) -> dict:
         auth_result["error_code"] = ex.status
         auth_result["error_message"] = ex.message
     finally:
-        websession.close()
+        await websession.close()
 
     return auth_result
