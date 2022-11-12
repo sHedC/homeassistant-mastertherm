@@ -47,7 +47,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         )
 
     @property
-    def device_class(self) -> str | None:
+    def device_class(self) -> str:
         return "temperature"
 
     @property
