@@ -40,7 +40,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.session = ClientSession(timeout=60)
+        self.session = ClientSession()
         self.mt_controller: MasterThermController = MasterThermController(
             websession=self.session, username=username, password=password
         )
@@ -109,7 +109,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 async def authenticate(username: str, password: str) -> dict:
     """Validate the user input by connecting."""
     auth_result = {}
-    websession = ClientSession(timeout=60)
+    websession = ClientSession()
     try:
         controller = MasterThermController(websession, username, password)
         await controller.connect(update_data=False)
