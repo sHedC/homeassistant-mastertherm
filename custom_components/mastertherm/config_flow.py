@@ -41,7 +41,7 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             return await self._show_config_form(user_input)
 
         auth_result = await authenticate(
-            self.hass, user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
+            user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
         )
 
         if auth_result["status"] != "success":

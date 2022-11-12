@@ -47,5 +47,11 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         )
 
     @property
+    def device_class(self) -> str | None:
+        return "temperature"
+
+    @property
     def native_value(self) -> Decimal:
-        return 1.0
+        return self.coordinator.data["modules"][self._module_key]["entities"][
+            self._entity_key
+        ]["state"]

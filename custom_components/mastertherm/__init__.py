@@ -8,8 +8,6 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers import aiohttp_client
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN, PLATFORMS
@@ -41,10 +39,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Initiate the Coordinator, not sure if I will need separate session for separate users
         username = entry.data.get(CONF_USERNAME)
         password = entry.data.get(CONF_PASSWORD)
-        websession = aiohttp_client.async_get_clientsession(hass)
-        coordinator = MasterthermDataUpdateCoordinator(
-            hass, websession, username, password
-        )
+        coordinator = MasterthermDataUpdateCoordinator(hass, username, password)
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await coordinator.async_config_entry_first_refresh()

@@ -2,6 +2,8 @@
 import logging
 
 from datetime import timedelta
+from aiohttp import ClientSession
+
 from masterthermconnect import (
     Controller as MasterThermController,
     MasterThermAuthenticationError,
@@ -11,7 +13,6 @@ from masterthermconnect import (
 
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers import aiohttp_client
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
@@ -21,8 +22,6 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-# TODO: Build Data Mapping Structure
-
 
 class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
@@ -30,7 +29,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(
         self,
         hass: HomeAssistant,
-        websession: aiohttp_client,
         username: str,
         password: str,
     ):
@@ -42,11 +40,16 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
+        self.__websession = ClientSession(timeout=60)
         self.mt_controller: MasterThermController = MasterThermController(
-            websession=websession, username=username, password=password
+            websession=self.__websession, username=username, password=password
         )
         self.platforms = []
         self._modules = []
+
+    def __del__(self):
+        """Close any Open Sessions."""
+        self.__websession.close()
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
@@ -99,10 +102,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         return result_data
 
 
-async def authenticate(hass: HomeAssistant, username: str, password: str) -> dict:
+async def authenticate(username: str, password: str) -> dict:
     """Validate the user input by connecting."""
     auth_result = {}
-    websession = aiohttp_client.async_get_clientsession(hass)
+    websession = ClientSession(timeout=60)
     try:
         controller = MasterThermController(websession, username, password)
         await controller.connect(update_data=False)
@@ -122,5 +125,7 @@ async def authenticate(hass: HomeAssistant, username: str, password: str) -> dic
         auth_result["status"] = "unsupported_role"
         auth_result["error_code"] = ex.status
         auth_result["error_message"] = ex.message
+    finally:
+        websession.close()
 
     return auth_result
