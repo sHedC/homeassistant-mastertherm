@@ -25,6 +25,11 @@ Platform | Description
 
 ![mastertherm][masterthermimg]
 
+## NOTES:
+Currently there are two versions of the mastertherm servers and two apps, Mastertherm which connects to https://mastertherm.vip-it.cz and Masthertherm Touch https://mastertherm.online.  The second does not yet work it has a different authentication system which needs a some work.
+
+Also not this is nto ready, whilst using an 2017-2020 heatpump is possible I have a problem with the sessions so it connects then starts failing, once sorted I will create an alpha HACS version.
+
 ## Installation
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
