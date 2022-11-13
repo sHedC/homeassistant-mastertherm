@@ -24,7 +24,10 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         self._attr_unique_id = (
             f"mt_{module_key}_{entity_key}".replace(" ", "_").replace("-", "_").lower()
         )
-        self._attr_name = f"Mastertherm {self._module_key} {self._entity_key}"
+        name = self.coordinator.data["modules"][self._module_key]["entities"][
+            self._entity_key
+        ]["name"]
+        self._attr_name = f"MT:{self._module_key} {name}"
 
     @property
     def get_module(self) -> dict:
