@@ -47,13 +47,13 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         self.platforms = []
         self._modules = []
 
-    async def __aenter__(self):
-        """Return Self."""
-        return self
+    # async def __aenter__(self):
+    #    """Return Self."""
+    #    return self
 
-    async def __aexit__(self, *excinfo):
-        """Close Session before class is destroyed."""
-        await self.session.close()
+    # async def __aexit__(self, *excinfo):
+    #    """Close Session before class is destroyed."""
+    #    await self.session.close()
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
