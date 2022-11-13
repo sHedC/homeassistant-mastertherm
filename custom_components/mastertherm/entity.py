@@ -26,7 +26,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             .replace("-", "_")
             .lower()
         )
-        self.entity_id = self._attr_unique_id
+        self.entity_id = f"sensor.{self._attr_unique_id}"
         self._attr_name = self.coordinator.data["modules"][self._module_key][
             "entities"
         ][self._entity_key]["name"]
