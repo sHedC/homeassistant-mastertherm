@@ -5,10 +5,10 @@ from datetime import timedelta
 from aiohttp import ClientSession
 
 from masterthermconnect import (
-    Controller as MasterThermController,
-    MasterThermAuthenticationError,
-    MasterThermConnectionError,
-    MasterThermUnsupportedRole,
+    MasterthermController,
+    MasterthermAuthenticationError,
+    MasterthermConnectionError,
+    MasterthermUnsupportedRole,
 )
 
 from homeassistant.core import HomeAssistant
@@ -31,6 +31,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         hass: HomeAssistant,
         username: str,
         password: str,
+        api_version: str,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
@@ -41,8 +42,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
         self.session = ClientSession()
-        self.mt_controller: MasterThermController = MasterThermController(
-            websession=self.session, username=username, password=password
+        self.mt_controller: MasterthermController = MasterthermController(
+            username,
+            password,
+            self.session,
+            api_version=api_version,
         )
         self.platforms = []
         self._modules = []
@@ -62,19 +66,20 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             if self.data is None:
                 connected = await self.mt_controller.connect()
             else:
-                connected = await self.mt_controller.refresh()
+                connected = await self.mt_controller.refresh_info()
+                connected = await self.mt_controller.refresh_data()
 
             if not connected:
                 _LOGGER.error("Update Failed for unknown reason")
                 raise UpdateFailed("unknown_reason")
 
-        except MasterThermAuthenticationError as ex:
+        except MasterthermAuthenticationError as ex:
             _LOGGER.error("Invalid credentials: %s", ex)
             raise ConfigEntryAuthFailed("authentication_error") from ex
-        except MasterThermConnectionError as ex:
+        except MasterthermConnectionError as ex:
             _LOGGER.error("Unable to communicate with MasterTherm API: %s", ex)
             raise UpdateFailed("connection_error") from ex
-        except MasterThermUnsupportedRole as ex:
+        except MasterthermUnsupportedRole as ex:
             _LOGGER.error("Unsupported role: %s", ex)
             raise UpdateFailed("unsupported_role") from ex
 
@@ -106,25 +111,27 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         return result_data
 
 
-async def authenticate(username: str, password: str) -> dict:
+async def authenticate(username: str, password: str, api_version: str) -> dict:
     """Validate the user input by connecting."""
     auth_result = {}
     websession = ClientSession()
     try:
-        controller = MasterThermController(websession, username, password)
-        await controller.connect(update_data=False)
+        controller: MasterthermController = MasterthermController(
+            username, password, websession, api_version=api_version
+        )
+        await controller.connect()
         auth_result["status"] = "success"
-    except MasterThermAuthenticationError as ex:
+    except MasterthermAuthenticationError as ex:
         _LOGGER.error("Invalid credentials: %s", ex)
         auth_result["status"] = "authentication_error"
         auth_result["error_code"] = ex.status
         auth_result["error_message"] = ex.message
-    except MasterThermConnectionError as ex:
+    except MasterthermConnectionError as ex:
         _LOGGER.error("Unable to communicate with MasterTherm API: %s", ex)
         auth_result["status"] = "connection_error"
         auth_result["error_code"] = ex.status
         auth_result["error_message"] = ex.message
-    except MasterThermUnsupportedRole as ex:
+    except MasterthermUnsupportedRole as ex:
         _LOGGER.error("Unsupported role: %s", ex)
         auth_result["status"] = "unsupported_role"
         auth_result["error_code"] = ex.status

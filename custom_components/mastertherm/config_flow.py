@@ -2,10 +2,12 @@
 import logging
 import voluptuous as vol
 
-from homeassistant import config_entries
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+import homeassistant.helpers.config_validation as cv
 
-from .const import DOMAIN
+from homeassistant import config_entries
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
+
+from .const import DOMAIN, API_VERSIONS
 from .coordinator import authenticate
 
 _LOGGER = logging.getLogger(__name__)
@@ -37,11 +39,14 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             user_input = {}
             user_input[CONF_USERNAME] = ""
             user_input[CONF_PASSWORD] = ""
+            user_input[CONF_API_VERSION] = "v1"
 
             return await self._show_config_form(user_input)
 
         auth_result = await authenticate(
-            user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
+            user_input[CONF_USERNAME],
+            user_input[CONF_PASSWORD],
+            user_input[CONF_API_VERSION],
         )
 
         if auth_result["status"] != "success":
@@ -61,6 +66,9 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
+                    vol.Required(CONF_API_VERSION, default="v1"): vol.All(
+                        cv.ensure_list, [vol.In(API_VERSIONS)]
+                    ),
                     vol.Required(CONF_USERNAME, default=user_input[CONF_USERNAME]): str,
                     vol.Required(CONF_PASSWORD, default=user_input[CONF_PASSWORD]): str,
                 }
