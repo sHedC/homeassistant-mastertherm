@@ -38,7 +38,7 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             user_input = {}
             user_input[CONF_USERNAME] = ""
             user_input[CONF_PASSWORD] = ""
-            user_input[CONF_API_VERSION] = ""
+            user_input[CONF_API_VERSION] = "v1"
 
             return await self._show_config_form(user_input)
 
