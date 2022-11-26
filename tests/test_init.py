@@ -9,6 +9,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SOURCE,
     CONF_USERNAME,
+    CONF_API_VERSION,
 )
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -126,6 +127,7 @@ async def test_setup_twovalidentries(
             data={
                 CONF_USERNAME: "user.name2",
                 CONF_PASSWORD: "hash2",
+                CONF_API_VERSION: "v1",
             },
         )
         await hass.async_block_till_done()

@@ -8,6 +8,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_TOKEN,
     CONF_USERNAME,
+    CONF_API_VERSION,
 )
 
 from custom_components.mastertherm.const import DOMAIN
@@ -32,10 +33,7 @@ TEST_AUTHRESULT = {
 }
 
 TEST_CONFIGDATA = {
-    DOMAIN: {
-        CONF_USERNAME: "user.name",
-        CONF_PASSWORD: "hash",
-    }
+    DOMAIN: {CONF_USERNAME: "user.name", CONF_PASSWORD: "hash", CONF_API_VERSION: "v1"}
 }
 
 TEST_ENTITIES = {

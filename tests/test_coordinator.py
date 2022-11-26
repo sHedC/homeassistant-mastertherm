@@ -20,7 +20,7 @@ async def test_coordinator_setup(hass: HomeAssistant, mock_configdata: dict):
         "custom_components.mastertherm.config_flow.authenticate",
         return_value={"status": "success"},
     ), patch(
-        "custom_components.mastertherm.coordinator.MasterThermController",
+        "custom_components.mastertherm.coordinator.MasterthermController",
         return_value=api_mock,
     ):
         await async_setup_component(
