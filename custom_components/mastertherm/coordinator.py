@@ -38,7 +38,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=240),
+            update_interval=timedelta(minutes=10),
         )
 
         self.session = ClientSession()

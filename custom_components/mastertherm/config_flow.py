@@ -4,7 +4,13 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant import config_entries
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
+from homeassistant.core import callback
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_USERNAME,
+    CONF_API_VERSION,
+    CONF_SCAN_INTERVAL,
+)
 
 from .const import DOMAIN, API_VERSIONS
 from .coordinator import authenticate
@@ -38,7 +44,7 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             user_input = {}
             user_input[CONF_USERNAME] = ""
             user_input[CONF_PASSWORD] = ""
-            user_input[CONF_API_VERSION] = "v1"
+            user_input[CONF_API_VERSION] = ""
 
             return await self._show_config_form(user_input)
 
@@ -59,6 +65,11 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_create_entry(title=user_input[CONF_USERNAME], data=user_input)
 
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        return MasterthermOptionsFlowHandler(config_entry)
+
     async def _show_config_form(self, user_input: dict):
         """Show the configuration form to edit location data."""
         return self.async_show_form(
@@ -77,4 +88,41 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 }
             ),
             errors=self._errors,
+        )
+
+
+class MasterthermOptionsFlowHandler(config_entries.OptionsFlow):
+    """Mastertherm config options flow handler."""
+
+    def __init__(self, config_entry):
+        """Initialize HACS options flow."""
+        self.config_entry = config_entry
+        self.options = dict(config_entry.options)
+
+    async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
+        """Manage the options."""
+        return await self.async_step_user()
+
+    async def async_step_user(self, user_input=None):
+        """Handle a flow initialized by the user."""
+        if user_input is not None:
+            self.options.update(user_input)
+            return await self._update_options()
+
+        return self.async_show_form(
+            step_id="user",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        CONF_SCAN_INTERVAL,
+                        default=self.options.get(CONF_SCAN_INTERVAL, 10),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=2, max=60))
+                }
+            ),
+        )
+
+    async def _update_options(self):
+        """Update config entry options."""
+        return self.async_create_entry(
+            title=self.config_entry.data.get(CONF_USERNAME), data=self.options
         )
