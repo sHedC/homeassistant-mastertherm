@@ -41,7 +41,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password = entry.data.get(CONF_PASSWORD)
         api_version = entry.data.get(CONF_API_VERSION)
         coordinator = MasterthermDataUpdateCoordinator(
-            hass, username, password, api_version
+            hass,
+            username,
+            password,
+            api_version,
+            scan_interval=entry.options.get(CONF_API_VERSION, 10),
         )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 

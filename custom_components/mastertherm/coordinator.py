@@ -32,13 +32,14 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         username: str,
         password: str,
         api_version: str,
+        scan_interval: int = 10,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(minutes=10),
+            update_interval=timedelta(minutes=scan_interval),
         )
 
         self.session = ClientSession()

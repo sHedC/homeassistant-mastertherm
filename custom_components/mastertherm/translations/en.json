@@ -21,10 +21,9 @@
         "step": {
             "user": {
                 "data": {
-                    "binary_sensor": "Binary sensor enabled",
-                    "sensor": "Sensor enabled",
-                    "switch": "Switch enabled"
-                }
+                    "scan_interval": "Scan Interval in minutes"
+                },
+                "description": "The new mastertherm servers (mastertherm.online) can lock out with too many requests, if you ahve multiple (more than 2) devices attached to your username consider 10 min refresh rate or higher. (Limits not fully tested)"
             }
         }
     }
