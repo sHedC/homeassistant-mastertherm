@@ -11,7 +11,9 @@
                 "data": {
                     "username": "Username",
                     "password": "Password",
-                    "api_verson": "Login Site"
+                    "api_verson": "Login Site",
+                    "v1": "mt v1",
+                    "v2": "mt v2"
                 }
             }
         },
