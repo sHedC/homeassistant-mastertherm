@@ -39,6 +39,7 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             user_input = {}
             user_input[CONF_USERNAME] = ""
             user_input[CONF_PASSWORD] = ""
+            user_input[CONF_API_VERSION] = ""
 
             return await self._show_config_form(user_input)
 
@@ -65,11 +66,13 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_API_VERSION): vol.All(
-                        cv.ensure_list, [vol.In(API_VERSIONS)]
-                    ),
-                    vol.Required(CONF_USERNAME, default=user_input[CONF_USERNAME]): str,
-                    vol.Required(CONF_PASSWORD, default=user_input[CONF_PASSWORD]): str,
+                    vol.Required(
+                        CONF_USERNAME, default=user_input[CONF_USERNAME]
+                    ): cv.string,
+                    vol.Required(
+                        CONF_PASSWORD, default=user_input[CONF_PASSWORD]
+                    ): cv.string,
+                    vol.Required(CONF_API_VERSION, None): vol.In(API_VERSIONS),
                 }
             ),
             errors=self._errors,

@@ -4,7 +4,7 @@ import pytest
 
 from homeassistant import config_entries, data_entry_flow
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
 
 from custom_components.mastertherm.const import DOMAIN
 
@@ -34,7 +34,8 @@ async def test_form_success(hass: HomeAssistant):
         return_value={"status": "success"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -57,7 +58,8 @@ async def test_form_invalid_auth(hass: HomeAssistant):
         return_value={"status": "authentication_error"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -81,7 +83,8 @@ async def test_form_cannot_connect(hass: HomeAssistant):
         return_value={"status": "connection_error"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -106,7 +109,8 @@ async def test_form_duplicate(hass: HomeAssistant):
         "custom_components.mastertherm.async_setup_entry", return_value=True
     ):
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -122,7 +126,8 @@ async def test_form_duplicate(hass: HomeAssistant):
         return_value={"status": "success"},
     ):
         setup_result2 = await hass.config_entries.flow.async_configure(
-            result2["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result2["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
