@@ -3,7 +3,6 @@ import logging
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
-import homeassistant.helpers.selector as selector
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
 

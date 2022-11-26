@@ -1,19 +1,13 @@
 {
-    "state": {
-        "v1": "mastertherm v1",
-        "v2": "mastertherm v2"
-    },
     "config": {
         "step": {
             "user": {
                 "title": "Cloud Service Login",
-                "description": "Login to the Mastertherm cloud service",
+                "description": "Login to the Mastertherm cloud service, select the site you log in to if pre 2022 then it is likely to be mastertherm.vip-it.cz and post 2022 mastertherm.online.",
                 "data": {
-                    "username": "Username",
-                    "password": "Password",
                     "api_verson": "Login Site",
-                    "v1": "mt v1",
-                    "v2": "mt v2"
+                    "username": "Username",
+                    "password": "Password"
                 }
             }
         },
