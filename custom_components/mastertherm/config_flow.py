@@ -3,7 +3,7 @@ import logging
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
-
+import homeassistant.helpers.selector as selector
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
 
@@ -67,12 +67,14 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required(
+                        CONF_API_VERSION, default=user_input[CONF_API_VERSION]
+                    ): vol.In(API_VERSIONS),
+                    vol.Required(
                         CONF_USERNAME, default=user_input[CONF_USERNAME]
                     ): cv.string,
                     vol.Required(
                         CONF_PASSWORD, default=user_input[CONF_PASSWORD]
                     ): cv.string,
-                    vol.Required(CONF_API_VERSION, None): vol.In(API_VERSIONS),
                 }
             ),
             errors=self._errors,

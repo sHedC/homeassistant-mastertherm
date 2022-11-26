@@ -1,4 +1,8 @@
 {
+    "data": {
+        "v1": "mastertherm v1",
+        "v2": "mastertherm v2"
+    },
     "config": {
         "step": {
             "user": {
@@ -6,7 +10,8 @@
                 "description": "Login to the Mastertherm cloud service",
                 "data": {
                     "username": "Username",
-                    "password": "Password"
+                    "password": "Password",
+                    "api_verson": "Login Site"
                 }
             }
         },
