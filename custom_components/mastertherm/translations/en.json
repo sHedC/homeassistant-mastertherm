@@ -3,10 +3,10 @@
         "step": {
             "user": {
                 "title": "Cloud Service Login",
-                "description": "Login to the Mastertherm cloud service, select the site you log in to if pre 2022 then it is likely to be mastertherm.vip-it.cz and post 2022 mastertherm.online.",
+                "description": "Login to the Mastertherm cloud service select the site you log in to if pre 2022 then it is likely to be mastertherm.vip-it.cz and post 2022 mastertherm.online.",
                 "data": {
                     "api_verson": "Login Site",
-                    "username": "Username",
+                    "username": "Username1",
                     "password": "Password"
                 }
             }
@@ -20,7 +20,7 @@
     "options": {
         "step": {
             "user": {
-                "description": "The new mastertherm servers (mastertherm.online) can lock out with too many requests, if you have multiple (more than 2) devices attached to your username consider 10 min refresh rate or higher. (Limits not fully tested)",
+                "description": "Test",
                 "data": {
                     "scan_interval": "Scan Interval in minutes"
                 }
