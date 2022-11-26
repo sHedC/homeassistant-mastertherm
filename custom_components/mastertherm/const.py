@@ -4,7 +4,8 @@ from homeassistant.const import Platform
 NAME = "Mastertherm"
 DOMAIN = "mastertherm"
 
-API_VERSIONS = {
+API_VERSIONS = ["v1", "v2"]
+API_VERSIONS1 = {
     "v1": ("mastertherm.vip-it.cz (Pre 2022)", "mb"),
     "v2": ("mastertherm.online (Post 2022)", "%"),
 }
