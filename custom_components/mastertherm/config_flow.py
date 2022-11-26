@@ -66,9 +66,9 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    # vol.Required(CONF_API_VERSION): vol.All(
-                    #    cv.ensure_list, [vol.In(API_VERSIONS)]
-                    # ),
+                    vol.Required(CONF_API_VERSION): vol.All(
+                        cv.ensure_list, [vol.In(API_VERSIONS)]
+                    ),
                     vol.Required(CONF_USERNAME, default=user_input[CONF_USERNAME]): str,
                     vol.Required(CONF_PASSWORD, default=user_input[CONF_PASSWORD]): str,
                 }
