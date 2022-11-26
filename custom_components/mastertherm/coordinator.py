@@ -96,7 +96,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         # based on the sensor configuration.
         for device_id, device in result_data["modules"].items():
             device_data = self.mt_controller.get_device_data(
-                device["info"]["module_id"], device["info"]["device_id"]
+                device["info"]["module_id"], device["info"]["unit_id"]
             )
 
             # Process Device Data, to pick up entities. Probably end up mapping it?
