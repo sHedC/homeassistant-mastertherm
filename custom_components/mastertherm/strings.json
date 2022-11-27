@@ -5,9 +5,9 @@
                 "title": "Cloud Service Login",
                 "description": "Login to the Mastertherm cloud service, select the site you log in to: if pre 2022 then it is likely to be mastertherm.vip-it.cz; if post 2022 mastertherm.online.",
                 "data": {
-                    "api_verson": "Website",
-                    "username": "[%key:common::config_flow::data::username%]",
-                    "password": "[%key:common::config_flow::data::password%]"
+                    "api_verson": "Login Website",
+                    "username": "username",
+                    "password": "password"
                 }
             }
         },
@@ -15,6 +15,9 @@
             "authentication_error": "Username/ Password is incorrect.",
             "connection_error": "Error connecting to the Mastertherm servers.",
             "unsupported_role": "Error System Role is not suppored by this integration."
+        },
+        "abort": {
+            "single_instance_allowed": "Only a single instance is allowed."
         }
     },
     "options": {

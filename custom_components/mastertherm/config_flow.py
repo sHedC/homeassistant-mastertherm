@@ -32,13 +32,13 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Initialize."""
         self._errors = {}
 
-    async def async_step_import(self, user_input=None):
-        """Import a config entry from configuraiton.yaml."""
-        return await self.async_step_user(user_input)
-
     async def async_step_user(self, user_input=None):
         """Handle a flow initialized by the user."""
         self._errors = {}
+
+        # only a single instance of the integration is allowed:
+        if self._async_current_entries():
+            return self.async_abort(reason="single_instance_allowed")
 
         if user_input is None:
             user_input = {}

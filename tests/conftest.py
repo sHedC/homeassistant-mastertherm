@@ -40,7 +40,7 @@ TEST_ENTITIES = {
     "modules": {
         "1234_1": {
             "info": {
-                "module_id": "1234",
+                "unit_id": "1234",
                 "user_name": "UserName",
                 "module_name": "1234_AQI4434344_UserName_XX_CC_Thermal",
                 "serial_number": "AQI4434344",
@@ -90,7 +90,11 @@ class APIMock:
         """Simulate the Connect and Update method"""
         return True
 
-    async def refresh(self, full_load=False):
+    async def refresh_info(self, full_load=False):
+        """Mock the Refresh Method"""
+        return True
+
+    async def refresh_data(self, full_load=False):
         """Mock the Refresh Method"""
         return True
 
@@ -102,11 +106,11 @@ class APIMock:
 
         return info
 
-    def get_device_data(self, module_id: str, device_id: str):
+    def get_device_data(self, module_id: str, unit_id: str):
         """Return the data for the device."""
         info = json.loads(
             load_fixture(
-                "masterthermconnect", f"device_data_{module_id}_{device_id}.json"
+                "masterthermconnect", f"device_data_{module_id}_{unit_id}.json"
             )
         )
         if info is None:

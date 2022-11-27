@@ -17,18 +17,10 @@ SCAN_INTERVAL = timedelta(seconds=30)
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup(hass: HomeAssistant, config: Config):
-    """Set up this integration using YAML."""
-    # init storage for registries
-    hass.data[DOMAIN] = {}
-
-    if DOMAIN in config:
-        hass.async_create_task(
-            hass.config_entries.flow.async_init(
-                DOMAIN, context={"source": SOURCE_IMPORT}, data=config[DOMAIN]
-            )
-        )
-
+async def async_setup(
+    hass: HomeAssistant, config: Config
+):  # pylint: disable=unused-argument
+    """Set up this integration using YAML is not supported."""
     return True
 
 
