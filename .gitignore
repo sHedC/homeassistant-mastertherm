@@ -6,3 +6,4 @@ venv
 .idea
 
 .devcontainer/devcontainer.json
+.devcontainer/configuration.yaml

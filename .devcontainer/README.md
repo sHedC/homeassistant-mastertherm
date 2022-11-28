@@ -8,7 +8,7 @@ In the container you will have a dedicated Home Assistant core instance running 
 
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Docker
-  -  For Linux, macOS, or Windows 10 Pro/Enterprise/Education use the [current release version of Docker](https://docs.docker.com/install/)
+  -  For Linux, macOS, or Windows 10 Pro/Enterprise/Education use the [current release version of Docker or Podman](https://docs.docker.com/install/)
   -   Windows 10 Home requires [WSL 2](https://docs.microsoft.com/windows/wsl/wsl2-install) and the current Edge version of Docker Desktop (see instructions [here](https://docs.docker.com/docker-for-windows/wsl-tech-preview/)). This can also be used for Windows Pro/Enterprise/Education.
 - [Visual Studio code](https://code.visualstudio.com/)
 - [Remote - Containers (VSC Extension)][extension-link]
@@ -21,7 +21,15 @@ In the container you will have a dedicated Home Assistant core instance running 
 
 1. Fork the repository.
 2. Clone the repository to your computer.
+3. Copy the devcontainer-linux-podman.json or devcontainer-windows-docker.json to devcontainer.json
 3. Open the repository using Visual Studio code.
+
+NOTE: Podman requires additional setup to tell VS Code that you are using Podman and not Docker.
+
+You can modify the devcontainer.json settings to your needs, it will not re-sync back to github as its excluded, things to change are the containerEnv settings:
+- REQUIREMENTS_TXT - This is either test (for unit testing) or dev (for running a home assistant environment)
+- MASTERTHERM_USER - user to do real testing
+- MASTERTHERM_PASS - Password for the real testing
 
 When you open this repository with Visual Studio code you are asked to "Reopen in Container", this will start the build of the container.
 
