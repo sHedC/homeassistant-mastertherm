@@ -62,4 +62,4 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
         """Return the Value."""
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
-        ]["heatpump_on"]
+        ]["state"]
