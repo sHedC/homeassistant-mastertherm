@@ -58,7 +58,7 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
         return BinarySensorDeviceClass.POWER
 
     @property
-    def is_on(self) -> bool | None:
+    def is_on(self) -> bool:
         """Return the Value."""
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key

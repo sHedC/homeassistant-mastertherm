@@ -6,7 +6,12 @@ import logging
 
 from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_USERNAME,
+    CONF_API_VERSION,
+    CONF_SCAN_INTERVAL,
+)
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
@@ -39,7 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             username,
             password,
             api_version,
-            scan_interval=entry.options.get(CONF_API_VERSION, 10),
+            scan_interval=entry.options.get(CONF_SCAN_INTERVAL, 10),
         )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
