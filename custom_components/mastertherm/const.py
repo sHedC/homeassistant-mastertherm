@@ -10,4 +10,4 @@ API_VERSIONS = {
 }
 
 # Platforms
-PLATFORMS = [Platform.SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
