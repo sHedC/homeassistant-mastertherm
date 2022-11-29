@@ -44,11 +44,6 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         return self.coordinator.data["modules"][self._module_key]
 
     @property
-    def name(self) -> str:
-        _LOGGER.error(locale.getlocale())
-        return super().name
-
-    @property
     def get_moduleinfo(self) -> dict:
         """Get the Information for this Module"""
         return self.get_module["info"]
