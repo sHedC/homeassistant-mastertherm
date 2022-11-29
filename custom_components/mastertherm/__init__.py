@@ -1,6 +1,7 @@
 """Mastertherm integration to integrate Mastertherm Heatpumps with Home Assistant."""
 import asyncio
 from datetime import timedelta
+import locale
 import logging
 
 from homeassistant.config_entries import SOURCE_IMPORT
@@ -27,6 +28,7 @@ async def async_setup(
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MasterTherm integration from a config entry."""
     hass.data.setdefault(DOMAIN, {})
+
     if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
         # Initiate the Coordinator, not sure if I will need separate session for separate users
         username = entry.data.get(CONF_USERNAME)

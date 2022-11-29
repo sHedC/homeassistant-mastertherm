@@ -108,7 +108,12 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                     "type": "temperature",
                     "name": "Outside Temperature",
                     "state": device_data["outside_temp"],
-                }
+                },
+                "heatpump_on": {
+                    "type": "power",
+                    "name": "Heatpump On",
+                    "state": device_data["on"],
+                },
             }
 
         return result_data
