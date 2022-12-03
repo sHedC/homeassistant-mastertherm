@@ -4,8 +4,6 @@
 [![GitHub Activity][commits-shield]][commits]
 
 [![hacs][hacsbadge]][hacs]
-![Project Maintenance][maintenance-shield]
-
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
