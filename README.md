@@ -49,7 +49,7 @@ Mastertherm only allows a single install, mutliple accounts are not currently su
 
 Local connection is not possible at this time, it seems the heat pumps connect to the servers using SSH.
 
-### Manual Install
+#### Manual Install
 To install manually, if you really want to:
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder) there, you need to create it.
