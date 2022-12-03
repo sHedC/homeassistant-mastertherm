@@ -43,6 +43,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
         self.session = ClientSession()
+        _LOGGER.error("New Session")
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
