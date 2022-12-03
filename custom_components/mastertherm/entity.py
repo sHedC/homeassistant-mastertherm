@@ -1,6 +1,5 @@
 """Mastertherm base entities."""
 import logging
-import locale
 
 from homeassistant.const import CONF_ENTITIES
 from homeassistant.helpers.entity import DeviceInfo

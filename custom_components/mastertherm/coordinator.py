@@ -67,10 +67,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             if self.data is None:
                 connected = await self.mt_controller.connect()
 
-            connected = (
-                await self.mt_controller.refresh_info()
-                and await self.mt_controller.refresh_data()
-            )
+            connected = await self.mt_controller.refresh()
 
             if not connected:
                 _LOGGER.error("Update Failed for unknown reason")

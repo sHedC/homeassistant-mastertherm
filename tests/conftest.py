@@ -90,11 +90,7 @@ class APIMock:
         """Simulate the Connect and Update method"""
         return True
 
-    async def refresh_info(self, full_load=False):
-        """Mock the Refresh Method"""
-        return True
-
-    async def refresh_data(self, full_load=False):
+    async def refresh(self, full_load=False):
         """Mock the Refresh Method"""
         return True
 
