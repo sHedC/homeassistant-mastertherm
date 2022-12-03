@@ -1,8 +1,7 @@
 # mastertherm
-
-[![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
+![Project Maintenance][maintenance-shield]
+[![GitHub Activity][commits-shield]][commits]
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
@@ -10,8 +9,13 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [mastertherm][mastertherm]. [![workflow-status]][workflows]_
+Stable -
+[![GitHub Release][stable-release-shield]][releases]
+[![workflow-stable]][workflows]
 
+Latest -
+[![GitHub Release][latest-release-shield]][releases]
+[![workflow-latest]][workflows]
 
 **This component will set up the following platforms.**
 
@@ -66,21 +70,25 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 ***
 
+[masterthermimg]: mastertherm.png
 [mastertherm]: https://github.com/sHedC/homeassistant-mastertherm
-[buymecoffee]: https://www.buymeacoffee.com/shedc
-[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
+[commits-shield]: https://img.shields.io/github/commit-activity/y/sHedC/homeassistant-mastertherm?style=for-the-badge
 [commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
+[license-shield]: https://img.shields.io/github/license/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
+
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
 [discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[masterthermimg]: mastertherm.png
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/shedc/blueprint.svg?style=for-the-badge
+
+
 [releases]: https://github.com/shedc/homeassistant-mastertherm/releases
-[workflow-status]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
-[workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml
+[stable-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?style=flat
+[latest-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?include_prereleases&style=flat
+
+[workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
+[workflow-stable]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg?branch=main
+[workflow-latest]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
