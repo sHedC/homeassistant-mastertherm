@@ -1,5 +1,5 @@
 {
-    "on": true,
+    "hp_power_state": true,
     "heating": false,
     "compressor_running": false,
     "circulation_pump_running": false,

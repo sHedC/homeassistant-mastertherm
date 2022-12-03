@@ -109,7 +109,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 "heatpump_on": {
                     "type": "power",
                     "name": "Heatpump On",
-                    "state": device_data["on"],
+                    "state": device_data["hp_power_state"],
                 },
             }
 
