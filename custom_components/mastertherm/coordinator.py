@@ -9,6 +9,7 @@ from masterthermconnect import (
     MasterthermAuthenticationError,
     MasterthermConnectionError,
     MasterthermUnsupportedRole,
+    MasterthermTokenInvalid,
 )
 
 from homeassistant.core import HomeAssistant
@@ -43,7 +44,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
         self.session = ClientSession()
-        _LOGGER.error("New Session")
+
+        # TODO Get Rid
+        _LOGGER.error(f"Started New Session, timeout={self.session.timeout}")
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
@@ -63,6 +66,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
+        # TODO: Get Rid
+        _LOGGER.error("Refresh Data")
+
         # Try to refresh, check for refresh issues
         try:
             if self.data is None:
@@ -83,6 +89,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         except MasterthermUnsupportedRole as ex:
             _LOGGER.error("Unsupported role: %s", ex)
             raise UpdateFailed("unsupported_role") from ex
+        except MasterthermTokenInvalid as ex:
+            _LOGGER.error("Invalid Token: %s", ex)
+            raise UpdateFailed("invalid_token") from ex
 
         # If first run then populate the Modules.
         result_data = self.data
