@@ -16,7 +16,8 @@
 		"github.vscode-pull-request-github",
 		"ryanluker.vscode-coverage-gutters",
 		"ms-python.vscode-pylance",
-		"mikestead.dotenv"
+		"mikestead.dotenv",
+		"github.vscode-pull-request-github"
 	],
 	"settings": {
 		"files.eol": "\n",
