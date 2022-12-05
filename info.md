@@ -1,18 +1,13 @@
 # mastertherm
-[![License][license-shield]](LICENSE)
-![Project Maintenance][maintenance-shield]
-[![GitHub Activity][commits-shield]][commits]
+[![License][license-shield]](LICENSE) ![Project Maintenance][maintenance-shield] [![GitHub Activity][commits-shield]][commits]
 
-[![hacs][hacsbadge]][hacs]
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
+[![hacs][hacsbadge]][hacs] [![Discord][discord-shield]][discord] [![Community Forum][forum-shield]][forum]
 
 Stable -
 [![GitHub Release][stable-release-shield]][releases]
 
 Latest -
-[![GitHub Release][latest-release-shield]][releases]
-[![workflow-lastest]][workflows]
+[![GitHub Release][latest-release-shield]][releases] [![workflow-lastest]][workflows]
 
 **This component will set up the following platforms.**
 
