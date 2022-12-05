@@ -37,7 +37,7 @@ NOTES:
 - materhterm.online is sensitive to too many requests, for this reason by default it defaults to updates every 10 minutes, the App updates every 2 minutes. To help the Info updates every 30 min and data can be set in the options.
 - if multiple requests are sent at the same time (i.e. from home assistant/ the app and web) some will be refused by the servers, its temporary.  The updates have been built to report but ignore these.
 
-This is very beta, logging in works and 2 entities are returned per module and
+This is very beta, logging in works and 2 entities are returned per module
 
 ## Installation
 The preferred and easiest way to install this is from the Home Assistant Community Store (HACS).  Follow the link in the badge above for details on HACS.
