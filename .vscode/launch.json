@@ -11,7 +11,10 @@
         "debug-test"
       ],
       "console": "integratedTerminal",
-      "justMyCode": true
+      "justMyCode": true,
+      "env": {
+        "PYTEST_ADDOPTS": "--no-cov"
+      }
     },
     {
       // Example of attaching to local debug server

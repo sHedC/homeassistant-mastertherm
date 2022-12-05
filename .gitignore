@@ -4,4 +4,6 @@ venv
 .venv
 .coverage
 .idea
-local.env
+
+.devcontainer/devcontainer.json
+.devcontainer/configuration.yaml

@@ -4,7 +4,7 @@ import pytest
 
 from homeassistant import config_entries, data_entry_flow
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
 
 from custom_components.mastertherm.const import DOMAIN
 
@@ -34,7 +34,8 @@ async def test_form_success(hass: HomeAssistant):
         return_value={"status": "success"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -57,7 +58,8 @@ async def test_form_invalid_auth(hass: HomeAssistant):
         return_value={"status": "authentication_error"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -81,7 +83,8 @@ async def test_form_cannot_connect(hass: HomeAssistant):
         return_value={"status": "connection_error"},
     ) as mock_authenticate:
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -92,8 +95,8 @@ async def test_form_cannot_connect(hass: HomeAssistant):
     assert len(mock_authenticate.mock_calls) == 1
 
 
-async def test_form_duplicate(hass: HomeAssistant):
-    """Test Form Login with user already set up."""
+async def test_form_single_instance(hass: HomeAssistant):
+    """Test Form Login with single instance."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
@@ -106,7 +109,8 @@ async def test_form_duplicate(hass: HomeAssistant):
         "custom_components.mastertherm.async_setup_entry", return_value=True
     ):
         setup_result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
+            result["flow_id"],
+            {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name", CONF_API_VERSION: "v1"},
         )
         await hass.async_block_till_done()
 
@@ -117,39 +121,5 @@ async def test_form_duplicate(hass: HomeAssistant):
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
 
-    with patch(
-        "custom_components.mastertherm.config_flow.authenticate",
-        return_value={"status": "success"},
-    ):
-        setup_result2 = await hass.config_entries.flow.async_configure(
-            result2["flow_id"], {CONF_PASSWORD: "hash", CONF_USERNAME: "user.name"}
-        )
-        await hass.async_block_till_done()
-
-    assert setup_result2["type"] == data_entry_flow.RESULT_TYPE_ABORT
-    assert setup_result2["reason"] == "already_configured"
-
-
-async def test_import_config(hass: HomeAssistant, mock_configdata: dict):
-    """Peform an import flow setup."""
-    with patch(
-        "custom_components.mastertherm.config_flow.authenticate",
-        return_value={"status": "success"},
-    ) as mock_authenticate, patch(
-        "custom_components.mastertherm.async_setup", return_value=True
-    ) as mock_setup, patch(
-        "custom_components.mastertherm.async_setup_entry", return_value=True
-    ) as mock_setup_entry:
-        result = await hass.config_entries.flow.async_init(
-            DOMAIN,
-            context={"source": config_entries.SOURCE_IMPORT},
-            data=mock_configdata[DOMAIN],
-        )
-        await hass.async_block_till_done()
-
-    assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "user.name"
-
-    assert len(mock_authenticate.mock_calls) == 1
-    assert len(mock_setup.mock_calls) == 1
-    assert len(mock_setup_entry.mock_calls) == 1
+    assert result2["type"] == data_entry_flow.RESULT_TYPE_ABORT
+    assert result2["reason"] == "single_instance_allowed"

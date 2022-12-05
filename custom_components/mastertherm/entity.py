@@ -1,10 +1,14 @@
 """Mastertherm base entities."""
+import logging
+
 from homeassistant.const import CONF_ENTITIES
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__package__)
 
 
 class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
@@ -15,6 +19,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         coordinator: MasterthermDataUpdateCoordinator,
         module_key: str,
         entity_key: str,
+        entity_type: str,
     ):
         """Initialisation for all Mastertherm Entities"""
         super().__init__(coordinator)
@@ -26,7 +31,8 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             .replace("-", "_")
             .lower()
         )
-        self.entity_id = f"sensor.{self._attr_unique_id}"
+        self.entity_id = f"{entity_type}.{self._attr_unique_id}"
+
         self._attr_name = self.coordinator.data["modules"][self._module_key][
             "entities"
         ][self._entity_key]["name"]

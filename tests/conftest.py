@@ -8,6 +8,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_TOKEN,
     CONF_USERNAME,
+    CONF_API_VERSION,
 )
 
 from custom_components.mastertherm.const import DOMAIN
@@ -32,17 +33,14 @@ TEST_AUTHRESULT = {
 }
 
 TEST_CONFIGDATA = {
-    DOMAIN: {
-        CONF_USERNAME: "user.name",
-        CONF_PASSWORD: "hash",
-    }
+    DOMAIN: {CONF_USERNAME: "user.name", CONF_PASSWORD: "hash", CONF_API_VERSION: "v1"}
 }
 
 TEST_ENTITIES = {
     "modules": {
         "1234_1": {
             "info": {
-                "module_id": "1234",
+                "unit_id": "1234",
                 "user_name": "UserName",
                 "module_name": "1234_AQI4434344_UserName_XX_CC_Thermal",
                 "serial_number": "AQI4434344",
@@ -57,7 +55,12 @@ TEST_ENTITIES = {
                     "type": "temperature",
                     "name": "Outside Temperature",
                     "state": 8.4,
-                }
+                },
+                "heatpump_on": {
+                    "type": "power",
+                    "name": "Heatpump On",
+                    "state": True,
+                },
             },
         }
     }
@@ -104,11 +107,11 @@ class APIMock:
 
         return info
 
-    def get_device_data(self, module_id: str, device_id: str):
+    def get_device_data(self, module_id: str, unit_id: str):
         """Return the data for the device."""
         info = json.loads(
             load_fixture(
-                "masterthermconnect", f"device_data_{module_id}_{device_id}.json"
+                "masterthermconnect", f"device_data_{module_id}_{unit_id}.json"
             )
         )
         if info is None:

@@ -7,5 +7,10 @@
     },
     "python.testing.pytestArgs": [],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "docker.composeCommand": "podman-compose",
+    "docker.dockerPath": "podman",
+    "docker.environment": {
+        "DOCKER_HOST": "unix:///run/user/1000/podman/podman.sock"
+    }
 }

@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ ! -f ./local.env ]; then
+  cp ./.devcontainer/configuration-template.yaml ./.devcontainer/configuration.yaml
+fi
+
 container install
 
 if [ ! ${REQUIREMENTS_TXT} == "none" ]; then
