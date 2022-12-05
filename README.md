@@ -42,7 +42,7 @@ This is very beta, logging in works and 2 entities are returned per module
 ## Installation
 The preferred and easiest way to install this is from the Home Assistant Community Store (HACS).  Follow the link in the badge above for details on HACS.
 
-At this time its not automatically part of HACS, so after installing HACS, visit the HACS _Integrations_ pane and add `https://github.com/HandyHat/ha-hildebrandglow-dcc` as an `Integration` by following [these instructions](https://hacs.xyz/docs/faq/custom_repositories/). You'll then be able to install it through the _Integrations_ pane.
+At this time its not automatically part of HACS, so after installing HACS, visit the HACS _Integrations_ pane and add `https://github.com/sHedC/homeassistant-mastertherm.git` as an `Integration` by following [these instructions](https://hacs.xyz/docs/faq/custom_repositories/). You'll then be able to install it through the _Integrations_ pane.
 
 Once installed go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 - Select the correct mastertherm login version, if not sure try online directly to see which server you use.
