@@ -91,11 +91,11 @@ class APIMock:
     def __init__(self):
         """Initialize the Mock API"""
 
-    async def connect(self, updata_data=True):
+    async def connect(self):
         """Simulate the Connect and Update method"""
         return True
 
-    async def refresh(self, full_load=False):
+    def refresh(self, full_load=False):  # pylint: disable=unused-argument
         """Mock the Refresh Method"""
         return True
 
