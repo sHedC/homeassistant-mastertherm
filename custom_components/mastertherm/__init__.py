@@ -4,8 +4,7 @@ from datetime import timedelta
 import locale
 import logging
 
-from homeassistant.config_entries import SOURCE_IMPORT
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,

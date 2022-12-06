@@ -44,8 +44,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(minutes=scan_interval),
         )
 
-        self.session = ClientSession()
+        # Temporary Exception Handling
+        self.temporary_exception = False
 
+        self.session = ClientSession()
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
@@ -67,8 +69,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         """Refresh the data from the API endpoint and process."""
         # Try to refresh, check for refresh issues
         try:
-            if self.data is None:
+            if self.data is None or self.temporary_exception:
                 connected = await self.mt_controller.connect()
+                self.temporary_exception = False
 
             connected = await self.mt_controller.refresh()
 
@@ -79,18 +82,18 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         except MasterthermAuthenticationError as ex:
             _LOGGER.error("Invalid credentials: %s", ex)
             raise ConfigEntryAuthFailed("authentication_error") from ex
-        except MasterthermConnectionError as ex:
-            _LOGGER.error("Unable to communicate with MasterTherm API: %s", ex)
-            raise UpdateFailed("connection_error") from ex
         except MasterthermUnsupportedRole as ex:
             _LOGGER.error("Unsupported role: %s", ex)
             raise UpdateFailed("unsupported_role") from ex
+        except MasterthermConnectionError as ex:
+            _LOGGER.warning("Unable to communicate with MasterTherm API: %s", ex)
+            self.temporary_exception = True
         except MasterthermTokenInvalid as ex:
-            _LOGGER.error("Invalid Token: %s", ex)
-            raise UpdateFailed("invalid_token") from ex
+            _LOGGER.warning("Invalid Token: %s", ex)
+            self.temporary_exception = True
         except MasterthermResponseFormatError as ex:
-            _LOGGER.error("Response Format Error: %s", ex)
-            raise UpdateFailed("response_format_error") from ex
+            _LOGGER.warning("Response Format Error: %s", ex)
+            self.temporary_exception = True
 
         # If first run then populate the Modules.
         result_data = self.data
