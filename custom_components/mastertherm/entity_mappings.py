@@ -51,5 +51,10 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
         key="hp_power_state",
         name="Heatpump Power State",
         device_class=BinarySensorDeviceClass.POWER,
-    )
+    ),
+    "compressor_running": MasterthermBinarySensorEntityDescription(
+        key="compressor_running",
+        name="Compressor Running",
+        device_class=BinarySensorDeviceClass.RUNNING,
+    ),
 }
