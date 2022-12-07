@@ -1,0 +1,27 @@
+{
+    "10021_1": {
+        "module_id": "10021",
+        "module_name": "10021_BAI000SIM_Simulator_Jablonec nad Jizerou_CZ_MT-TC",
+        "unit_id": "1",
+        "unit_name": "Heat Pump",
+        "name": "Heatpump",
+        "surname": "Simulator",
+        "country": "CZ",
+        "language": "en",
+        "hp_type": "BAI",
+        "controller": "uPC",
+        "exp": "0",
+        "output": "SIMULATOR",
+        "place": "Jablonec nad Jizerou",
+        "latitude": "50.1037",
+        "longitude": "13.7334",
+        "notes": "Heat Pump Simulator",
+        "pada": "Living room",
+        "padb": "Bedroom",
+        "padc": "",
+        "padd": "",
+        "pade": "kuchyň",
+        "padf": "seti",
+        "padz": "Basement"
+    }
+}

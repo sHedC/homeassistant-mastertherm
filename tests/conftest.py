@@ -51,16 +51,8 @@ TEST_ENTITIES = {
                 "mb_name": "Module_Board_1",
             },
             "entities": {
-                "outside_temp": {
-                    "type": "temperature",
-                    "name": "Outside Temperature",
-                    "state": 8.4,
-                },
-                "heatpump_on": {
-                    "type": "power",
-                    "name": "Heatpump On",
-                    "state": True,
-                },
+                "hp_power_state": True,
+                "outside_temp": 8.4,
             },
         }
     }

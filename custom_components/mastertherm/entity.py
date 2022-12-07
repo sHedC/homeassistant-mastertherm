@@ -2,8 +2,9 @@
 import logging
 
 from homeassistant.const import CONF_ENTITIES
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import slugify
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN
@@ -17,6 +18,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
     def __init__(
         self,
         coordinator: MasterthermDataUpdateCoordinator,
+        entity_description: EntityDescription,
         module_key: str,
         entity_key: str,
         entity_type: str,
@@ -25,17 +27,11 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         super().__init__(coordinator)
 
         self._module_key = module_key
-        self._entity_key = entity_key  #
-        self._attr_unique_id = (
-            f"mastertherm_{module_key}_{entity_key}".replace(" ", "_")
-            .replace("-", "_")
-            .lower()
-        )
+        self._entity_key = entity_key
+        self.entity_description = entity_description
+        self._attr_unique_id = slugify(f"mt_{module_key}_{entity_key}")
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
-
-        self._attr_name = self.coordinator.data["modules"][self._module_key][
-            "entities"
-        ][self._entity_key]["name"]
+        # self._attr_name = entity_description.name
 
     @property
     def get_module(self) -> dict:

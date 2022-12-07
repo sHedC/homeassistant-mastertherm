@@ -1,15 +1,15 @@
 {
-    "1234_2": {
-        "hp_power_state": true,
+    "10021_1": {
+        "hp_power_state": false,
         "hp_function": 0,
         "cooling_mode": false,
         "domestic_hot_water": {
             "function": false,
             "enabled": true,
-            "current_temp": 39.2,
-            "required_temp": 40.0,
+            "current_temp": 42.4,
+            "required_temp": 38.0,
             "min": 0.0,
-            "max": 55.0
+            "max": 45.0
         },
         "pool_function": false,
         "compressor_running": false,
@@ -19,72 +19,72 @@
         "defrost_mode": false,
         "aux_heater_1": false,
         "aux_heater_2": false,
-        "outside_temp": 7.0,
-        "requested_temp": 26.6,
-        "actual_temp": 20.2,
+        "outside_temp": 2.4,
+        "requested_temp": 33.3,
+        "actual_temp": 30.5,
         "dewp_control": false,
         "hdo_on": true,
         "runtime_info": {
-            "compressor_run_time": 220,
-            "compressor_start_counter": 28,
-            "pump_runtime": 280,
-            "aux1_runtime": 0,
+            "compressor_run_time": 0,
+            "compressor_start_counter": 0,
+            "pump_runtime": 380,
+            "aux1_runtime": 30,
             "aux2_runtime": 0
         },
         "season_info": {
             "hp_season": true,
             "hp_seasonset": 1,
             "hp_season_winter": 13.0,
-            "hp_season_summer": 17.0
+            "hp_season_summer": 16.5
         },
         "error_info": {
-            "some_error": false,
+            "some_error": true,
             "three_errors": false,
             "reset_3e": false,
             "safety_tstat": true,
-            "alarm_a": 1,
+            "alarm_a": 0,
             "alarm_b": 0,
             "alarm_c": 0,
             "alarm_d": 0,
             "alarm_e": 0,
             "alarm_f": 0,
-            "alarm_g": 0,
-            "alarm_h": 0,
+            "alarm_g": 1,
+            "alarm_h": 1,
             "alarm_i": 0,
             "alarm_j": 0,
             "alarm_k": 0,
-            "alarm_l": 5,
-            "alarm_m": 1
+            "alarm_l": 0,
+            "alarm_m": 0
         },
         "heating_circuits": {
             "hc0": {
-                "enabled": true,
-                "name": "Home",
+                "enabled": false,
+                "name": "Basement",
                 "on": false,
-                "ambient_temp": 21.4,
-                "ambient_requested": 19.0,
+                "ambient_temp": 20.0,
+                "ambient_requested": 20.6,
                 "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -10.0,
-                    "setpoint_b_requested": 35.0
+                    "setpoint_a_outside": 19.5,
+                    "setpoint_a_requested": 22.5,
+                    "setpoint_b_outside": -16.0,
+                    "setpoint_b_requested": 45.0
                 },
                 "control_curve_cooling": {
                     "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
+                    "setpoint_a_requested": 14.5,
                     "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 17.0
+                    "setpoint_b_requested": 14.5
                 }
             },
             "hc1": {
-                "enabled": false,
-                "name": "",
-                "on": false,
+                "enabled": true,
+                "name": "Living room",
+                "on": true,
                 "cooling": false,
-                "water_temp": 18.3,
-                "water_requested": 23.7,
+                "water_temp": 0.0,
+                "water_requested": 25.0,
                 "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
+                "ambient_requested": 23.6,
                 "control_curve_heating": {
                     "setpoint_a_outside": 20.0,
                     "setpoint_a_requested": 20.0,
@@ -99,14 +99,14 @@
                 }
             },
             "hc2": {
-                "enabled": false,
-                "name": "",
+                "enabled": true,
+                "name": "Bedroom",
                 "on": false,
                 "cooling": false,
-                "water_temp": 18.3,
-                "water_requested": 23.7,
-                "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
+                "water_temp": 0.0,
+                "water_requested": 25.0,
+                "ambient_temp": 23.7,
+                "ambient_requested": 22.5,
                 "control_curve_heating": {
                     "setpoint_a_outside": 20.0,
                     "setpoint_a_requested": 20.0,
@@ -126,7 +126,7 @@
                 "on": false,
                 "cooling": false,
                 "water_temp": 0.0,
-                "water_requested": 23.7,
+                "water_requested": 25.0,
                 "ambient_temp": 20.0,
                 "ambient_requested": 20.0,
                 "control_curve_heating": {
@@ -148,7 +148,7 @@
                 "on": false,
                 "cooling": false,
                 "water_temp": 0.0,
-                "water_requested": 23.7,
+                "water_requested": 25.0,
                 "ambient_temp": 20.0,
                 "ambient_requested": 20.0,
                 "control_curve_heating": {
@@ -166,11 +166,11 @@
             },
             "hc5": {
                 "enabled": false,
-                "name": "",
+                "name": "kuchyň",
                 "on": false,
                 "cooling": false,
                 "water_temp": 0.0,
-                "water_requested": 23.7,
+                "water_requested": 25.0,
                 "ambient_temp": 20.0,
                 "ambient_requested": 20.0,
                 "control_curve_heating": {
@@ -188,11 +188,11 @@
             },
             "hc6": {
                 "enabled": false,
-                "name": "",
+                "name": "seti",
                 "on": false,
                 "cooling": false,
                 "water_temp": 0.0,
-                "water_requested": 23.7,
+                "water_requested": 25.0,
                 "ambient_temp": 20.0,
                 "ambient_requested": 20.0,
                 "control_curve_heating": {

@@ -1,0 +1,27 @@
+{
+    "0_1": {
+        "module_id": "0",
+        "module_name": "MT Demo",
+        "unit_id": "1",
+        "unit_name": "DEMO",
+        "name": "Demo",
+        "surname": "Mastertherm",
+        "country": "CZ",
+        "language": "cz",
+        "hp_type": "EM",
+        "controller": "pco5",
+        "exp": "0",
+        "output": "EM45",
+        "place": "Praha",
+        "latitude": "50.0571",
+        "longitude": "14.6839",
+        "notes": "solar, tuv nezapinat , pouze zobrazuje hodnotu a neni hydraulicky propojene s tc",
+        "pada": "Dílna",
+        "padb": "Bazén",
+        "padc": "PAD-13",
+        "padd": "PAD-14",
+        "pade": "PAD-15",
+        "padf": "PAD-16",
+        "padz": "Důmek"
+    }
+}

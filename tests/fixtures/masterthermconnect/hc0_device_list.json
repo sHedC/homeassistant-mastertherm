@@ -1,0 +1,27 @@
+{
+    "12345_1": {
+        "module_id": "12345",
+        "module_name": "12345_AQI03700922_Last_Place_BE_Van Mechgelen Pieter",
+        "unit_id": "1",
+        "unit_name": "Heat Pump",
+        "name": "First",
+        "surname": "Last",
+        "country": "BE",
+        "language": "en",
+        "hp_type": "AQI",
+        "controller": "uPC",
+        "exp": "0",
+        "output": "3AQ37I1-0",
+        "place": "Place",
+        "latitude": "52.9999",
+        "longitude": "3.9999",
+        "notes": "20220397\nOpgestart: 8/11/2022",
+        "pada": "",
+        "padb": "",
+        "padc": "",
+        "padd": "",
+        "pade": "",
+        "padf": "",
+        "padz": "Home"
+    }
+}

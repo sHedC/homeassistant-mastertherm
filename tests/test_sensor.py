@@ -35,7 +35,11 @@ async def test_sensor_setup(
     assert (
         hass.states.async_entity_ids_count(Platform.SENSOR) > 0
     ), "Sensors Failed to Create"
+    assert (
+        hass.states.async_entity_ids_count(Platform.BINARY_SENSOR) > 0
+    ), "Binary Sensors Failed to Create"
 
-    # Check the Temperature Sensor, TODO: Fix Not Working
-    # assert state.state == "8.4"
-    # assert state.name == "MasterTherm Serial Outside Temperature"
+    # Check the Temperature Sensor
+    state = hass.states.get("sensor.mt_1234_1_outside_temp")
+    assert state.state == "8.4"
+    assert state.name == "Outside Temperature"
