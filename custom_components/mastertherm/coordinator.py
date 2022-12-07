@@ -34,14 +34,14 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         username: str,
         password: str,
         api_version: str,
-        scan_interval: int = 10,
+        scan_interval: int = 600,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(minutes=scan_interval),
+            update_interval=timedelta(seconds=scan_interval),
         )
 
         # Temporary Exception Handling
@@ -54,6 +54,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             self.session,
             api_version=api_version,
         )
+        self.update_refresh_rate(scan_interval)
         self.platforms = []
         self._modules = []
 
@@ -135,6 +136,12 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 )
 
         return result_data
+
+    def update_refresh_rate(self, scan_interval: int) -> None:
+        """Update the Refresh Rate"""
+        self.update_interval = timedelta(seconds=scan_interval)
+        if scan_interval < 2:
+            self.mt_controller.set_refresh_rate(data_refresh_seconds=scan_interval - 10)
 
 
 async def authenticate(username: str, password: str, api_version: str) -> dict:

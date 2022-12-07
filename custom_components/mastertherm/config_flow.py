@@ -115,8 +115,8 @@ class MasterthermOptionsFlowHandler(config_entries.OptionsFlow):
                 {
                     vol.Required(
                         CONF_SCAN_INTERVAL,
-                        default=self.options.get(CONF_SCAN_INTERVAL, 10),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=2))
+                        default=self.options.get(CONF_SCAN_INTERVAL, 600),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=30))
                 }
             ),
         )
