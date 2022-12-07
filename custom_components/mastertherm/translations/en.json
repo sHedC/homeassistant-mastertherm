@@ -23,9 +23,9 @@
     "options": {
         "step": {
             "user": {
-                "description": "The new mastertherm servers 'mastertherm.online' can lock out with too many requests. If you have multiple more than 2 devices attached to your username, consider 10 min refresh rate or higher. (Limits not fully tested)",
+                "description": "The new mastertherm servers 'mastertherm.online' can lock out with too many requests. If you have multiple more than 2 devices attached to your username, consider 600 seconds refresh rate or higher. (Limits not fully tested). 30 seconds on single unit has been tested.",
                 "data": {
-                    "scan_interval": "Scan interval in minutes"
+                    "scan_interval": "Scan interval in seconds"
                 }
             }
         }
