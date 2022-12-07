@@ -2,10 +2,7 @@
 import logging
 
 from homeassistant.core import HomeAssistant
-from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
-    BinarySensorEntity,
-)
+from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import CONF_ENTITIES
@@ -13,8 +10,12 @@ from homeassistant.const import CONF_ENTITIES
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
+from .entity_mappings import (
+    BINARY_SENSOR_TYPES,
+    MasterthermBinarySensorEntityDescription,
+)
 
-_LOGGER = logging.getLogger(__package__)
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
@@ -25,15 +26,17 @@ async def async_setup_entry(
     """Setup sensors from a config entry created in the integrations UI."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-    sensors: list[BinarySensorEntity] = []
-    for module_key, module in coordinator.data["modules"].items():
-        for entity_key, entity in module[CONF_ENTITIES].items():
-            if entity["type"] == BinarySensorDeviceClass.POWER:
-                sensors.append(
-                    MasterthermBinarySensor(coordinator, module_key, entity_key)
+    entities: list[BinarySensorEntity] = []
+    for entity_key, entity_description in BINARY_SENSOR_TYPES.items():
+        for module_key, module in coordinator.data["modules"].items():
+            if entity_key in module[CONF_ENTITIES]:
+                entities.append(
+                    MasterthermBinarySensor(
+                        coordinator, module_key, entity_key, entity_description
+                    )
                 )
 
-    async_add_entities(sensors, True)
+    async_add_entities(entities, True)
 
 
 class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
@@ -44,22 +47,19 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
         coordinator: MasterthermDataUpdateCoordinator,
         module_key: str,
         entity_key: str,
+        entity_description: MasterthermBinarySensorEntityDescription,
     ):
-        self._attr_device_class = BinarySensorDeviceClass.POWER
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
             entity_key=entity_key,
             entity_type="binary_sensor",
+            entity_description=entity_description,
         )
-
-    @property
-    def device_class(self) -> str:
-        return BinarySensorDeviceClass.POWER
 
     @property
     def is_on(self) -> bool:
         """Return the Value."""
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
-        ]["state"]
+        ]

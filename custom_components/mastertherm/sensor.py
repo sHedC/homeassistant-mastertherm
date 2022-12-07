@@ -6,11 +6,12 @@ from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import CONF_ENTITIES, DEVICE_CLASS_TEMPERATURE
+from homeassistant.const import CONF_ENTITIES
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
+from .entity_mappings import SENSOR_TYPES, MasterthermSensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,13 +24,17 @@ async def async_setup_entry(
     """Setup sensors from a config entry created in the integrations UI."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-    sensors: list[SensorEntity] = []
-    for module_key, module in coordinator.data["modules"].items():
-        for entity_key, entity in module[CONF_ENTITIES].items():
-            if entity["type"] == "temperature":
-                sensors.append(MasterthermSensor(coordinator, module_key, entity_key))
+    entities: list[SensorEntity] = []
+    for entity_key, entity_description in SENSOR_TYPES.items():
+        for module_key, module in coordinator.data["modules"].items():
+            if entity_key in module[CONF_ENTITIES]:
+                entities.append(
+                    MasterthermSensor(
+                        coordinator, module_key, entity_key, entity_description
+                    )
+                )
 
-    async_add_entities(sensors, True)
+    async_add_entities(entities, True)
 
 
 class MasterthermSensor(MasterthermEntity, SensorEntity):
@@ -40,21 +45,18 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         coordinator: MasterthermDataUpdateCoordinator,
         module_key: str,
         entity_key: str,
+        sensor_description: MasterthermSensorEntityDescription,
     ):
-        self._attr_device_class = DEVICE_CLASS_TEMPERATURE
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
             entity_key=entity_key,
             entity_type="sensor",
+            entity_description=sensor_description,
         )
-
-    @property
-    def device_class(self) -> str:
-        return "temperature"
 
     @property
     def native_value(self) -> Decimal:
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
-        ]["state"]
+        ]

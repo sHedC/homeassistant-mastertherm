@@ -65,6 +65,20 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         """Close Session before class is destroyed."""
         await self.session.close()
 
+    def __build_entities(self, parent: str, device_data: dict) -> dict:
+        """Build the Entities in dot notation, this is a nested method."""
+        return_data = {}
+
+        for state_id, state_value in device_data.items():
+            if not isinstance(state_value, dict):
+                return_data[f"{parent}{state_id}"] = state_value
+            else:
+                return_data.update(
+                    self.__build_entities(f"{parent}{state_id}.", state_value)
+                )
+
+        return return_data
+
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         # Try to refresh, check for refresh issues
@@ -110,20 +124,15 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 device["info"]["module_id"], device["info"]["unit_id"]
             )
 
-            # Process Device Data, to pick up entities. Probably end up mapping it?
-            # Short term adding just the outside temperature.
-            result_data["modules"][device_id]["entities"] = {
-                "outside_temp": {
-                    "type": "temperature",
-                    "name": "Outside Temperature",
-                    "state": device_data["outside_temp"],
-                },
-                "heatpump_on": {
-                    "type": "power",
-                    "name": "Heatpump On",
-                    "state": device_data["hp_power_state"],
-                },
-            }
+            # Process Device Data and populate the data to pass to the Entities
+            if "entities" in result_data["modules"][device_id]:
+                result_data["modules"][device_id]["entities"].update(
+                    self.__build_entities("", device_data)
+                )
+            else:
+                result_data["modules"][device_id]["entities"] = self.__build_entities(
+                    "", device_data
+                )
 
         return result_data
 
