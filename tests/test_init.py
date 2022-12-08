@@ -1,7 +1,6 @@
 """Test mastertherm setup process."""
 from unittest.mock import patch
 
-from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntryState
 
@@ -31,6 +30,7 @@ async def test_setup_unload_and_reload_entry(
         return_value=mock_entitydata,
     ) as mock_sync:
         assert await async_setup_entry(hass, entry)
+        await hass.async_block_till_done()
 
         assert (
             len(hass.config_entries.flow.async_progress()) == 0
