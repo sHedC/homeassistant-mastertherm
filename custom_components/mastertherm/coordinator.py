@@ -89,7 +89,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         # Try to refresh, check for refresh issues
-        _LOGGER.warning("Refreshing Data")
         try:
             if self.data is None or self.temporary_exception:
                 connected = await self.mt_controller.connect()
