@@ -34,9 +34,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         username: str,
         password: str,
         api_version: str,
-        scan_interval: int = 600,
+        scan_interval: int,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
+        _LOGGER.warning(f"Setting Scan Interval {scan_interval}")
         super().__init__(
             hass,
             _LOGGER,
@@ -54,8 +55,12 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             self.session,
             api_version=api_version,
         )
+
+        # Make sure the allowed refresh rate in the API is lower than what we want.
         if scan_interval < 100:
             self.mt_controller.set_refresh_rate(data_refresh_seconds=scan_interval - 10)
+        else:
+            self.mt_controller.set_refresh_rate(data_refresh_seconds=60)
 
         self.platforms = []
         self._modules = []
@@ -85,6 +90,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         # Try to refresh, check for refresh issues
+        _LOGGER.warning("Refreshing Data")
         try:
             if self.data is None or self.temporary_exception:
                 connected = await self.mt_controller.connect()

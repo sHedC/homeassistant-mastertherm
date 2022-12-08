@@ -12,7 +12,7 @@ from homeassistant.const import (
     CONF_SCAN_INTERVAL,
 )
 
-from .const import DOMAIN, API_VERSIONS
+from .const import DOMAIN, API_VERSIONS, DEFAULT_REFRESH
 from .coordinator import authenticate
 
 _LOGGER = logging.getLogger(__name__)
@@ -115,7 +115,7 @@ class MasterthermOptionsFlowHandler(config_entries.OptionsFlow):
                 {
                     vol.Required(
                         CONF_SCAN_INTERVAL,
-                        default=self.options.get(CONF_SCAN_INTERVAL, 600),
+                        default=self.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
                     ): vol.All(vol.Coerce(int), vol.Range(min=30))
                 }
             ),

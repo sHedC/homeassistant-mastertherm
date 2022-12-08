@@ -1,24 +1,18 @@
 """Test mastertherm config flow."""
 from unittest.mock import patch
-import pytest
 
 from homeassistant import config_entries, data_entry_flow
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_API_VERSION
+from homeassistant.const import (
+    CONF_PASSWORD,
+    CONF_USERNAME,
+    CONF_API_VERSION,
+    CONF_SCAN_INTERVAL,
+)
+
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.mastertherm.const import DOMAIN
-
-
-@pytest.fixture(autouse=True)
-def bypass_setup_fixture():
-    """This fixture bypasses the actual setup of the integration
-    since we only want to test the config flow. We test the
-    actual functionality of the integration in other test modules."""
-    with patch("custom_components.mastertherm.async_setup", return_value=True,), patch(
-        "custom_components.mastertherm.async_setup_entry",
-        return_value=True,
-    ):
-        yield
 
 
 async def test_form_success(hass: HomeAssistant):
@@ -123,3 +117,50 @@ async def test_form_single_instance(hass: HomeAssistant):
 
     assert result2["type"] == data_entry_flow.RESULT_TYPE_ABORT
     assert result2["reason"] == "single_instance_allowed"
+
+
+async def test_update_options(
+    hass: HomeAssistant,
+    mock_configdata: dict,
+    mock_entitydata: dict,
+):
+    """Test updating the option reloads correctly."""
+    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
+    entry.add_to_hass(hass)
+
+    with patch(
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
+        return_value=mock_entitydata,
+    ) as mock_updater:
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
+
+    # show user form
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    assert "form" == result["type"]
+    assert "user" == result["step_id"]
+
+    # Populate with updated options
+    with patch(
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
+        return_value=mock_entitydata,
+    ) as mock_updater:
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"],
+            user_input={CONF_SCAN_INTERVAL: 30},
+        )
+        await hass.async_block_till_done()
+
+    assert "create_entry" == result["type"]
+    assert result["result"] is True
+
+    # Check the Refresh Interval was updated
+    assert entry.options.get(CONF_SCAN_INTERVAL) == 30

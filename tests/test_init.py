@@ -1,6 +1,7 @@
 """Test mastertherm setup process."""
 from unittest.mock import patch
 
+from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntryState
 
