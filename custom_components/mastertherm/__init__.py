@@ -79,5 +79,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Reload config entry."""
+    # Unload All Entires
     await async_unload_entry(hass, entry)
+
+    # Reset the Coordinator
+    hass.data[DOMAIN][entry.entry_id] = None
+
+    # Re-initialize
     await async_setup_entry(hass, entry)
