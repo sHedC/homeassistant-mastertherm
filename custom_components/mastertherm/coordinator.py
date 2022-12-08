@@ -37,7 +37,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         scan_interval: int,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
-        _LOGGER.warning(f"Setting Scan Interval {scan_interval}")
         super().__init__(
             hass,
             _LOGGER,
