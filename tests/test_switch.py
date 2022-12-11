@@ -1,5 +1,6 @@
-"""MasterTherm Sensor Tests."""
+"""Mastertherm Switch Tests."""
 from unittest.mock import patch
+
 import pytest
 
 from homeassistant.core import HomeAssistant
@@ -12,18 +13,16 @@ from custom_components.mastertherm.const import DOMAIN
 @pytest.fixture(autouse=True)
 def override_platform():
     """Override the Platforms to test Switches."""
-    with patch("custom_components.mastertherm.PLATFORMS", [Platform.SENSOR]):
+    with patch("custom_components.mastertherm.PLATFORMS", [Platform.SWITCH]):
         yield
 
 
-async def test_sensor_setup(
+async def test_switch_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
     mock_entitydata: dict,
 ):
-    """Test Sensors are Created and Updated."""
-    # Setting up using Mock requires the actual config not the Domain
-    # changed the way the test works to send without domain.
+    """Test Switches are Created and Updated."""
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
@@ -41,10 +40,10 @@ async def test_sensor_setup(
     # Check we called the Mock and we have a Sensor.
     assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
     assert (
-        hass.states.async_entity_ids_count(Platform.SENSOR) > 0
-    ), "Sensors Failed to Create"
+        hass.states.async_entity_ids_count(Platform.SWITCH) > 0
+    ), "Switches Failed to Create"
 
-    # Check the Temperature Sensor
-    state = hass.states.get("sensor.mt_1234_1_outside_temp")
-    assert state.state == "8.4"
-    assert state.name == "Outside Temperature"
+    # Check the Power Switch
+    state = hass.states.get("switch.mt_1234_1_hp_power_state")
+    assert state.state
+    assert state.name == "Heatpump Power"

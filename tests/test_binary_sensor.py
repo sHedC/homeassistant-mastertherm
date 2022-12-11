@@ -12,11 +12,11 @@ from custom_components.mastertherm.const import DOMAIN
 @pytest.fixture(autouse=True)
 def override_platform():
     """Override the Platforms to test Switches."""
-    with patch("custom_components.mastertherm.PLATFORMS", [Platform.SENSOR]):
+    with patch("custom_components.mastertherm.PLATFORMS", [Platform.BINARY_SENSOR]):
         yield
 
 
-async def test_sensor_setup(
+async def test_binary_sensor_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
     mock_entitydata: dict,
@@ -41,10 +41,10 @@ async def test_sensor_setup(
     # Check we called the Mock and we have a Sensor.
     assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
     assert (
-        hass.states.async_entity_ids_count(Platform.SENSOR) > 0
-    ), "Sensors Failed to Create"
+        hass.states.async_entity_ids_count(Platform.BINARY_SENSOR) > 0
+    ), "Binary Sensors Failed to Create"
 
     # Check the Temperature Sensor
-    state = hass.states.get("sensor.mt_1234_1_outside_temp")
-    assert state.state == "8.4"
-    assert state.name == "Outside Temperature"
+    state = hass.states.get("binary_sensor.mt_1234_1_hp_power_state")
+    assert state.state
+    assert state.name == "Heatpump Power"

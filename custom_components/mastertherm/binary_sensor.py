@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import CONF_ENTITIES
+from homeassistant.const import CONF_ENTITIES, Platform
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -53,7 +53,7 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
             coordinator=coordinator,
             module_key=module_key,
             entity_key=entity_key,
-            entity_type="binary_sensor",
+            entity_type=Platform.BINARY_SENSOR,
             entity_description=entity_description,
         )
 
