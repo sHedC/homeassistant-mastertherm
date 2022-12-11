@@ -41,6 +41,10 @@ SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
 }
 
 SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
+    "hp_function": MasterthermSensorEntityDescription(
+        key="hp_function",
+        name="HP Function",
+    ),
     "season": MasterthermSensorEntityDescription(
         key="season",
         name="Season",
@@ -54,6 +58,18 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
     "outside_temp": MasterthermSensorEntityDescription(
         key="outside_temp",
         name="Outside Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "requested_temp": MasterthermSensorEntityDescription(
+        key="requested_temp",
+        name="Requested Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "actual_temp": MasterthermSensorEntityDescription(
+        key="actual_temp",
+        name="Actual Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -104,5 +120,9 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     "dewp_control": MasterthermBinarySensorEntityDescription(
         key="dewp_control",
         name="Dew Point Control",
+    ),
+    "hdo_on": MasterthermBinarySensorEntityDescription(
+        key="hdo_on",
+        name="HDO on",
     ),
 }
