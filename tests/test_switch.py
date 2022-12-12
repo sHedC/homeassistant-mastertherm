@@ -46,4 +46,4 @@ async def test_switch_setup(
     # Check the Power Switch
     state = hass.states.get("switch.mt_1234_1_hp_power_state")
     assert state.state
-    assert state.name == "Heatpump Power"
+    assert state.name == "HP Power"

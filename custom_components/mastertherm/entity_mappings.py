@@ -10,6 +10,9 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
     BinarySensorDeviceClass,
 )
+from homeassistant.components.select import (
+    SelectEntityDescription,
+)
 from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
@@ -34,7 +37,7 @@ class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
 SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
-        name="Heatpump Power",
+        name="HP Power",
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
     ),
@@ -52,7 +55,7 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
     ),
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
-        name="Operating Mode",
+        name="HP Operating Mode",
         icon="mdi:sun-thermomete",
     ),
     "outside_temp": MasterthermSensorEntityDescription(
@@ -63,19 +66,43 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
     ),
     "requested_temp": MasterthermSensorEntityDescription(
         key="requested_temp",
-        name="Requested Temperature",
+        name="HP Requested Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     "actual_temp": MasterthermSensorEntityDescription(
         key="actual_temp",
-        name="Actual Temperature",
+        name="HP Actual Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     "runtime_info.compressor_run_time": MasterthermSensorEntityDescription(
         key="compressor_run_time",
         name="Compressor Runtime",
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    "runtime_info.compressor_start_counter": MasterthermSensorEntityDescription(
+        key="compressor_start_counter",
+        name="Compressor Start Counter",
+        icon="mdi:count",
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    "runtime_info.pump_runtime": MasterthermSensorEntityDescription(
+        key="pump_runtime",
+        name="Pump Runtime",
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    "runtime_info.aux1_runtime": MasterthermSensorEntityDescription(
+        key="aux1_runtime",
+        name="Aux 1 Runtime",
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    "runtime_info.aux2_runtime": MasterthermSensorEntityDescription(
+        key="aux2_runtime",
+        name="Aux 2 Runtime",
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
