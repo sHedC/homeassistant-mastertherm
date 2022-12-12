@@ -73,6 +73,12 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+    "runtime_info.compressor_run_time": MasterthermSensorEntityDescription(
+        key="compressor_run_time",
+        name="Compressor Runtime",
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
 }
 
 BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
@@ -123,6 +129,6 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "hdo_on": MasterthermBinarySensorEntityDescription(
         key="hdo_on",
-        name="HDO on",
+        name="High Tarrif (HDO)",
     ),
 }
