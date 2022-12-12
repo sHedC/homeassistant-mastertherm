@@ -52,6 +52,8 @@ TEST_ENTITIES = {
             },
             "entities": {
                 "hp_power_state": True,
+                "compressor_running": True,
+                "hp_function": 0,
                 "outside_temp": 8.4,
             },
         }

@@ -29,5 +29,14 @@
                 }
             }
         }
+    },
+    "entity": {
+        "hp_function": {
+            "state": {
+                "heating": "Heating",
+                "cooling": "Cooling",
+                "auto": "Auto"
+            }
+        }
     }
 }

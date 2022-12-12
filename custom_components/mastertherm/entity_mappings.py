@@ -1,5 +1,5 @@
 """Contains all the Entity Mappings from the Mastertherm Connector"""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -25,6 +25,13 @@ class MasterthermSwitchEntityDescription(SwitchEntityDescription):
 
 
 @dataclass
+class MasterthermSelectEntityDescription(SelectEntityDescription):
+    """Description for the Mastertherm select entities."""
+
+    options_map: dict = field(default_factory=dict)
+
+
+@dataclass
 class MasterthermSensorEntityDescription(SensorEntityDescription):
     """Description for the Mastertherm sensor entities."""
 
@@ -40,6 +47,19 @@ SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
         name="HP Power",
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
+    ),
+}
+
+SELECT_TYPES: dict[str, MasterthermSelectEntityDescription] = {
+    "hp_function": MasterthermSelectEntityDescription(
+        key="hp_function",
+        name="HP Function",
+        options_map={
+            "Heating": 0,
+            "Cooling": 1,
+            "Auto": 2,
+        },
+        options=["heating", "cooling", "auto"],
     ),
 }
 
@@ -109,11 +129,6 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
 }
 
 BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
-    "hp_power_state": MasterthermBinarySensorEntityDescription(
-        key="hp_power_state",
-        name="Heatpump Power",
-        device_class=BinarySensorDeviceClass.POWER,
-    ),
     "cooling_mode": MasterthermBinarySensorEntityDescription(
         key="cooling_mode",
         name="Cooling Mode",
