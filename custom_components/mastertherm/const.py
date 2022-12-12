@@ -13,4 +13,4 @@ API_VERSIONS = {
 DEFAULT_REFRESH = 120
 
 # Platforms
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.SELECT]
