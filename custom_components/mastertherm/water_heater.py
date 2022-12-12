@@ -1,6 +1,4 @@
 """Support for the Mastertherm Water Heater."""
-from decimal import Decimal
-from datetime import date, datetime
 import logging
 
 from homeassistant.core import HomeAssistant
@@ -13,7 +11,6 @@ from homeassistant.components.water_heater import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import StateType
 from homeassistant.const import CONF_ENTITIES, Platform
 
 from .const import DOMAIN
@@ -66,7 +63,7 @@ class MasterthermWaterHeater(MasterthermEntity, WaterHeaterEntity):
             coordinator=coordinator,
             module_key=module_key,
             entity_key=entity_key,
-            entity_type=Platform.SENSOR,
+            entity_type=Platform.WATER_HEATER,
             entity_description=entity_description,
         )
 
