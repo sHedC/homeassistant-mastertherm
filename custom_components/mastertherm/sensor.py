@@ -49,6 +49,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         entity_key: str,
         entity_description: MasterthermSensorEntityDescription,
     ):
+        self.get_initial_entity_options
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
