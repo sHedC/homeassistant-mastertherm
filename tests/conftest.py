@@ -49,6 +49,7 @@ TEST_ENTITIES = {
                 "country": "CC",
                 "mb_addr": "1",
                 "mb_name": "Module_Board_1",
+                "api_url": "https://mastertherm.vip-it.cz",
             },
             "entities": {
                 "hp_power_state": True,
