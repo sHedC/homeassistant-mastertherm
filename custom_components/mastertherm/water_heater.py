@@ -11,13 +11,13 @@ from homeassistant.components.water_heater import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import CONF_ENTITIES, Platform
+from homeassistant.const import CONF_ENTITIES, Platform, UnitOfTemperature
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
 from .entity_mappings import (
-    WATER_HEATER_SENSOR_TYPES,
+    WATER_HEATER_TYPES,
     MasterthermWaterHeaterEntityDescription,
 )
 
@@ -33,7 +33,7 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[WaterHeaterEntity] = []
-    for entity_key, entity_description in WATER_HEATER_SENSOR_TYPES.items():
+    for entity_key, entity_description in WATER_HEATER_TYPES.items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(
@@ -59,6 +59,7 @@ class MasterthermWaterHeater(MasterthermEntity, WaterHeaterEntity):
             WaterHeaterEntityFeature.TARGET_TEMPERATURE
             | WaterHeaterEntityFeature.OPERATION_MODE
         )
+        self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -69,33 +70,36 @@ class MasterthermWaterHeater(MasterthermEntity, WaterHeaterEntity):
 
     @property
     def current_operation(self) -> str | None:
-        if self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]["enabled"]:
-            return STATE_HEAT_PUMP
-
-        return STATE_OFF
+        # if self.coordinator.data["modules"][self._module_key]["entities"][
+        #    self._entity_key
+        # ]["enabled"]:
+        #    return STATE_HEAT_PUMP
+        return STATE_HEAT_PUMP
 
     @property
     def current_temperature(self) -> float | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]["current_temp"]
+        # return self.coordinator.data["modules"][self._module_key]["entities"][
+        #    self._entity_key
+        # ]["current_temp"]
+        return 41.2
 
     @property
     def target_temperature(self) -> float | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]["required_temp"]
+        # return self.coordinator.data["modules"][self._module_key]["entities"][
+        #    self._entity_key
+        # ]["required_temp"]
+        return 44.5
 
     @property
     def target_temperature_low(self) -> float | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]["min_temp"]
+        # return self.coordinator.data["modules"][self._module_key]["entities"][
+        #    self._entity_key
+        # ]["min_temp"]
+        return 45.0
 
     @property
     def target_temperature_high(self) -> float | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]["max_temp"]
+        # return self.coordinator.data["modules"][self._module_key]["entities"][
+        #    self._entity_key
+        # ]["max_temp"]
+        return 10.0

@@ -19,7 +19,6 @@ from homeassistant.components.switch import (
 )
 from homeassistant.components.water_heater import (
     WaterHeaterEntityEntityDescription,
-    WaterHeaterEntityFeature,
 )
 
 
@@ -184,8 +183,8 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
 }
 
-WATER_HEATER_SENSOR_TYPES: dict[str, MasterthermWaterHeaterEntityDescription] = {
-    "domestic_hot_water": MasterthermWaterHeaterEntityDescription(
+WATER_HEATER_TYPES: dict[str, MasterthermWaterHeaterEntityDescription] = {
+    "domestic_hot_water.enabled": MasterthermWaterHeaterEntityDescription(
         key="domestic_hot_water",
         name="Domestic Hot Water",
     )
