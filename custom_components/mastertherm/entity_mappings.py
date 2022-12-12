@@ -48,6 +48,12 @@ SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
     ),
+    "domestic_hot_water.enabled": MasterthermSwitchEntityDescription(
+        key="dhw_enabled",
+        name="DHW Enabled",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:thermometer-water",
+    ),
 }
 
 SELECT_TYPES: dict[str, MasterthermSelectEntityDescription] = {
@@ -126,6 +132,18 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
+    "domestic_hot_water.current_temp": MasterthermSensorEntityDescription(
+        key="dhw_current_temp",
+        name="DHW Actual Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "domestic_hot_water.required_temp": MasterthermSensorEntityDescription(
+        key="dhw_required_temp",
+        name="DHW Required Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
 }
 
 BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
@@ -172,5 +190,9 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     "hdo_on": MasterthermBinarySensorEntityDescription(
         key="hdo_on",
         name="High Tarrif (HDO)",
+    ),
+    "domestic_hot_water.function": MasterthermBinarySensorEntityDescription(
+        key="dhw_function",
+        name="DHW Heating",
     ),
 }
