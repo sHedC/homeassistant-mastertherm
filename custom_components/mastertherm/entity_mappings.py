@@ -70,10 +70,6 @@ SELECT_TYPES: dict[str, MasterthermSelectEntityDescription] = {
 }
 
 SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
-    "hp_function": MasterthermSensorEntityDescription(
-        key="hp_function",
-        name="HP Function",
-    ),
     "season": MasterthermSensorEntityDescription(
         key="season",
         name="Season",
@@ -99,6 +95,18 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
     "actual_temp": MasterthermSensorEntityDescription(
         key="actual_temp",
         name="HP Actual Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "domestic_hot_water.current_temp": MasterthermSensorEntityDescription(
+        key="dhw_current_temp",
+        name="DHW Actual Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "domestic_hot_water.required_temp": MasterthermSensorEntityDescription(
+        key="dhw_required_temp",
+        name="DHW Required Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -131,18 +139,6 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
         name="Aux 2 Runtime",
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "domestic_hot_water.current_temp": MasterthermSensorEntityDescription(
-        key="dhw_current_temp",
-        name="DHW Actual Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "domestic_hot_water.required_temp": MasterthermSensorEntityDescription(
-        key="dhw_required_temp",
-        name="DHW Required Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
     ),
 }
 

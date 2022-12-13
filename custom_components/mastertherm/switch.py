@@ -1,6 +1,8 @@
 """Support for the Mastertherm Switches."""
 import logging
 
+from typing import Any
+
 from homeassistant.core import HomeAssistant
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
@@ -59,3 +61,9 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
+
+    def turn_on(self, **kwargs: Any) -> None:
+        self.schedule_update_ha_state()
+
+    def turn_off(self, **kwargs: Any) -> None:
+        self.schedule_update_ha_state
