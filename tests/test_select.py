@@ -3,8 +3,13 @@ from unittest.mock import patch
 
 import pytest
 
-from homeassistant.components.select import SelectEntity
-from homeassistant.const import Platform
+from homeassistant.components.select import (
+    SelectEntity,
+    ATTR_OPTION,
+    DOMAIN as SELECT_DOMAIN,
+    SERVICE_SELECT_OPTION,
+)
+from homeassistant.const import Platform, ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -23,7 +28,7 @@ async def test_select_setup(
     mock_configdata: dict,
     mock_entitydata: dict,
 ):
-    """Test Switches are Created and Updated."""
+    """Test Select Entities are Created"""
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
@@ -48,3 +53,42 @@ async def test_select_setup(
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
     assert state.state == "heating"
     assert state.name == "HP Function"
+
+
+async def test_select_change(
+    hass: HomeAssistant,
+    mock_configdata: dict,
+    mock_entitydata: dict,
+):
+    """Test Select are not allowed to change."""
+    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
+    entry.add_to_hass(hass)
+
+    # Patch the Autentication and setup the entry.
+    with patch(
+        (
+            "custom_components.mastertherm.coordinator."
+            "MasterthermDataUpdateCoordinator._async_update_data"
+        ),
+        return_value=mock_entitydata,
+    ) as mock_updater:
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    # Check we called the Mock and we have a Select.
+    assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
+
+    # Check the HP Function Select
+    state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
+    assert state.state == "heating"
+
+    await hass.services.async_call(
+        SELECT_DOMAIN,
+        SERVICE_SELECT_OPTION,
+        {ATTR_OPTION: "auto", ATTR_ENTITY_ID: "select.mt_1234_1_hp_function"},
+        blocking=True,
+    )
+    await hass.async_block_till_done()
+
+    state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
+    assert state.state == "heating"

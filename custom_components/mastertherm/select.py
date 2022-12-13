@@ -79,4 +79,6 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         ]
         option = self._reverse_map.get(state)
         self._attr_current_option = option
-        self.async_write_ha_state()
+        self.async_schedule_update_ha_state()
+        # self.async_write_ha_state()
+        # self.schedule_update_ha_state()
