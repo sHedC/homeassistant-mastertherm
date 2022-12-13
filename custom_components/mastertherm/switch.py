@@ -63,7 +63,9 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
         ]
 
     def turn_on(self, **kwargs: Any) -> None:
+        """Reset the update, not supported at this time."""
         self.schedule_update_ha_state()
 
     def turn_off(self, **kwargs: Any) -> None:
-        self.schedule_update_ha_state
+        """Reset the update, not supported at this time."""
+        self.schedule_update_ha_state()

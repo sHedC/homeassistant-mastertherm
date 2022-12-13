@@ -71,3 +71,7 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         if option is not None:
             return option.lower()
         return None
+
+    def select_option(self, option: str) -> None:
+        """Change the selected option, not supported"""
+        self.schedule_update_ha_state()
