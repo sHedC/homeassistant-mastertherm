@@ -73,6 +73,6 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
             return option.lower()
         return None
 
-    async def async_select_option(self, option: str) -> None:
-        """Change the selected option."""
-        raise HomeAssistantError(f"Error while setting {self.name}")
+    def select_option(self, option: str) -> None:
+        """Don't Update Anything"""
+        self.schedule_update_ha_state(force_refresh=True)
