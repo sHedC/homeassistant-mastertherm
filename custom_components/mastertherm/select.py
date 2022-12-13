@@ -85,9 +85,8 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         current_option = self._reverse_map.get(state).lower()
 
         if option != current_option:
-            await self.hass.services.async_call(
+            self.hass.services.async_call(
                 SELECT_DOMAIN,
                 SERVICE_SELECT_OPTION,
                 {ATTR_OPTION: current_option, ATTR_ENTITY_ID: self.entity_id},
-                blocking=True,
             )
