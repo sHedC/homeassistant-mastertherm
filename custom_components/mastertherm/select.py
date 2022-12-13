@@ -72,13 +72,10 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
             return option.lower()
         return None
 
-    def select_option(self, option: str) -> None:
-        """Change the selected option, not supported"""
+    async def async_select_option(self, option: str) -> None:
+        """Change the selected option."""
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-        current_option = self._reverse_map.get(state)
-        if current_option != option:
-            self.select_option(current_option)
-        else:
-            self.schedule_update_ha_state()
+        option = self._reverse_map.get(state)
+        await self.hass.async_add_executor_job(self.select_option, option)
