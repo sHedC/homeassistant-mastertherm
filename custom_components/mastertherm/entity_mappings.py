@@ -421,17 +421,17 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
         key="hc1_on",
         name="HC1 Heating",
     ),
-    "heating_circuits.hc1.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc1_pad_enabled",
-        name="HC1 PAD Enabled",
+    "heating_circuits.hc1.pad.active": MasterthermBinarySensorEntityDescription(
+        key="hc1_pad_active",
+        name="HC1 PAD Active",
     ),
     "heating_circuits.hc2.on": MasterthermBinarySensorEntityDescription(
         key="hc2_on",
         name="HC2 Heating",
     ),
-    "heating_circuits.hc2.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc2_pad_enabled",
-        name="HC2 PAD Enabled",
+    "heating_circuits.hc2.pad.active": MasterthermBinarySensorEntityDescription(
+        key="hc2_pad_active",
+        name="HC2 PAD Active",
     ),
     "heating_circuits.hc3.on": MasterthermBinarySensorEntityDescription(
         key="hc3_on",
