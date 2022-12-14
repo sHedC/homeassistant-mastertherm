@@ -180,6 +180,18 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+    "heating_circuits.hc1.water_requested": MasterthermSensorEntityDescription(
+        key="hc1_water_requested",
+        name="HC1 Water Requested",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "heating_circuits.hc1.water_temp": MasterthermSensorEntityDescription(
+        key="hc1_water_temp",
+        name="HC1 Water Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
     "heating_circuits.hc1.ambient_requested": MasterthermSensorEntityDescription(
         key="hc1_ambient_requested",
         name="HC1 Ambient Requested",
@@ -411,7 +423,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc0.on": MasterthermBinarySensorEntityDescription(
         key="hc9_on",
-        name="HC0 Heating",
+        name="HC0",
     ),
     "heating_circuits.hc0.pad.enabled": MasterthermBinarySensorEntityDescription(
         key="hc9_pad_enabled",
@@ -419,7 +431,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc1.on": MasterthermBinarySensorEntityDescription(
         key="hc1_on",
-        name="HC1 Heating",
+        name="HC1",
     ),
     "heating_circuits.hc1.pad.active": MasterthermBinarySensorEntityDescription(
         key="hc1_pad_active",
@@ -427,7 +439,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc2.on": MasterthermBinarySensorEntityDescription(
         key="hc2_on",
-        name="HC2 Heating",
+        name="HC2",
     ),
     "heating_circuits.hc2.pad.active": MasterthermBinarySensorEntityDescription(
         key="hc2_pad_active",
@@ -435,7 +447,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc3.on": MasterthermBinarySensorEntityDescription(
         key="hc3_on",
-        name="HC3 Heating",
+        name="HC3",
     ),
     "heating_circuits.hc3.pad.enabled": MasterthermBinarySensorEntityDescription(
         key="hc3_pad_enabled",
@@ -443,7 +455,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc4.on": MasterthermBinarySensorEntityDescription(
         key="hc4_on",
-        name="HC4 Heating",
+        name="HC4",
     ),
     "heating_circuits.hc4.pad.enabled": MasterthermBinarySensorEntityDescription(
         key="hc4_pad_enabled",
@@ -451,7 +463,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc5.on": MasterthermBinarySensorEntityDescription(
         key="hc5_on",
-        name="HC5 Heating",
+        name="HC5",
     ),
     "heating_circuits.hc5.pad.enabled": MasterthermBinarySensorEntityDescription(
         key="hc5_pad_enabled",
@@ -459,7 +471,7 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     ),
     "heating_circuits.hc6.on": MasterthermBinarySensorEntityDescription(
         key="hc6_on",
-        name="HC6 Heating",
+        name="HC6",
     ),
     "heating_circuits.hc6.pad.enabled": MasterthermBinarySensorEntityDescription(
         key="hc6_pad_enabled",
