@@ -17,12 +17,13 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
+from homeassistant.const import Platform
 from homeassistant.helpers.entity import EntityDescription
 
 
 @dataclass
-class MasterthermSwitchEntityDescription(SwitchEntityDescription):
-    """Description for the Mastertherm switch entities."""
+class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
+    """Description for the Mastertherm binary sensor entities."""
 
 
 @dataclass
@@ -30,6 +31,7 @@ class MasterthermSelectEntityDescription(SelectEntityDescription):
     """Description for the Mastertherm select entities."""
 
     options_map: dict = field(default_factory=dict)
+    read_only: bool = False
 
 
 @dataclass
@@ -38,35 +40,177 @@ class MasterthermSensorEntityDescription(SensorEntityDescription):
 
 
 @dataclass
-class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
-    """Description for the Mastertherm binary sensor entities."""
+class MasterthermSwitchEntityDescription(SwitchEntityDescription):
+    """Description for the Mastertherm switch entities."""
+
+    read_only: bool = False
 
 
 ENTITIES: dict[str, str] = {
-    MasterthermBinarySensorEntityDescription.__name__: "binary_sensor",
-    # MasterthermSelectEntityDescription.__name__: "select",
-    MasterthermSensorEntityDescription.__name__: "sensor",
-    MasterthermSwitchEntityDescription.__name__: "switch",
+    MasterthermBinarySensorEntityDescription.__name__: Platform.BINARY_SENSOR,
+    # MasterthermSelectEntityDescription.__name__: Platform.SELECT,
+    MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
+    MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
 }
 
+# Putting all entities into a single map which hopfully makes it easier
+# to maintain, will split into usable entity lists in the coordinator.
+HEATING_CIRCUITS: dict[str, str | EntityDescription] = {
+    "hc0": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc0_name",
+            name="HC0 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc0_on",
+            name="HC0",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc0_ambient_temp",
+            name="HC0 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc0_ambient_requested",
+            name="HC0 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc0_pad_active",
+                name="HC0 PAD Active",
+            ),
+            "enabled": MasterthermBinarySensorEntityDescription(
+                key="hc0_pad_enabled",
+                name="HC0 PAD Enabled",
+            ),
+            "temp": MasterthermSensorEntityDescription(
+                key="hc0_pad_temp",
+                name="HC0 PAD Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "temp_requested": MasterthermSensorEntityDescription(
+                key="hc0_pad_temp_requested",
+                name="HC0 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
+    },
+    "hc1": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc1_name",
+            name="HC1 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc1_on",
+            name="HC1",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc1_cooling",
+            name="HC1 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc1_pump_running",
+            name="HC1 Pump Running",
+            device_class=BinarySensorDeviceClass.RUNNING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc1_ambient_temp",
+            name="HC1 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc1_water_requested",
+            name="HC1 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc1_water_temp",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc1_ambient_requested",
+            name="HC1 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc1_auto",
+            name="HC1 Auto",
+        ),
+    },
+    "hc2": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc2_name",
+            name="HC2 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc2_on",
+            name="HC2",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc2_cooling",
+            name="HC2 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc2_pump_running",
+            name="HC2 Pump Running",
+            device_class=BinarySensorDeviceClass.RUNNING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc2_ambient_temp",
+            name="HC2 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc2_water_requested",
+            name="HC2 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc2_water_temp",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc2_ambient_requested",
+            name="HC2 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc2_auto",
+            name="HC2 Auto",
+        ),
+    },
+}
 
-SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
+ENTITY_TYPES_MAP: dict[str, dict | EntityDescription] = {
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
         name="HP Power",
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
+        read_only=True,
     ),
-    "domestic_hot_water.enabled": MasterthermSwitchEntityDescription(
-        key="dhw_enabled",
-        name="DHW Enabled",
-        device_class=SwitchDeviceClass.SWITCH,
-        icon="mdi:thermometer-water",
-    ),
-}
-
-# Disabled for Now
-SELECT_TYPES: dict[str, MasterthermSelectEntityDescription] = {
     "hp_function": MasterthermSelectEntityDescription(
         key="hp_function",
         name="HP Function",
@@ -76,10 +220,8 @@ SELECT_TYPES: dict[str, MasterthermSelectEntityDescription] = {
             "Auto": 2,
         },
         options=["heating", "cooling", "auto"],
+        read_only=True,
     ),
-}
-
-SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
     "season": MasterthermSensorEntityDescription(
         key="season",
         name="Season",
@@ -90,281 +232,33 @@ SENSOR_TYPES: dict[str, MasterthermSensorEntityDescription] = {
         name="HP Operating Mode",
         icon="mdi:sun-thermomete",
     ),
-    "outside_temp": MasterthermSensorEntityDescription(
-        key="outside_temp",
-        name="Outside Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "requested_temp": MasterthermSensorEntityDescription(
-        key="requested_temp",
-        name="HP Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "actual_temp": MasterthermSensorEntityDescription(
-        key="actual_temp",
-        name="HP Actual Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "domestic_hot_water.current_temp": MasterthermSensorEntityDescription(
-        key="dhw_current_temp",
-        name="DHW Actual Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "domestic_hot_water.required_temp": MasterthermSensorEntityDescription(
-        key="dhw_required_temp",
-        name="DHW Required Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "runtime_info.compressor_run_time": MasterthermSensorEntityDescription(
-        key="compressor_run_time",
-        name="Compressor Runtime",
-        device_class=SensorDeviceClass.DURATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "runtime_info.compressor_start_counter": MasterthermSensorEntityDescription(
-        key="compressor_start_counter",
-        name="Compressor Start Counter",
-        icon="mdi:count",
-        state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "runtime_info.pump_runtime": MasterthermSensorEntityDescription(
-        key="pump_runtime",
-        name="Pump Runtime",
-        device_class=SensorDeviceClass.DURATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "runtime_info.aux1_runtime": MasterthermSensorEntityDescription(
-        key="aux1_runtime",
-        name="Aux 1 Runtime",
-        device_class=SensorDeviceClass.DURATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "runtime_info.aux2_runtime": MasterthermSensorEntityDescription(
-        key="aux2_runtime",
-        name="Aux 2 Runtime",
-        device_class=SensorDeviceClass.DURATION,
-        state_class=SensorStateClass.TOTAL_INCREASING,
-    ),
-    "heating_circuits.hc0.name": MasterthermSensorEntityDescription(
-        key="hc0_name",
-        name="HC0 Name",
-    ),
-    "heating_circuits.hc0.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc0_ambient_temp",
-        name="HC0 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc0.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc0_ambient_requested",
-        name="HC0 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc0.pad.temp": MasterthermSensorEntityDescription(
-        key="hc0_pad_temp",
-        name="HC0 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc0.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc0_pad_temp_requested",
-        name="HC0 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.name": MasterthermSensorEntityDescription(
-        key="hc1_name",
-        name="HC1 Name",
-    ),
-    "heating_circuits.hc1.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc1_ambient_temp",
-        name="HC1 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.water_requested": MasterthermSensorEntityDescription(
-        key="hc1_water_requested",
-        name="HC1 Water Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.water_temp": MasterthermSensorEntityDescription(
-        key="hc1_water_temp",
-        name="HC1 Water Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc1_ambient_requested",
-        name="HC1 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.pad.temp": MasterthermSensorEntityDescription(
-        key="hc1_pad_temp",
-        name="HC1 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc1.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc1_pad_temp_requested",
-        name="HC1 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc2.name": MasterthermSensorEntityDescription(
-        key="hc2_name",
-        name="HC2 Name",
-    ),
-    "heating_circuits.hc2.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc2_ambient_temp",
-        name="HC2 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc2.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc2_ambient_requested",
-        name="HC2 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc2.pad.temp": MasterthermSensorEntityDescription(
-        key="hc2_pad_temp",
-        name="HC2 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc2.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc2_pad_temp_requested",
-        name="HC2 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc3.name": MasterthermSensorEntityDescription(
-        key="hc3_name",
-        name="HC3 Name",
-    ),
-    "heating_circuits.hc3.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc3_ambient_temp",
-        name="HC3 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc3.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc3_ambient_requested",
-        name="HC3 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc3.pad.temp": MasterthermSensorEntityDescription(
-        key="hc3_pad_temp",
-        name="HC3 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc3.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc3_pad_temp_requested",
-        name="HC3 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc4.name": MasterthermSensorEntityDescription(
-        key="hc4_name",
-        name="HC4 Name",
-    ),
-    "heating_circuits.hc4.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc4_ambient_temp",
-        name="HC4 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc4.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc4_ambient_requested",
-        name="HC4 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc4.pad.temp": MasterthermSensorEntityDescription(
-        key="hc4_pad_temp",
-        name="HC4 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc4.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc4_pad_temp_requested",
-        name="HC4 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc5.name": MasterthermSensorEntityDescription(
-        key="hc5_name",
-        name="HC5 Name",
-    ),
-    "heating_circuits.hc5.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc5_ambient_temp",
-        name="HC5 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc5.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc5_ambient_requested",
-        name="HC5 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc5.pad.temp": MasterthermSensorEntityDescription(
-        key="hc5_pad_temp",
-        name="HC5 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc5.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc5_pad_temp_requested",
-        name="HC5 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc6.name": MasterthermSensorEntityDescription(
-        key="hc6_name",
-        name="HC6 Name",
-    ),
-    "heating_circuits.hc6.ambient_temp": MasterthermSensorEntityDescription(
-        key="hc6_ambient_temp",
-        name="HC6 Ambient Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc6.ambient_requested": MasterthermSensorEntityDescription(
-        key="hc6_ambient_requested",
-        name="HC6 Ambient Requested",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc6.pad.temp": MasterthermSensorEntityDescription(
-        key="hc6_pad_temp",
-        name="HC6 PAD Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    "heating_circuits.hc6.pad.temp_requested": MasterthermSensorEntityDescription(
-        key="hc6_pad_temp_requested",
-        name="HC6 PAD Requested Temperature",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-}
-
-BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
     "cooling_mode": MasterthermBinarySensorEntityDescription(
         key="cooling_mode",
         name="Cooling Mode",
     ),
+    "domestic_hot_water": {
+        "heating": MasterthermBinarySensorEntityDescription(
+            key="dhw_heating",
+            name="DHW Heating",
+        ),
+        "enabled": MasterthermSensorEntityDescription(
+            key="dhw_enabled",
+            name="DHW Enabled",
+            icon="mdi:thermometer-water",
+        ),
+        "current_temp": MasterthermSensorEntityDescription(
+            key="dhw_current_temp",
+            name="DHW Actual Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "required_temp": MasterthermSensorEntityDescription(
+            key="dhw_required_temp",
+            name="DHW Required Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+    },
     "compressor_running": MasterthermBinarySensorEntityDescription(
         key="compressor_running",
         name="Compressor",
@@ -397,6 +291,24 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
         key="aux_heater_2",
         name="Aux Heater 2",
     ),
+    "outside_temp": MasterthermSensorEntityDescription(
+        key="outside_temp",
+        name="Outside Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "requested_temp": MasterthermSensorEntityDescription(
+        key="requested_temp",
+        name="HP Requested Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    "actual_temp": MasterthermSensorEntityDescription(
+        key="actual_temp",
+        name="HP Actual Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
     "dewp_control": MasterthermBinarySensorEntityDescription(
         key="dewp_control",
         name="Dew Point Control",
@@ -405,103 +317,69 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
         key="hdo_on",
         name="High Tarrif (HDO)",
     ),
-    "domestic_hot_water.heating": MasterthermBinarySensorEntityDescription(
-        key="dwh_heating",
-        name="DHW Heating",
-    ),
-    "season.hp_season": MasterthermBinarySensorEntityDescription(
-        key="winter_season",
-        name="Winter Season",
-    ),
-    "error_info.some_error": MasterthermBinarySensorEntityDescription(
-        key="somer_error",
-        name="Some Error",
-    ),
-    "error_info.three_errors": MasterthermBinarySensorEntityDescription(
-        key="three_errors",
-        name="Three Errors",
-    ),
-    "error_info.reset_3e": MasterthermBinarySensorEntityDescription(
-        key="reset_3e",
-        name="Reset 3E",
-    ),
-    "error_info.safety_tstat": MasterthermBinarySensorEntityDescription(
-        key="safety_tstat",
-        name="Reset 3E",
-    ),
-    "heating_circuits.hc0.on": MasterthermBinarySensorEntityDescription(
-        key="hc9_on",
-        name="HC0",
-    ),
-    "heating_circuits.hc0.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc9_pad_enabled",
-        name="HC0 PAD Enabled",
-    ),
-    "heating_circuits.hc1.on": MasterthermBinarySensorEntityDescription(
-        key="hc1_on",
-        name="HC1",
-    ),
-    "heating_circuits.hc1.pad.active": MasterthermBinarySensorEntityDescription(
-        key="hc1_pad_active",
-        name="HC1 PAD Active",
-    ),
-    "heating_circuits.hc2.on": MasterthermBinarySensorEntityDescription(
-        key="hc2_on",
-        name="HC2",
-    ),
-    "heating_circuits.hc2.pad.active": MasterthermBinarySensorEntityDescription(
-        key="hc2_pad_active",
-        name="HC2 PAD Active",
-    ),
-    "heating_circuits.hc3.on": MasterthermBinarySensorEntityDescription(
-        key="hc3_on",
-        name="HC3",
-    ),
-    "heating_circuits.hc3.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc3_pad_enabled",
-        name="HC3 PAD Enabled",
-    ),
-    "heating_circuits.hc4.on": MasterthermBinarySensorEntityDescription(
-        key="hc4_on",
-        name="HC4",
-    ),
-    "heating_circuits.hc4.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc4_pad_enabled",
-        name="HC4 PAD Enabled",
-    ),
-    "heating_circuits.hc5.on": MasterthermBinarySensorEntityDescription(
-        key="hc5_on",
-        name="HC5",
-    ),
-    "heating_circuits.hc5.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc5_pad_enabled",
-        name="HC5 PAD Enabled",
-    ),
-    "heating_circuits.hc6.on": MasterthermBinarySensorEntityDescription(
-        key="hc6_on",
-        name="HC6",
-    ),
-    "heating_circuits.hc6.pad.enabled": MasterthermBinarySensorEntityDescription(
-        key="hc6_pad_enabled",
-        name="HC6 PAD Enabled",
-    ),
-}
-
-# Putting all entities into a single map which hopfully makes it easier
-# to maintain, will split into usable entity lists in the coordinator.
-ENTITY_TYPES_MAP: dict[str, dict | EntityDescription] = {
-    "hp_power_state": MasterthermSwitchEntityDescription(
-        key="hp_power_state",
-        name="HP Power",
-        device_class=SwitchDeviceClass.SWITCH,
-        icon="mdi:power",
-    ),
-    "domestic_hot_water": {
-        "enabled": MasterthermSwitchEntityDescription(
-            key="dhw_enabled",
-            name="DHW Enabled",
-            device_class=SwitchDeviceClass.SWITCH,
-            icon="mdi:thermometer-water",
+    "runtime_info": {
+        "compressor_run_time": MasterthermSensorEntityDescription(
+            key="compressor_run_time",
+            name="Compressor Runtime",
+            device_class=SensorDeviceClass.DURATION,
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "compressor_start_counter": MasterthermSensorEntityDescription(
+            key="compressor_start_counter",
+            name="Compressor Start Counter",
+            icon="mdi:count",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "pump_runtime": MasterthermSensorEntityDescription(
+            key="pump_runtime",
+            name="Pump Runtime",
+            device_class=SensorDeviceClass.DURATION,
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "aux1_runtime": MasterthermSensorEntityDescription(
+            key="aux1_runtime",
+            name="Aux 1 Runtime",
+            device_class=SensorDeviceClass.DURATION,
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "aux2_runtime": MasterthermSensorEntityDescription(
+            key="aux2_runtime",
+            name="Aux 2 Runtime",
+            device_class=SensorDeviceClass.DURATION,
+            state_class=SensorStateClass.TOTAL_INCREASING,
         ),
     },
+    "season_info": {
+        "hp_season": MasterthermSwitchEntityDescription(
+            key="winter_season",
+            name="Winter Season",
+            device_class=SwitchDeviceClass.SWITCH,
+            read_only=True,
+        ),
+        "hp_seasonset": MasterthermSwitchEntityDescription(
+            key="auto_season",
+            name="Auto Season",
+            device_class=SwitchDeviceClass.SWITCH,
+            read_only=True,
+        ),
+    },
+    "error_info": {
+        "some_error": MasterthermBinarySensorEntityDescription(
+            key="somer_error",
+            name="Some Error",
+        ),
+        "three_errors": MasterthermBinarySensorEntityDescription(
+            key="three_errors",
+            name="Three Errors",
+        ),
+        "reset_3e": MasterthermBinarySensorEntityDescription(
+            key="reset_3e",
+            name="Reset 3E",
+        ),
+        "safety_tstat": MasterthermBinarySensorEntityDescription(
+            key="safety_tstat",
+            name="Reset 3E",
+        ),
+    },
+    "heating_circuits": HEATING_CIRCUITS,
 }

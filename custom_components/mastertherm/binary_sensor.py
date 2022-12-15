@@ -10,10 +10,7 @@ from homeassistant.const import CONF_ENTITIES, Platform
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import (
-    BINARY_SENSOR_TYPES,
-    MasterthermBinarySensorEntityDescription,
-)
+from .entity_mappings import MasterthermBinarySensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,7 +24,9 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[BinarySensorEntity] = []
-    for entity_key, entity_description in BINARY_SENSOR_TYPES.items():
+    for entity_key, entity_description in coordinator.entity_types[
+        Platform.BINARY_SENSOR
+    ].items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(

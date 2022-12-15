@@ -12,7 +12,7 @@ from homeassistant.const import CONF_ENTITIES, Platform
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import SWITCH_TYPES, MasterthermSwitchEntityDescription
+from .entity_mappings import MasterthermSwitchEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,7 +26,9 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SwitchEntity] = []
-    for entity_key, entity_description in SWITCH_TYPES.items():
+    for entity_key, entity_description in coordinator.entity_types[
+        Platform.SWITCH
+    ].items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(

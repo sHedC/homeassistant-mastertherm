@@ -15,16 +15,19 @@ from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.mastertherm.const import DOMAIN
 from custom_components.mastertherm.entity_mappings import (
-    MasterthermSensorEntityDescription,
+    MasterthermSelectEntityDescription,
 )
 
 
 @pytest.fixture(autouse=True)
-def override_platform():
+def override_entity():
     """Override the Platforms to test Selects."""
     with patch(
         "custom_components.mastertherm.ENTITIES",
-        {MasterthermSensorEntityDescription.__name__: Platform.SELECT},
+        {MasterthermSelectEntityDescription.__name__: Platform.SELECT},
+    ), patch(
+        "custom_components.mastertherm.coordinator.ENTITIES",
+        {MasterthermSelectEntityDescription.__name__: Platform.SELECT},
     ):
         yield
 

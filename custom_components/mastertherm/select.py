@@ -11,7 +11,7 @@ from homeassistant.exceptions import HomeAssistantError
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import SELECT_TYPES, MasterthermSelectEntityDescription
+from .entity_mappings import MasterthermSelectEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,7 +25,9 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SelectEntity] = []
-    for entity_key, entity_description in SELECT_TYPES.items():
+    for entity_key, entity_description in coordinator.entity_types[
+        Platform.SELECT
+    ].items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(

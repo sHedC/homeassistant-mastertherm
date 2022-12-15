@@ -20,6 +20,9 @@ def override_platform():
     with patch(
         "custom_components.mastertherm.ENTITIES",
         {MasterthermSensorEntityDescription.__name__: Platform.SENSOR},
+    ), patch(
+        "custom_components.mastertherm.coordinator.ENTITIES",
+        {MasterthermSensorEntityDescription.__name__: Platform.SENSOR},
     ):
         yield
 

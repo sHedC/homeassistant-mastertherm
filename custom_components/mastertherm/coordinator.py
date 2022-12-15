@@ -98,9 +98,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                     entity_list[entity_type].update(entity_list_update[entity_type])
             else:
                 # Add the entity to the relevant dot noted key.
-                entity_list[ENTITIES[type(entity).__name__]][
-                    f"{parent}{entity_key}"
-                ] = entity
+                if type(entity).__name__ in ENTITIES:
+                    entity_list[ENTITIES[type(entity).__name__]][
+                        f"{parent}{entity_key}"
+                    ] = entity
 
         return entity_list
 
