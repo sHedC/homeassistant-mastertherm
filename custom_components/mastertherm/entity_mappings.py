@@ -138,6 +138,7 @@ HEATING_CIRCUITS: dict[str, str | EntityDescription] = {
         ),
         "water_temp": MasterthermSensorEntityDescription(
             key="hc1_water_temp",
+            name="HC1 Water Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
@@ -187,6 +188,7 @@ HEATING_CIRCUITS: dict[str, str | EntityDescription] = {
         ),
         "water_temp": MasterthermSensorEntityDescription(
             key="hc2_water_temp",
+            name="HC1 Water Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
