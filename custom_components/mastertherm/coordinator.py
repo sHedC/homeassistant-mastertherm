@@ -78,7 +78,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         await self.session.close()
 
     def __build_entity_types(
-        self, entity_map: dict[str, str | EntityDescription], parent: str = ""
+        self, entity_map: dict, parent: str = ""
     ) -> dict[str, EntityDescription]:
         """Build a list of each entity type from the Main Entity Map, recursive method."""
         entity_list = {}
