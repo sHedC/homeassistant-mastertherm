@@ -14,6 +14,7 @@ from masterthermconnect import (
 )
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
@@ -21,6 +22,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import DOMAIN
+from .entity_mappings import ENTITY_TYPES_MAP, ENTITIES
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,6 +63,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         else:
             self.mt_controller.set_refresh_rate(data_refresh_seconds=60)
 
+        self.entity_types: dict[str, EntityDescription] = self.__build_entity_types(
+            ENTITY_TYPES_MAP
+        )
         self.platforms = []
         self._modules = []
 
@@ -71,6 +76,34 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def __aexit__(self, *excinfo):
         """Close Session before class is destroyed."""
         await self.session.close()
+
+    def __build_entity_types(
+        self, entity_map: dict, parent: str = ""
+    ) -> dict[str, EntityDescription]:
+        """Build a list of each entity type from the Main Entity Map, recursive method."""
+        entity_list = {}
+        for entity_type in ENTITIES.values():
+            entity_list[entity_type] = {}
+
+        # For each Map Entry passed to this method process.
+        for entity_key, entity in entity_map.items():
+            if isinstance(entity, dict):
+                # If entity is of type dict assume its a child to process.
+                entity_list_update = self.__build_entity_types(
+                    entity_map[entity_key], f"{parent}{entity_key}."
+                )
+
+                # Merget the child entries back to the parent.
+                for entity_type in ENTITIES.values():
+                    entity_list[entity_type].update(entity_list_update[entity_type])
+            else:
+                # Add the entity to the relevant dot noted key.
+                if type(entity).__name__ in ENTITIES:
+                    entity_list[ENTITIES[type(entity).__name__]][
+                        f"{parent}{entity_key}"
+                    ] = entity
+
+        return entity_list
 
     def __build_entities(self, parent: str, device_data: dict) -> dict:
         """Build the Entities in dot notation, this is a nested method."""

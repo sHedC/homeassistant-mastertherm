@@ -22,7 +22,8 @@
         "padd": "",
         "pade": "",
         "padf": "",
-        "padz": "Home"
+        "padz": "Home",
+        "api_url": "https://mastertherm.vip-it.cz"
     },
     "1234_2": {
         "module_id": "1234",
@@ -47,6 +48,7 @@
         "padd": "",
         "pade": "",
         "padf": "",
-        "padz": "Home"
+        "padz": "Home",
+        "api_url": "https://mastertherm.online"
     }
 }

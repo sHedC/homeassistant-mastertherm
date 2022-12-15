@@ -56,5 +56,5 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             name=self.get_moduleinfo["module_name"],
             manufacturer="Mastertherm",
             model=self.get_moduleinfo["hp_type"],
-            configuration_url="https://mastertherm.vip-it.cz/",
+            configuration_url=self.get_moduleinfo["api_url"],
         )

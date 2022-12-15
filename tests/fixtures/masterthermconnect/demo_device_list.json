@@ -22,6 +22,7 @@
         "padd": "PAD-14",
         "pade": "PAD-15",
         "padf": "PAD-16",
-        "padz": "Důmek"
+        "padz": "Důmek",
+        "api_url": "https://mastertherm.vip-it.cz"
     }
 }

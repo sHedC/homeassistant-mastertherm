@@ -22,6 +22,7 @@
         "padd": "",
         "pade": "",
         "padf": "",
-        "padz": "Home"
+        "padz": "Home",
+        "api_url": "https://mastertherm.vip-it.cz"
     }
 }

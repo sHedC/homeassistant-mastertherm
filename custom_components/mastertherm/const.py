@@ -1,6 +1,4 @@
 """Constants used by Home Assistant Components."""
-from homeassistant.const import Platform
-
 NAME = "Mastertherm"
 DOMAIN = "mastertherm"
 
@@ -11,6 +9,3 @@ API_VERSIONS = {
 
 # Default Refresh Rate in Seconds
 DEFAULT_REFRESH = 120
-
-# Platforms
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
