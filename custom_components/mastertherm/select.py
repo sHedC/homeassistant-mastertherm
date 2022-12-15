@@ -74,8 +74,4 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
     def select_option(self, option: str) -> None:
         """Don't Update Anything"""
-        self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ] = self._options_map[option]
-
         self.schedule_update_ha_state(force_refresh=True)

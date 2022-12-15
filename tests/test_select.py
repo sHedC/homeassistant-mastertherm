@@ -60,7 +60,7 @@ async def test_select_setup(
 
     # Check the HP Function Select
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
-    assert state.state == "heating"
+    assert state.state == "Heating"
     assert state.name == "HP Function"
 
 
@@ -100,4 +100,4 @@ async def test_select_change(
     await hass.async_block_till_done()
 
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
-    assert state.state == "Auto"
+    assert state.state == "Heating"
