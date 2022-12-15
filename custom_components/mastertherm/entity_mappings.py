@@ -55,7 +55,7 @@ ENTITIES: dict[str, str] = {
 
 # Putting all entities into a single map which hopfully makes it easier
 # to maintain, will split into usable entity lists in the coordinator.
-HEATING_CIRCUITS: dict[str, dict | EntityDescription] = {
+HEATING_CIRCUITS: dict = {
     "hc0": {
         "name": MasterthermSensorEntityDescription(
             key="hc0_name",
@@ -205,7 +205,7 @@ HEATING_CIRCUITS: dict[str, dict | EntityDescription] = {
     },
 }
 
-ENTITY_TYPES_MAP: dict[str, dict | EntityDescription] = {
+ENTITY_TYPES_MAP: dict = {
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
         name="HP Power",
