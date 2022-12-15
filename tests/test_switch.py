@@ -18,10 +18,13 @@ from custom_components.mastertherm.entity_mappings import (
 
 
 @pytest.fixture(autouse=True)
-def override_platform():
-    """Override the Platforms to test Switches."""
+def override_entity():
+    """Override the ENTITIES to test Switches."""
     with patch(
         "custom_components.mastertherm.ENTITIES",
+        {MasterthermSwitchEntityDescription.__name__: Platform.SWITCH},
+    ), patch(
+        "custom_components.mastertherm.coordinator.ENTITIES",
         {MasterthermSwitchEntityDescription.__name__: Platform.SWITCH},
     ):
         yield

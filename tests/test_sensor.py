@@ -15,8 +15,8 @@ from .conftest import APIMock
 
 
 @pytest.fixture(autouse=True)
-def override_platform():
-    """Override the Platforms to test Switches."""
+def override_entity():
+    """Override the ENTITIES to test Sensors."""
     with patch(
         "custom_components.mastertherm.ENTITIES",
         {MasterthermSensorEntityDescription.__name__: Platform.SENSOR},

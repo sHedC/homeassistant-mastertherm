@@ -21,7 +21,7 @@ from custom_components.mastertherm.entity_mappings import (
 
 @pytest.fixture(autouse=True)
 def override_entity():
-    """Override the Platforms to test Selects."""
+    """Override the ENTITIES to test Selects."""
     with patch(
         "custom_components.mastertherm.ENTITIES",
         {MasterthermSelectEntityDescription.__name__: Platform.SELECT},
