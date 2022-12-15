@@ -42,6 +42,14 @@ class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Description for the Mastertherm binary sensor entities."""
 
 
+ENTITIES: dict[str, str] = {
+    MasterthermBinarySensorEntityDescription.__name__: "binary_sensor",
+    # MasterthermSelectEntityDescription.__name__: "select",
+    MasterthermSensorEntityDescription.__name__: "sensor",
+    MasterthermSwitchEntityDescription.__name__: "switch",
+}
+
+
 SWITCH_TYPES: dict[str, MasterthermSwitchEntityDescription] = {
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
@@ -477,4 +485,23 @@ BINARY_SENSOR_TYPES: dict[str, MasterthermBinarySensorEntityDescription] = {
         key="hc6_pad_enabled",
         name="HC6 PAD Enabled",
     ),
+}
+
+# Putting all entities into a single map which hopfully makes it easier
+# to maintain, will split into usable entity lists in the coordinator.
+ENTITY_TYPES_MAP: dict[str, dict | EntityDescription] = {
+    "hp_power_state": MasterthermSwitchEntityDescription(
+        key="hp_power_state",
+        name="HP Power",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:power",
+    ),
+    "domestic_hot_water": {
+        "enabled": MasterthermSwitchEntityDescription(
+            key="dhw_enabled",
+            name="DHW Enabled",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:thermometer-water",
+        ),
+    },
 }

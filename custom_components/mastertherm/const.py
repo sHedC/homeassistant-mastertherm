@@ -11,10 +11,3 @@ API_VERSIONS = {
 
 # Default Refresh Rate in Seconds
 DEFAULT_REFRESH = 120
-
-# Platforms
-PLATFORMS = [
-    Platform.SENSOR,
-    Platform.BINARY_SENSOR,
-    Platform.SWITCH,
-]

@@ -14,7 +14,8 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .coordinator import MasterthermDataUpdateCoordinator
-from .const import DOMAIN, PLATFORMS, DEFAULT_REFRESH
+from .const import DOMAIN, DEFAULT_REFRESH
+from .entity_mappings import ENTITIES
 
 SCAN_INTERVAL = timedelta(seconds=30)
 
@@ -51,7 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if not coordinator.data:
         raise ConfigEntryNotReady
 
-    for platform in PLATFORMS:
+    for platform in ENTITIES.values():
         if entry.options.get(platform, True):
             coordinator.platforms.append(platform)
             hass.async_add_job(
@@ -70,7 +71,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await asyncio.gather(
             *[
                 hass.config_entries.async_forward_entry_unload(entry, platform)
-                for platform in PLATFORMS
+                for platform in ENTITIES.values()
                 if platform in coordinator.platforms
             ]
         )

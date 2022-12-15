@@ -7,12 +7,18 @@ from homeassistant.const import Platform
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.mastertherm.const import DOMAIN
+from custom_components.mastertherm.entity_mappings import (
+    MasterthermSelectEntityDescription,
+)
 
 
 @pytest.fixture(autouse=True)
 def override_platform():
-    """Override the Platforms to test Switches."""
-    with patch("custom_components.mastertherm.PLATFORMS", [Platform.BINARY_SENSOR]):
+    """Override the ENTITIES to test Switches."""
+    with patch(
+        "custom_components.mastertherm.ENTITIES",
+        {MasterthermSelectEntityDescription.__name__: Platform.BINARY_SENSOR},
+    ):
         yield
 
 
