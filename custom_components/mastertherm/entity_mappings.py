@@ -48,7 +48,7 @@ class MasterthermSwitchEntityDescription(SwitchEntityDescription):
 
 ENTITIES: dict[str, str] = {
     MasterthermBinarySensorEntityDescription.__name__: Platform.BINARY_SENSOR,
-    # MasterthermSelectEntityDescription.__name__: Platform.SELECT,
+    MasterthermSelectEntityDescription.__name__: Platform.SELECT,
     MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
     MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
 }
@@ -217,11 +217,11 @@ ENTITY_TYPES_MAP: dict = {
         key="hp_function",
         name="HP Function",
         options_map={
-            "Heating": 0,
-            "Cooling": 1,
-            "Auto": 2,
+            "heating": 0,
+            "cooling": 1,
+            "auto": 2,
         },
-        options=["Heating", "Cooling", "Auto"],
+        options=["heating", "cooling", "auto"],
         read_only=True,
     ),
     "season": MasterthermSensorEntityDescription(

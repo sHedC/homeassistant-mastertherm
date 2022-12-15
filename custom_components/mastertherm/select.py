@@ -65,13 +65,14 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
         self._reverse_map = {val: key for key, val in self._options_map.items()}
 
-    @property
-    def current_option(self) -> str | None:
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-        return self._reverse_map.get(state)
+        self._attr_current_option = self._reverse_map.get(state)
 
     def select_option(self, option: str) -> None:
         """Don't Update Anything"""
-        self.schedule_update_ha_state(force_refresh=True)
+        state = self.coordinator.data["modules"][self._module_key]["entities"][
+            self._entity_key
+        ]
+        self._attr_current_option = self._reverse_map.get(state)

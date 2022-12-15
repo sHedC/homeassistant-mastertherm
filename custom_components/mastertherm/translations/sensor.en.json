@@ -5,6 +5,7 @@
             "summer": "Summer",
             "auto:winter": "Winter (Auto)",
             "auto:summer": "Summer (Auto)",
+            "auto": "Auto",
             "heating": "Heating",
             "cooling": "Cooling",
             "pool": "Pool",
