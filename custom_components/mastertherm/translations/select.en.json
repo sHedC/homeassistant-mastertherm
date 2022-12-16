@@ -1,0 +1,7 @@
+{
+    "state": {
+        "auto": "Auto",
+        "heating": "Heating",
+        "cooling": "Cooling"
+    }
+}

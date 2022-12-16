@@ -72,7 +72,4 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
     def select_option(self, option: str) -> None:
         """Don't Update Anything"""
-        state = self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
-        self._attr_current_option = self._reverse_map.get(state)
+        self.async_write_ha_state()
