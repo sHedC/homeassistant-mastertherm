@@ -69,7 +69,11 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
             self._entity_key
         ]
         self._attr_current_option = self._reverse_map.get(state)
+        # self.async_write_ha_state()
 
-    def select_option(self, option: str) -> None:
-        """Don't Update Anything"""
-        self.async_write_ha_state()
+    #    def select_option(self, option: str) -> None:
+    #        """Don't Update Anything"""
+    #        self.async_write_ha_state()
+
+    async def async_select_option(self, option: str) -> None:
+        """Do Nothing"""
