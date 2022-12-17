@@ -232,7 +232,7 @@ ENTITY_TYPES_MAP: dict = {
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
         name="HP Operating Mode",
-        icon="mdi:sun-thermomete",
+        icon="mdi:weather-partly-snowy-rainy",
     ),
     "cooling_mode": MasterthermBinarySensorEntityDescription(
         key="cooling_mode",
