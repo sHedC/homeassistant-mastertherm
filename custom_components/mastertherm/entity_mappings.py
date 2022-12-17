@@ -203,6 +203,206 @@ HEATING_CIRCUITS: dict = {
             name="HC2 Auto",
         ),
     },
+    "hc3": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc3_name",
+            name="HC3 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc3_on",
+            name="HC3",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc3_cooling",
+            name="HC3 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc3_pump_running",
+            name="HC3 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc3_ambient_temp",
+            name="HC3 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc3_water_requested",
+            name="HC3 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc3_water_temp",
+            name="HC3 Water Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc3_ambient_requested",
+            name="HC3 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc3_auto",
+            name="HC3 Auto",
+        ),
+    },
+    "hc4": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc4_name",
+            name="HC4 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc4_on",
+            name="HC4",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc4_cooling",
+            name="HC4 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc4_pump_running",
+            name="HC4 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc4_ambient_temp",
+            name="HC4 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc4_water_requested",
+            name="HC4 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc4_water_temp",
+            name="HC4 Water Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc4_ambient_requested",
+            name="HC4 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc4_auto",
+            name="HC4 Auto",
+        ),
+    },
+    "hc5": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc5_name",
+            name="HC5 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc5_on",
+            name="HC5",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc5_cooling",
+            name="HC5 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc5_pump_running",
+            name="HC5 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc5_ambient_temp",
+            name="HC5 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc5_water_requested",
+            name="HC5 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc5_water_temp",
+            name="HC5 Water Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc5_ambient_requested",
+            name="HC5 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc5_auto",
+            name="HC5 Auto",
+        ),
+    },
+    "hc6": {
+        "name": MasterthermSensorEntityDescription(
+            key="hc6_name",
+            name="HC6 Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="hc6_on",
+            name="HC6",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "cooling": MasterthermBinarySensorEntityDescription(
+            key="hc6_cooling",
+            name="HC6 Cooling",
+        ),
+        "pump_running": MasterthermBinarySensorEntityDescription(
+            key="hc6_pump_running",
+            name="HC6 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
+        ),
+        "ambient_temp": MasterthermSensorEntityDescription(
+            key="hc6_ambient_temp",
+            name="HC6 Ambient Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_requested": MasterthermSensorEntityDescription(
+            key="hc6_water_requested",
+            name="HC6 Water Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "water_temp": MasterthermSensorEntityDescription(
+            key="hc6_water_temp",
+            name="HC6 Water Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "ambient_requested": MasterthermSensorEntityDescription(
+            key="hc6_ambient_requested",
+            name="HC6 Ambient Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "auto": MasterthermSensorEntityDescription(
+            key="hc6_auto",
+            name="HC6 Auto",
+        ),
+    },
 }
 
 ENTITY_TYPES_MAP: dict = {
