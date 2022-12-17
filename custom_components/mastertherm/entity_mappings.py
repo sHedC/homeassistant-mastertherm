@@ -403,6 +403,60 @@ HEATING_CIRCUITS: dict = {
             name="HC6 Auto",
         ),
     },
+    "solar": {
+        "name": MasterthermSensorEntityDescription(
+            key="solar_name",
+            name="Solar Name",
+        ),
+        "s1_temp": MasterthermSensorEntityDescription(
+            key="solar_s1_temp",
+            name="Solar 1 Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "s2_temp": MasterthermSensorEntityDescription(
+            key="solar_s2_temp",
+            name="Solar 2 Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "s3_temp": MasterthermSensorEntityDescription(
+            key="solar_s3_temp",
+            name="Solar 3 Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+    },
+    "pool": {
+        "name": MasterthermSensorEntityDescription(
+            key="solar_name",
+            name="Solar Name",
+        ),
+        "on": MasterthermSwitchEntityDescription(
+            key="pool_on",
+            name="Pool",
+            device_class=SwitchDeviceClass.SWITCH,
+            icon="mdi:power",
+            read_only=True,
+        ),
+        "heating": MasterthermBinarySensorEntityDescription(
+            key="pool_heating",
+            name="Pool Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
+        ),
+        "s1_temp": MasterthermSensorEntityDescription(
+            key="pool_s1_temp",
+            name="Pool Temperature",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "temp_requested": MasterthermSensorEntityDescription(
+            key="pool_temp_requested",
+            name="Pool Temperature Requested",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+        ),
+    },
 }
 
 ENTITY_TYPES_MAP: dict = {
