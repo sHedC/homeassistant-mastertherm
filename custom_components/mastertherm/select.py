@@ -5,8 +5,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ENTITIES, Platform
+from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -65,18 +65,24 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
         self._reverse_map = {val: key for key, val in self._options_map.items()}
 
-    @property
-    def current_option(self) -> str | None:
+        # Set Initial State
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-        return self._reverse_map.get(state)
+        self._attr_current_option = self._reverse_map.get(state)
 
-    #    def select_option(self, option: str) -> None:
-    #        """Don't Update Anything"""
-    #        self.async_write_ha_state()
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        state = self.coordinator.data["modules"][self._module_key]["entities"][
+            self._entity_key
+        ]
+        self._attr_current_option = self._reverse_map.get(state)
+        self.async_write_ha_state()
 
     async def async_select_option(self, option: str) -> None:
         """Do Nothing"""
-        self.coordinator.async_request_refresh()
-        raise HomeAssistantError("Error Not Supported.")
+        self.coordinator.data["modules"][self._module_key]["entities"][
+            self._entity_key
+        ] = self._options_map.get(option)
+        await self.coordinator.async_request_refresh()
