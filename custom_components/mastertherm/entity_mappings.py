@@ -121,8 +121,8 @@ HEATING_CIRCUITS: dict = {
         ),
         "pump_running": MasterthermBinarySensorEntityDescription(
             key="hc1_pump_running",
-            name="HC1 Heat Requested",
-            device_class=BinarySensorDeviceClass.HEAT,
+            name="HC1 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc1_ambient_temp",
@@ -171,8 +171,8 @@ HEATING_CIRCUITS: dict = {
         ),
         "pump_running": MasterthermBinarySensorEntityDescription(
             key="hc2_pump_running",
-            name="HC2 Heat Requested",
-            device_class=BinarySensorDeviceClass.HEAT,
+            name="HC2 Circulation Valve",
+            device_class=BinarySensorDeviceClass.OPENING,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc2_ambient_temp",
