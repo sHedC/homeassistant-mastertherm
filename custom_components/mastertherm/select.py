@@ -71,11 +71,6 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         ]
         self._attr_current_option = self._reverse_map.get(state)
 
-    # @property
-    # def current_option(self) -> str | None:
-    #    state = super().current_option
-    #    return state
-
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""

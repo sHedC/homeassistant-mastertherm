@@ -17,6 +17,7 @@ from custom_components.mastertherm.const import DOMAIN
 from custom_components.mastertherm.entity_mappings import (
     MasterthermSelectEntityDescription,
 )
+from custom_components.mastertherm.coordinator import MasterthermDataUpdateCoordinator
 
 
 @pytest.fixture(autouse=True)
@@ -69,7 +70,7 @@ async def test_select_change(
     mock_configdata: dict,
     mock_entitydata: dict,
 ):
-    """Test Select are not allowed to change."""
+    """Test Select are not allowed to change, not working as comes back unavailable."""
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
@@ -101,3 +102,7 @@ async def test_select_change(
 
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
     assert state.state == "auto"
+
+    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
