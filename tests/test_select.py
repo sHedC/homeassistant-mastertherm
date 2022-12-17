@@ -98,6 +98,7 @@ async def test_select_change(
         blocking=True,
     )
     await hass.async_block_till_done()
+    await hass.async_block_till_done()
 
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
     assert state.state == "heating"
