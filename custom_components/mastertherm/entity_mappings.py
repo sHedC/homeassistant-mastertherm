@@ -483,6 +483,12 @@ ENTITY_TYPES_MAP: dict = {
         key="season",
         name="Season",
         icon="mdi:weather-partly-snowy-rainy",
+        icon_state_map={
+            "winter": "mdi:weather-snowy-heavy",
+            "summer": "mdi:weather-sunny",
+            "auto:winter": "mdi:weather-snowy-heavy",
+            "auto:summer": "mdi:weather-sunny",
+        },
     ),
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
