@@ -17,6 +17,7 @@ from custom_components.mastertherm.const import DOMAIN
 from custom_components.mastertherm.entity_mappings import (
     MasterthermSelectEntityDescription,
 )
+from custom_components.mastertherm.coordinator import MasterthermDataUpdateCoordinator
 
 
 @pytest.fixture(autouse=True)
@@ -60,7 +61,7 @@ async def test_select_setup(
 
     # Check the HP Function Select
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
-    assert state.state == "Heating"
+    assert state.state == "heating"
     assert state.name == "HP Function"
 
 
@@ -69,7 +70,7 @@ async def test_select_change(
     mock_configdata: dict,
     mock_entitydata: dict,
 ):
-    """Test Select are not allowed to change."""
+    """Test Select are not allowed to change, not working as comes back unavailable."""
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
@@ -89,15 +90,19 @@ async def test_select_change(
 
     # Check the HP Function Select
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
-    assert state.state == "Heating"
+    assert state.state == "heating"
 
     await hass.services.async_call(
         SELECT_DOMAIN,
         SERVICE_SELECT_OPTION,
-        {ATTR_OPTION: "Auto", ATTR_ENTITY_ID: "select.mt_1234_1_hp_function"},
+        {ATTR_OPTION: "auto", ATTR_ENTITY_ID: "select.mt_1234_1_hp_function"},
         blocking=True,
     )
     await hass.async_block_till_done()
 
     state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
-    assert state.state == "Heating"
+    assert state.state == "auto"
+
+    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
