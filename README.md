@@ -63,10 +63,27 @@ To install manually, if you really want to:
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
+## Sensor Details
+Current version is read only, updates do not work but that will come.
+
+The sensors are based on observations from the Web and Android Applications, the current testing has been done on some basic setup we have not tested options with Solar and Pool but have tried to add sensors based on the apps.
+1. One Main circuit with heating and cooling and domestic hot water with attached room thermostats
+2. Main Circuit for heating and two optional circuits for Barn and House Domestic Hot Water, no room thermostats
+
+#### Main Circuit
+These are the main entities for the heat pump, currently we understand the following.
+
+Entity | Description
+-- | --
+hp_power_state | Switch to turn on and off the Heat Pump
+hp_function | Select The function is heating/ cooling or auto
+season | Sensor showing the Season, Winter or Summer or Auto Winter and Auto Summer
+
 ## Contributions are welcome!
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
 Also to determine mappings use the mastertherm connect module directly from the command line where you can get a list of current registers for your heatpump.
+
 
 ***
 
