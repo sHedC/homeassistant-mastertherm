@@ -29,27 +29,5 @@
                 }
             }
         }
-    },
-    "entity": {
-        "sensor": {
-            "_": {
-                "winter": "Winter",
-                "summer": "Summer",
-                "auto:winter": "Winter (Auto)",
-                "auto:summer": "Summer (Auto)",
-                "heating": "Heating",
-                "cooling": "Cooling",
-                "pool": "Pool",
-                "dhw": "Hot Water",
-                "dpc": "Defrost Protection"
-            }
-        },
-        "select": {
-            "_": {
-                "auto": "Auto",
-                "heating": "Heating",
-                "cooling": "Cooling"
-            }
-        }
     }
 }
