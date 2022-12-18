@@ -126,11 +126,22 @@ Entity | Type | Description
 #### Heating Circuits
 The main circuit is HC0, this is linked to the main pump but some details in this circuit are hidden if any of HC1 to HC6 optional circuits are installed.
 
-HC1 to HC6 are used to provide things like heating/ cooling to different room zones or
+HC1 to HC6 are used to provide things like heating/ cooling to different room zones or multiple water tanks for hot water.
 
 Entity | Type | Description
 -- | -- | --
+name | sensor | The name of the circuit, hc0 is usually Home
+on | Swtich | If the circuit is turns on or not
+cooling | Binary Sensor | Circuit is in cooling mode
+circulation_valve | Binary Sensor | If this circuit is requesting then this is open, this also triggers the main circulation pump
+water_requested | Sensor | The requested water temperature based on heating and cooling curves
+water_temp | Sensor | The actual water temperature for the circuit
+ambient_temp | Sensor | based on the control pannel but not sure this is the right name, still testing
+ambient_requested | Sensor | again based on the control pannel but not sure, still testing
+auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
 
+#### Pool and Solar
+Some entities have been added based on debugging and best guess.
 
 
 ## Contributions are welcome!
