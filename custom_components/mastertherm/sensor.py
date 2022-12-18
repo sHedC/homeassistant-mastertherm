@@ -51,6 +51,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         entity_key: str,
         entity_description: MasterthermSensorEntityDescription,
     ):
+        self._icon_state_map = entity_description.icon_state_map
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -58,6 +59,14 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
             entity_type=Platform.SENSOR,
             entity_description=entity_description,
         )
+
+    @property
+    def icon(self) -> str | None:
+        """Set dynamic icons if available."""
+        if self._icon_state_map:
+            return self._icon_state_map[self.native_value]
+        else:
+            return self.entity_description.icon
 
     @property
     def native_value(self) -> StateType | date | datetime | Decimal:

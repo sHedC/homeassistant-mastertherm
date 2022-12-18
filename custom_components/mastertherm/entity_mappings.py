@@ -18,7 +18,6 @@ from homeassistant.components.switch import (
     SwitchDeviceClass,
 )
 from homeassistant.const import Platform
-from homeassistant.helpers.entity import EntityDescription
 
 
 @dataclass
@@ -37,6 +36,8 @@ class MasterthermSelectEntityDescription(SelectEntityDescription):
 @dataclass
 class MasterthermSensorEntityDescription(SensorEntityDescription):
     """Description for the Mastertherm sensor entities."""
+
+    icon_state_map: dict[str, str] = field(default_factory=dict[str, str])
 
 
 @dataclass
@@ -482,11 +483,24 @@ ENTITY_TYPES_MAP: dict = {
         key="season",
         name="Season",
         icon="mdi:weather-partly-snowy-rainy",
+        icon_state_map={
+            "winter": "mdi:weather-snowy-heavy",
+            "summer": "mdi:weather-sunny",
+            "auto:winter": "mdi:weather-snowy-heavy",
+            "auto:summer": "mdi:weather-sunny",
+        },
     ),
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
         name="HP Operating Mode",
         icon="mdi:weather-partly-snowy-rainy",
+        icon_state_map={
+            "heating": "mdi:sun-thermometer",
+            "cooling": "mdi:coolant-temperature",
+            "pool": "mdi:pool",
+            "dhw": "mdi:water-pump",
+            "dpc": "mdi:snowflake-melt",
+        },
     ),
     "cooling_mode": MasterthermBinarySensorEntityDescription(
         key="cooling_mode",

@@ -2,6 +2,7 @@
     "1234_2": {
         "hp_power_state": true,
         "hp_function": 0,
+        "operating_mode": "dhw",
         "cooling_mode": false,
         "domestic_hot_water": {
             "function": false,
