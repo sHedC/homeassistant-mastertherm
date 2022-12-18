@@ -92,6 +92,46 @@ requested_temp | Sensor | This is the temperature that the heat pump is requesti
 dewp_control | Binary Sensor | If Dew Point Control is active
 hdo_on | Binary Sensor | Something to do with High Tarrif Rates, do not know about this indicator
 
+#### Domestic Hot Water
+Entity | Type | Description
+-- | -- | --
+heating | Binary Sensor | Whether hot water is requested, also activates if HC1 to 6 is for hot water
+enabled | Binary Sensor | Not sure on mine always shows disabled.
+current_temp | Sensor | The current temperature of the hot water, should be taken from the sensor in the water tank
+required_temp | Sensor | The temperature that was set as required for your hot water.
+
+#### Run Time Info
+Entity | Type | Description
+-- | -- | --
+compressor_run_time | Sensor | Number of hours the compressor has run for
+compressor_start_counter | Sensor | Probably the number of times the compressor has started
+pump_runtime | Sensor | The number of hours the circulation pump has run
+aux1_runtime | Sensor | The house the auxillary heaters have run
+aux2_runtime | Sensor | The house the auxillary heaters have run
+
+#### Season Info
+The switches here define if Winter/ Summer or Auto
+
+Entity | Type | Description
+-- | -- | --
+hp_season | Switch | If set on then winter, if set off then summer
+hp_seasonset | Switch | If set on then Seasion is auto set.
+
+#### Error Info
+Work in Progress, error information just decoded from he web application.
+
+Entity | Type | Description
+-- | -- | --
+
+#### Heating Circuits
+The main circuit is HC0, this is linked to the main pump but some details in this circuit are hidden if any of HC1 to HC6 optional circuits are installed.
+
+HC1 to HC6 are used to provide things like heating/ cooling to different room zones or
+
+Entity | Type | Description
+-- | -- | --
+
+
 
 ## Contributions are welcome!
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
