@@ -74,7 +74,7 @@ The sensors are based on observations from the Web and Android Applications, the
 These are the main entities for the heat pump, currently we understand the following.
 
 Entity | Type | Description
--- | --
+-- | -- | --
 hp_power_state | Switch | Turn on and off the Heat Pump
 hp_function | Select | The function is heating/ cooling or auto
 season | Sensor | Shows the Season, Winter or Summer or Auto Winter and Auto Summer
