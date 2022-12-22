@@ -62,13 +62,6 @@ HEATING_CIRCUITS: dict = {
             key="hc0_name",
             name="HC0 Name",
         ),
-        "on": MasterthermSwitchEntityDescription(
-            key="hc0_on",
-            name="HC0",
-            device_class=SwitchDeviceClass.SWITCH,
-            icon="mdi:power",
-            read_only=True,
-        ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc0_ambient_temp",
             name="HC0 Ambient Temperature",
@@ -86,19 +79,21 @@ HEATING_CIRCUITS: dict = {
                 key="hc0_pad_active",
                 name="HC0 PAD Active",
             ),
-            "enabled": MasterthermBinarySensorEntityDescription(
-                key="hc0_pad_enabled",
-                name="HC0 PAD Enabled",
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc0_pad_current_humidity",
+                name="HC0 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
             ),
-            "temp": MasterthermSensorEntityDescription(
-                key="hc0_pad_temp",
-                name="HC0 PAD Temperature",
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc0_pad_requested_temp",
+                name="HC0 PAD Requested Temperature",
                 device_class=SensorDeviceClass.TEMPERATURE,
                 state_class=SensorStateClass.MEASUREMENT,
             ),
-            "temp_requested": MasterthermSensorEntityDescription(
-                key="hc0_pad_temp_requested",
-                name="HC0 PAD Requested Temperature",
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc0_pad_current_temp",
+                name="HC0 PAD Current Temperature",
                 device_class=SensorDeviceClass.TEMPERATURE,
                 state_class=SensorStateClass.MEASUREMENT,
             ),
@@ -153,6 +148,30 @@ HEATING_CIRCUITS: dict = {
             key="hc1_auto",
             name="HC1 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc1_pad_active",
+                name="HC1 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc1_pad_current_humidity",
+                name="HC1 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc1_pad_requested_temp",
+                name="HC1 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc1_pad_current_temp",
+                name="HC1 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "hc2": {
         "name": MasterthermSensorEntityDescription(
@@ -203,6 +222,30 @@ HEATING_CIRCUITS: dict = {
             key="hc2_auto",
             name="HC2 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc2_pad_active",
+                name="HC2 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc2_pad_current_humidity",
+                name="HC2 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc2_pad_requested_temp",
+                name="HC2 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc2_pad_current_temp",
+                name="HC2 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "hc3": {
         "name": MasterthermSensorEntityDescription(
@@ -253,6 +296,30 @@ HEATING_CIRCUITS: dict = {
             key="hc3_auto",
             name="HC3 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc3_pad_active",
+                name="HC3 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc3_pad_current_humidity",
+                name="HC3 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc3_pad_requested_temp",
+                name="HC3 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc3_pad_current_temp",
+                name="HC3 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "hc4": {
         "name": MasterthermSensorEntityDescription(
@@ -303,6 +370,30 @@ HEATING_CIRCUITS: dict = {
             key="hc4_auto",
             name="HC4 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc4_pad_active",
+                name="HC4 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc4_pad_current_humidity",
+                name="HC4 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc4_pad_requested_temp",
+                name="HC4 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc4_pad_current_temp",
+                name="HC4 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "hc5": {
         "name": MasterthermSensorEntityDescription(
@@ -353,6 +444,30 @@ HEATING_CIRCUITS: dict = {
             key="hc5_auto",
             name="HC5 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc5_pad_active",
+                name="HC5 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc5_pad_current_humidity",
+                name="HC5 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc5_pad_requested_temp",
+                name="HC5 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc5_pad_current_temp",
+                name="HC5 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "hc6": {
         "name": MasterthermSensorEntityDescription(
@@ -403,6 +518,30 @@ HEATING_CIRCUITS: dict = {
             key="hc6_auto",
             name="HC6 Auto",
         ),
+        "pad": {
+            "active": MasterthermBinarySensorEntityDescription(
+                key="hc6_pad_active",
+                name="HC6 PAD Active",
+            ),
+            "current_humidity": MasterthermSensorEntityDescription(
+                key="hc6_pad_current_humidity",
+                name="HC6 PAD Current Humidity",
+                device_class=SensorDeviceClass.HUMIDITY,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "requested_temp": MasterthermSensorEntityDescription(
+                key="hc6_pad_requested_temp",
+                name="HC6 PAD Requested Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+            "current_temp": MasterthermSensorEntityDescription(
+                key="hc6_pad_current_temp",
+                name="HC6 PAD Current Temperature",
+                device_class=SensorDeviceClass.TEMPERATURE,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
+        },
     },
     "solar": {
         "name": MasterthermSensorEntityDescription(
