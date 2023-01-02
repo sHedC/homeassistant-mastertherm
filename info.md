@@ -1,4 +1,4 @@
-# mastertherm
+# Mastertherm
 [![License][license-shield]](LICENSE) ![Project Maintenance][maintenance-shield] [![GitHub Activity][commits-shield]][commits]
 
 [![hacs][hacsbadge]][hacs] [![Discord][discord-shield]][discord] [![Community Forum][forum-shield]][forum]
@@ -9,31 +9,19 @@ Stable -
 Latest -
 [![GitHub Release][latest-release-shield]][releases] [![workflow-lastest]][workflows]
 
-**This component will set up the following platforms.**
-
-To Be Complete!!!
-
-Platform | Description
--- | --
-`binary_sensor` | Show something `True` or `False`.
-`sensor` | Show info from mastertherm API.
-`switch` | Switch something `True` or `False`.
+## About
+If you feel like donating to a charity, I would love you to sponsor my wife and the Salvation Army here:
+<a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/sHedC/issue3/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
 ![mastertherm][masterthermimg]
 
-## NOTES:
-This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps.
-
-There are two entry points for the Mastertherm Heat Pumps:
+This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
 - mastertherm.vip-it.cz - This is the server for pre 2022 heat pumps
 - mastertherm.online - This is the server for 2022 onward
 
 NOTES:
-- materhterm.online is sensitive to too many requests, for this reason by default it defaults to updates every 10 minutes, the App updates every 2 minutes. To help the Info updates every 30 min and data can be set in the options.
+- materhterm.online is sensitive to too many requests, for this reason by default it defaults to updates every 2 minutes, the App updates every 30 seconds. To help the Info updates every 30 min, data can be set in the options down to 30 seconds.
 - if multiple requests are sent at the same time (i.e. from home assistant/ the app and web) some will be refused by the servers, its temporary.  The updates have been built to report but ignore these.
-
-
-This is very beta, logging in works and 2 entities are returned per module
 
 {% if not installed %}
 
@@ -46,9 +34,20 @@ Once installed go to the Home Assistant UI, go to "Configuration" -> "Integratio
 - Select the correct mastertherm login version, if not sure try online directly to see which server you use.
 - Once connected you can change the refresh time in the options
 
-Mastertherm only allows a single install, mutliple accounts are not currently supported.  Additionally if you have an installation with more than 2 units/ devices keep the refresh rate as 10 min or even increase it, the app/ web only connects to a single device/ unit at a time and refreshes every 2 minutes.
+Mastertherm only allows a single install, mutliple accounts are not currently supported.  Additionally if you have an installation with more than 2 units/ devices keep the refresh rate as at least 2 min or even increase it, the app/ web only connects to a single device/ unit at a time and refreshes every 30 seconds but this integration retrieves all device and unit combinations.
 
 Local connection is not possible at this time, it seems the heat pumps connect to the servers using SSH.
+
+#### Manual Install
+To install manually, if you really want to:
+1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
+2. If you do not have a `custom_components` directory (folder) there, you need to create it.
+3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
+4. Download _all_ the files from the `custom_components/mastertherm/` directory (folder) in this repository.
+5. Place the files you downloaded in the new directory (folder) you created.
+6. Add the masterthermconnect module: pip install -I masterthermconnect==1.1.0
+7. Restart Home Assistant
+8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
 {% endif %}
 
@@ -119,6 +118,8 @@ The main circuit is HC0, this is linked to the main pump but some details in thi
 
 HC1 to HC6 are used to provide things like heating/ cooling to different room zones or multiple water tanks for hot water.
 
+HC0 to HC6 usually have room thermostat's installed, if used for heating/ cooling, in this case there is a pad sub-section that contains ambient temperatures and humidity.  If not installed then there is an int (internal) sub-section that has the ambient temperatures.
+
 Entity | Type | Description
 -- | -- | --
 name | sensor | The name of the circuit, hc0 is usually Home
@@ -127,9 +128,12 @@ cooling | Binary Sensor | Circuit is in cooling mode
 circulation_valve | Binary Sensor | If this circuit is requesting then this is open, this also triggers the main circulation pump
 water_requested | Sensor | The requested water temperature based on heating and cooling curves
 water_temp | Sensor | The actual water temperature for the circuit
-ambient_temp | Sensor | based on the control pannel but not sure this is the right name, still testing
-ambient_requested | Sensor | again based on the control pannel but not sure, still testing
 auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
+int.ambient_temp | Sensor | Internal ambient temperature, not really used.
+int.ambient_requested | Sensor | Internal requested temperature not really used.
+pad.current_humidity | Sensor | Room Humidity
+pad.ambient_temp | Sensor | Room Thermostat Ambient Temperature
+pad.ambient_requested | Sensor | Room Thermostat Requested Temperature
 
 #### Pool and Solar
 Some entities have been added based on debugging and best guess.
