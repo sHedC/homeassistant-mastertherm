@@ -1,4 +1,4 @@
-# mastertherm
+# Mastertherm
 [![License][license-shield]](LICENSE)
 ![Project Maintenance][maintenance-shield]
 [![GitHub Activity][commits-shield]][commits]
@@ -14,21 +14,12 @@ Latest -
 [![GitHub Release][latest-release-shield]][releases]
 [![workflow-lastest]][workflows]
 
-**This component will set up the following platforms.**
-
-To Be Complete!!!
-
-Platform | Description
--- | --
-`binary_sensor` | Show something `True` or `False`.
-`sensor` | Show info from mastertherm API.
-`switch` | Switch something `True` or `False`.
-
-![mastertherm][masterthermimg]
 
 ## About
 If you feel like donating to a charity, I would love you to sponsor my wife and the Salvation Army here:
 <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/sHedC/issue3/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
+
+![mastertherm][masterthermimg]
 
 This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
 - mastertherm.vip-it.cz - This is the server for pre 2022 heat pumps
