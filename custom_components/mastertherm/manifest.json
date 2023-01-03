@@ -10,6 +10,6 @@
     "@shedc"
   ],
   "requirements": [
-    "masterthermconnect>=1.1.*"
+    "masterthermconnect==1.1.*"
   ]
 }
