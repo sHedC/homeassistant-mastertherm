@@ -31,7 +31,6 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         self.entity_description = entity_description
         self._attr_unique_id = slugify(f"mt_{module_key}_{entity_key}")
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
-        # self._attr_name = entity_description.name
 
     @property
     def get_module(self) -> dict:
