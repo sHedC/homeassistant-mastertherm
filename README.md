@@ -17,7 +17,7 @@ Latest -
 
 ## About
 If you feel like donating to a charity, I would love you to sponsor my wife and the Salvation Army here:
-<a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/sHedC/issue3/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
+<a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
 ![mastertherm][masterthermimg]
 
