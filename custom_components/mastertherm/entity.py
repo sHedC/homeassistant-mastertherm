@@ -28,11 +28,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
 
         self._module_key = module_key
         self._entity_key = entity_key
-        # self.entity_description = entity_description
-        self._attr_device_class = entity_description.device_class
-        self._attr_unit_of_measurement = entity_description.unit_of_measurement
-        self._attr_name = entity_description.name
-        self._attr_icon = entity_description.icon
+        self.entity_description = entity_description
         self._attr_unique_id = slugify(f"mt_{module_key}_{entity_key}")
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
 
