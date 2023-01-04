@@ -17,7 +17,7 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
-from homeassistant.const import Platform, PERCENTAGE, UnitOfTime
+from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS
 
 
 @dataclass
@@ -638,8 +638,8 @@ ENTITY_TYPES_MAP: dict = {
             name="Compressor Runtime",
             device_class=SensorDeviceClass.DURATION,
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=UnitOfTime.HOURS,
-            suggested_unit_of_measurement=UnitOfTime.HOURS,
+            native_unit_of_measurement=TIME_HOURS,
+            suggested_unit_of_measurement=TIME_HOURS,
         ),
         "compressor_start_counter": MasterthermSensorEntityDescription(
             key="compressor_start_counter",
@@ -652,24 +652,24 @@ ENTITY_TYPES_MAP: dict = {
             name="Pump Runtime",
             device_class=SensorDeviceClass.DURATION,
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=UnitOfTime.HOURS,
-            suggested_unit_of_measurement=UnitOfTime.HOURS,
+            native_unit_of_measurement=TIME_HOURS,
+            suggested_unit_of_measurement=TIME_HOURS,
         ),
         "aux1_runtime": MasterthermSensorEntityDescription(
             key="aux1_runtime",
             name="Aux 1 Runtime",
             device_class=SensorDeviceClass.DURATION,
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=UnitOfTime.HOURS,
-            suggested_unit_of_measurement=UnitOfTime.HOURS,
+            native_unit_of_measurement=TIME_HOURS,
+            suggested_unit_of_measurement=TIME_HOURS,
         ),
         "aux2_runtime": MasterthermSensorEntityDescription(
             key="aux2_runtime",
             name="Aux 2 Runtime",
             device_class=SensorDeviceClass.DURATION,
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=UnitOfTime.HOURS,
-            suggested_unit_of_measurement=UnitOfTime.HOURS,
+            native_unit_of_measurement=TIME_HOURS,
+            suggested_unit_of_measurement=TIME_HOURS,
         ),
     },
     "season_info": {
