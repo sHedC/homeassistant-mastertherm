@@ -17,7 +17,7 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
-from homeassistant.const import Platform, TEMP_CELSIUS
+from homeassistant.const import Platform, UnitOfTemperature
 
 
 @dataclass
@@ -645,8 +645,8 @@ ENTITY_TYPES_MAP: dict = {
             key="dhw_current_temp",
             name="DHW Actual Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
-            # state_class=SensorStateClass.MEASUREMENT,
-            unit_of_measurement=TEMP_CELSIUS,
+            state_class=SensorStateClass.MEASUREMENT,
+            unit_of_measurement=UnitOfTemperature.CELSIUS,
         ),
         "required_temp": MasterthermSensorEntityDescription(
             key="dhw_required_temp",
@@ -692,6 +692,7 @@ ENTITY_TYPES_MAP: dict = {
         name="Outside Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
+        unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     "requested_temp": MasterthermSensorEntityDescription(
         key="requested_temp",

@@ -8,7 +8,7 @@ from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.const import CONF_ENTITIES, TEMP_CELSIUS, Platform
+from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -54,7 +54,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         self._icon_state_map = entity_description.icon_state_map
 
         if entity_description.device_class == SensorDeviceClass.TEMPERATURE:
-            entity_description.unit_of_measurement = TEMP_CELSIUS
+            entity_description.unit_of_measurement = UnitOfTemperature.CELSIUS
 
         super().__init__(
             coordinator=coordinator,
