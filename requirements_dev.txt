@@ -1,4 +1,4 @@
 bumpver==2022.1120
 natsort>=8.0.0
-masterthermconnect==1.2.0b1
+masterthermconnect==1.2.0
 homeassistant
