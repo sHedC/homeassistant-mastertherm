@@ -4,11 +4,11 @@ from datetime import date, datetime
 import logging
 
 from homeassistant.core import HomeAssistant
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.const import CONF_ENTITIES, Platform
+from homeassistant.const import CONF_ENTITIES, TEMP_CELSIUS, Platform
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -52,6 +52,10 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         entity_description: MasterthermSensorEntityDescription,
     ):
         self._icon_state_map = entity_description.icon_state_map
+
+        if entity_description.device_class == SensorDeviceClass.TEMPERATURE:
+            entity_description.unit_of_measurement = TEMP_CELSIUS
+
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
