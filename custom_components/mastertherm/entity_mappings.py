@@ -636,7 +636,7 @@ ENTITY_TYPES_MAP: dict = {
         "compressor_run_time": MasterthermSensorEntityDescription(
             key="compressor_run_time",
             name="Compressor Runtime",
-            device_class=SensorDeviceClass.DURATION,
+            icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
@@ -644,12 +644,13 @@ ENTITY_TYPES_MAP: dict = {
         "compressor_start_counter": MasterthermSensorEntityDescription(
             key="compressor_start_counter",
             name="Compressor Start Counter",
-            icon="mdi:count",
+            icon="mdi:timer",
             state_class=SensorStateClass.TOTAL_INCREASING,
         ),
         "pump_runtime": MasterthermSensorEntityDescription(
             key="pump_runtime",
             name="Pump Runtime",
+            icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
@@ -657,7 +658,7 @@ ENTITY_TYPES_MAP: dict = {
         "aux1_runtime": MasterthermSensorEntityDescription(
             key="aux1_runtime",
             name="Aux 1 Runtime",
-            device_class=SensorDeviceClass.DURATION,
+            icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
@@ -665,7 +666,7 @@ ENTITY_TYPES_MAP: dict = {
         "aux2_runtime": MasterthermSensorEntityDescription(
             key="aux2_runtime",
             name="Aux 2 Runtime",
-            device_class=SensorDeviceClass.DURATION,
+            icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
