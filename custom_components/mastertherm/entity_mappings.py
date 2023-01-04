@@ -645,7 +645,7 @@ ENTITY_TYPES_MAP: dict = {
             key="dhw_current_temp",
             name="DHW Actual Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
-            state_class=SensorStateClass.MEASUREMENT,
+            # state_class=SensorStateClass.MEASUREMENT,
             unit_of_measurement=TEMP_CELSIUS,
         ),
         "required_temp": MasterthermSensorEntityDescription(
