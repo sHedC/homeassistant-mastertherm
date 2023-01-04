@@ -57,6 +57,7 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
             entity_description=entity_description,
         )
 
+        self._attr_options = entity_description.options
         if entity_description.options_map:
             self._options_map = entity_description.options_map
         else:

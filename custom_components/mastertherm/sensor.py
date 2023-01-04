@@ -56,6 +56,8 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         if entity_description.device_class == SensorDeviceClass.TEMPERATURE:
             entity_description.unit_of_measurement = UnitOfTemperature.CELSIUS
 
+        self._attr_state_class = entity_description.state_class
+
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -70,7 +72,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         if self._icon_state_map:
             return self._icon_state_map[self.native_value]
         else:
-            return self.entity_description.icon
+            return self._attr_icon
 
     @property
     def native_value(self) -> StateType | date | datetime | Decimal:
