@@ -16,7 +16,7 @@ Latest -
 
 
 ## About
-If you feel like donating to a charity, my wife is rasing money for and the Salvation Army here:
+If you feel like donating, my wife is rasing money for and the Salvation Army here:
 <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
 ![mastertherm][masterthermimg]
@@ -49,7 +49,7 @@ To install manually, if you really want to:
 3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
 4. Download _all_ the files from the `custom_components/mastertherm/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
-6. Add the masterthermconnect module: pip install -I masterthermconnect==1.1.0
+6. Add the masterthermconnect module: pip install -I masterthermconnect==1.2.0
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
@@ -129,11 +129,9 @@ circulation_valve | Binary Sensor | If this circuit is requesting then this is o
 water_requested | Sensor | The requested water temperature based on heating and cooling curves
 water_temp | Sensor | The actual water temperature for the circuit
 auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
-int.ambient_temp | Sensor | Internal ambient temperature, not really used.
-int.ambient_requested | Sensor | Internal requested temperature not really used.
-pad.current_humidity | Sensor | Room Humidity
-pad.ambient_temp | Sensor | Room Thermostat Ambient Temperature
-pad.ambient_requested | Sensor | Room Thermostat Requested Temperature
+ambient_temp | Sensor | Ambient temperature, either from the room if the pad is installed or internal
+ambient_requested | Sensor | requested temperature, either from the room if the pad is installed or internal
+pad.current_humidity | Sensor | Room Humidity, if the thermostat is installed
 
 #### Pool and Solar
 Some entities have been added based on debugging and best guess.
