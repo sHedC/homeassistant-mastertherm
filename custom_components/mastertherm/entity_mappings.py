@@ -650,7 +650,6 @@ ENTITY_TYPES_MAP: dict = {
         "pump_runtime": MasterthermSensorEntityDescription(
             key="pump_runtime",
             name="Pump Runtime",
-            device_class=SensorDeviceClass.DURATION,
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
