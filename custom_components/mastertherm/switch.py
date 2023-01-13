@@ -60,14 +60,14 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
 
     @property
     def is_on(self) -> bool | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
+        return self.coordinator.get_state(self._module_key, self._entity_key)
 
-    def turn_on(self, **kwargs: Any) -> None:
-        """Reset the update, not supported at this time."""
-        self.schedule_update_ha_state()
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Update to turn on the given switch."""
+        await self.coordinator.update_state(self._module_key, self._entity_key, True)
+        self.async_write_ha_state()
 
-    def turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: Any) -> None:
         """Reset the update, not supported at this time."""
-        self.schedule_update_ha_state()
+        await self.coordinator.update_state(self._module_key, self._entity_key, False)
+        self.async_write_ha_state()

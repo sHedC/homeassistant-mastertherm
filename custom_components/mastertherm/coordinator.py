@@ -67,7 +67,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             ENTITY_TYPES_MAP
         )
         self.platforms = []
-        self._modules = []
 
     async def __aenter__(self):
         """Return Self."""
@@ -175,6 +174,28 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 )
 
         return result_data
+
+    async def update_state(self, module_key: str, entity_key: str, state: any):
+        """Attempt to Update the State, data is in dot notation to get parent, child."""
+        # Split the dot notation into parent child relationship.
+        keys: list[str] = entity_key.split(".")
+        update_data = {module_key: {}}
+        inner_data = update_data[module_key]
+        for i in range(len(keys) - 1):
+            inner_data[keys[i]] = {}
+            inner_data = inner_data[keys[i]]
+
+        inner_data[keys[len(keys) - 1]] = state
+
+        # TODO: Call masterthermconnect to perform the update.
+        # TODO: How to block update until done?
+
+        # Update data internally, on failure will reset back.
+        self.data["modules"][module_key]["entities"][entity_key] = state
+
+    def get_state(self, module_key: str, entity_key: str) -> any:
+        """Get the State from the core data."""
+        return self.data["modules"][module_key]["entities"][entity_key]
 
 
 async def authenticate(username: str, password: str, api_version: str) -> dict:
