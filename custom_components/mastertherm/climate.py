@@ -74,6 +74,10 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         return 45
 
     @property
+    def target_humidity(self) -> int | None:
+        return 45
+
+    @property
     def current_temperature(self) -> float | None:
         return 19.2
 
