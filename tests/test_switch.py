@@ -94,20 +94,23 @@ async def test_switch_on(
     ), patch(
         "custom_components.mastertherm.coordinator.MasterthermController.get_device_data",
         side_effect=api_mock.get_device_data,
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.set_device_data_item",
+        side_effect=api_mock.set_device_data_item,
     ):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    state = hass.states.get("switch.mt_1234_1_hp_power_state")
-    assert state.state == STATE_ON
+        state = hass.states.get("switch.mt_1234_1_hp_power_state")
+        assert state.state == STATE_ON
 
-    await hass.services.async_call(
-        SWITCH_DOMAIN,
-        SERVICE_TURN_OFF,
-        {ATTR_ENTITY_ID: "switch.mt_1234_1_hp_power_state"},
-        blocking=True,
-    )
-    await hass.async_block_till_done()
+        await hass.services.async_call(
+            SWITCH_DOMAIN,
+            SERVICE_TURN_OFF,
+            {ATTR_ENTITY_ID: "switch.mt_1234_1_hp_power_state"},
+            blocking=True,
+        )
+        await hass.async_block_till_done()
 
     state = hass.states.get("switch.mt_1234_1_hp_power_state")
     assert state.state == STATE_OFF
@@ -137,20 +140,23 @@ async def test_dot_switch_on(
     ), patch(
         "custom_components.mastertherm.coordinator.MasterthermController.get_device_data",
         side_effect=api_mock.get_device_data,
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.set_device_data_item",
+        side_effect=api_mock.set_device_data_item,
     ):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
-    assert state.state == STATE_OFF
+        state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
+        assert state.state == STATE_OFF
 
-    await hass.services.async_call(
-        SWITCH_DOMAIN,
-        SERVICE_TURN_ON,
-        {ATTR_ENTITY_ID: "switch.mt_1234_1_heating_circuits_hc1_on"},
-        blocking=True,
-    )
-    await hass.async_block_till_done()
+        await hass.services.async_call(
+            SWITCH_DOMAIN,
+            SERVICE_TURN_ON,
+            {ATTR_ENTITY_ID: "switch.mt_1234_1_heating_circuits_hc1_on"},
+            blocking=True,
+        )
+        await hass.async_block_till_done()
 
     state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
     assert state.state == STATE_ON

@@ -11,6 +11,7 @@ from masterthermconnect import (
     MasterthermUnsupportedRole,
     MasterthermTokenInvalid,
     MasterthermResponseFormatError,
+    MasterthermEntryNotFound,
 )
 
 from homeassistant.core import HomeAssistant
@@ -177,21 +178,27 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def update_state(self, module_key: str, entity_key: str, state: any):
         """Attempt to Update the State, data is in dot notation to get parent, child."""
-        # Split the dot notation into parent child relationship.
-        keys: list[str] = entity_key.split(".")
-        update_data = {module_key: {}}
-        inner_data = update_data[module_key]
-        for i in range(len(keys) - 1):
-            inner_data[keys[i]] = {}
-            inner_data = inner_data[keys[i]]
+        # Get the Module and Unit ID.
+        module_id = self.data["modules"][module_key]["info"]["module_id"]
+        unit_id = self.data["modules"][module_key]["info"]["unit_id"]
 
-        inner_data[keys[len(keys) - 1]] = state
-
-        # TODO: Call masterthermconnect to perform the update.
-        # TODO: How to block update until done?
+        return_value = False
+        try:
+            return_value = await self.mt_controller.set_device_data_item(
+                module_id, unit_id, entity_key, state
+            )
+        except MasterthermConnectionError as mex:
+            _LOGGER.warning("Unable to communicate with MasterTherm API: %s", mex)
+            self.temporary_exception = True
+        except MasterthermAuthenticationError as mex:
+            _LOGGER.error("Invalid credentials: %s", mex)
+            raise ConfigEntryAuthFailed("authentication_error") from mex
+        except MasterthermEntryNotFound as mex:
+            _LOGGER.warning("Entity not found or Read Only %s", mex)
 
         # Update data internally, on failure will reset back.
-        self.data["modules"][module_key]["entities"][entity_key] = state
+        if return_value:
+            self.data["modules"][module_key]["entities"][entity_key] = state
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""

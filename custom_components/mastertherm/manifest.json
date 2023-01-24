@@ -10,7 +10,6 @@
     "@shedc"
   ],
   "requirements": [
-    "natsort>=8.0.0",
-    "masterthermconnect==1.2.0"
+    "masterthermconnect==2.0.0a0"
   ]
 }

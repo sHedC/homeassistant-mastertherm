@@ -114,6 +114,13 @@ class APIMock:
 
         return info
 
+    # pylint: disable=unused-argument
+    async def set_device_data_item(
+        self, module_id: str, unit_id: str, entry: str, value: any
+    ) -> bool:
+        """Sets the Device Data"""
+        return True
+
 
 @pytest.fixture
 def mock_configdata():
