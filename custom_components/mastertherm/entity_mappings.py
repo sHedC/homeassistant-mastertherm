@@ -1,6 +1,9 @@
 """Contains all the Entity Mappings from the Mastertherm Connector"""
 from dataclasses import dataclass, field
 
+from homeassistant.components.climate import (
+    ClimateEntityDescription,
+)
 from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorDeviceClass,
@@ -52,6 +55,7 @@ ENTITIES: dict[str, str] = {
     MasterthermSelectEntityDescription.__name__: Platform.SELECT,
     MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
     MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
+    ClimateEntityDescription.__name__: Platform.CLIMATE,
 }
 
 # Putting all entities into a single map which hopfully makes it easier
