@@ -4,6 +4,10 @@ from dataclasses import dataclass, field
 from homeassistant.components.climate import (
     ClimateEntityDescription,
 )
+from homeassistant.components.number import (
+    NumberEntityDescription,
+    NumberDeviceClass,
+)
 from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorDeviceClass,
@@ -20,12 +24,19 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
-from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS
+from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS, UnitOfTemperature
 
 
 @dataclass
 class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Description for the Mastertherm binary sensor entities."""
+
+
+@dataclass
+class MasterthermNumberEntityDescription(NumberEntityDescription):
+    """Description for the Mastertherm number sensor entities."""
+
+    read_only: bool = False
 
 
 @dataclass
@@ -56,6 +67,7 @@ ENTITIES: dict[str, str] = {
     MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
     MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
     ClimateEntityDescription.__name__: Platform.CLIMATE,
+    MasterthermNumberEntityDescription.__name__: Platform.NUMBER,
 }
 
 # Putting all entities into a single map which hopfully makes it easier
@@ -66,11 +78,10 @@ HEATING_CIRCUITS: dict = {
             key="hc0_name",
             name="HC0 Name",
         ),
-        "ambient_requested": MasterthermSensorEntityDescription(
+        "ambient_requested": MasterthermNumberEntityDescription(
             key="hc0_ambient_requested",
             name="HC0 Ambient Requested",
-            device_class=SensorDeviceClass.TEMPERATURE,
-            state_class=SensorStateClass.MEASUREMENT,
+            device_class=NumberDeviceClass.TEMPERATURE,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc0_ambient_temp",
@@ -126,11 +137,14 @@ HEATING_CIRCUITS: dict = {
             key="hc1_auto",
             name="HC1 Auto",
         ),
-        "ambient_requested": MasterthermSensorEntityDescription(
+        "ambient_requested": MasterthermNumberEntityDescription(
             key="hc1_ambient_requested",
             name="HC1 Ambient Requested",
-            device_class=SensorDeviceClass.TEMPERATURE,
-            state_class=SensorStateClass.MEASUREMENT,
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_max_value=50.0,
+            native_min_value=0.0,
+            native_step=0.1,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc1_ambient_temp",
