@@ -62,12 +62,15 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_min_temp = 0.0
         self._attr_max_temp = 45.0
+        self._attr_current_humidity = 45
+        self._attr_min_humidity = 0
+        self._attr_max_humidity = 100
         self._attr_supported_features = (
             ClimateEntityFeature.TARGET_TEMPERATURE
             | ClimateEntityFeature.TARGET_HUMIDITY
         )
         self._attr_hvac_modes = []
-        self._attr_hvac_mode = HVACMode.OFF
+        self._attr_hvac_mode = None
 
     @property
     def current_humidity(self) -> int | None:
