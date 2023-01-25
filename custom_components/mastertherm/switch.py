@@ -3,7 +3,7 @@ import logging
 
 from typing import Any
 
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -61,6 +61,11 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
     @property
     def is_on(self) -> bool | None:
         return self.coordinator.get_state(self._module_key, self._entity_key)
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self.async_write_ha_state()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Update to turn on the given switch."""

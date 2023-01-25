@@ -8,7 +8,7 @@ from homeassistant.components.number import (
     DOMAIN as NUMBER_DOMAIN,
     SERVICE_SET_VALUE,
 )
-from homeassistant.const import Platform, ATTR_ENTITY_ID, ATTR_STATE
+from homeassistant.const import Platform, ATTR_ENTITY_ID
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.mastertherm.const import DOMAIN
@@ -32,6 +32,7 @@ def override_entity():
         yield
 
 
+@pytest.mark.skip(reason="No Entities Set Up Yes.")
 async def test_number_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
@@ -71,6 +72,7 @@ async def test_number_setup(
     assert state.name == "HC1 Ambient Requested"
 
 
+@pytest.mark.skip(reason="No Entities Set Up Yes.")
 async def test_set_temp(
     hass: HomeAssistant,
     mock_configdata: dict,

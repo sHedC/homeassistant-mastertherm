@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 
 from homeassistant.components.climate import (
     ClimateEntityDescription,
+    DEFAULT_MAX_TEMP,
+    DEFAULT_MIN_TEMP,
 )
 from homeassistant.components.number import (
     NumberEntityDescription,
@@ -33,10 +35,25 @@ class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
 
 
 @dataclass
+class MasterthermClimateEntityDescription(ClimateEntityDescription):
+    """Description for the Mastertherm Climate Entity."""
+
+    # Key must be the entity that decides if this is enabled
+    # in dot notation e.g. heating_circuits.hc1.ambient_requested
+    # current_temperature_path and requested_temperature_path are
+    # the entities to lookup the states in dot notation as above.
+    current_temperature_path: str = None
+    requested_temperature_path: str = None
+    min_temp: int = DEFAULT_MIN_TEMP
+    max_temp: int = DEFAULT_MAX_TEMP
+
+
+@dataclass
 class MasterthermNumberEntityDescription(NumberEntityDescription):
-    """Description for the Mastertherm number sensor entities."""
+    """Description for the Mastertherm Number Entity."""
 
     read_only: bool = False
+    mode: str = "auto"
 
 
 @dataclass
@@ -66,7 +83,7 @@ ENTITIES: dict[str, str] = {
     MasterthermSelectEntityDescription.__name__: Platform.SELECT,
     MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
     MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
-    ClimateEntityDescription.__name__: Platform.CLIMATE,
+    MasterthermClimateEntityDescription.__name__: Platform.CLIMATE,
     MasterthermNumberEntityDescription.__name__: Platform.NUMBER,
 }
 
@@ -78,16 +95,23 @@ HEATING_CIRCUITS: dict = {
             key="hc0_name",
             name="HC0 Name",
         ),
-        "ambient_requested": MasterthermNumberEntityDescription(
+        "ambient_requested": MasterthermSensorEntityDescription(
             key="hc0_ambient_requested",
             name="HC0 Ambient Requested",
-            device_class=NumberDeviceClass.TEMPERATURE,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc0_ambient_temp",
             name="HC0 Ambient Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc0.ambient_requested",
+            name="HC0 Thermostat",
+            current_temperature_path="heating_circuits.hc0.ambient_temp",
+            requested_temperature_path="heating_circuits.hc0.ambient_requested",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -137,20 +161,23 @@ HEATING_CIRCUITS: dict = {
             key="hc1_auto",
             name="HC1 Auto",
         ),
-        "ambient_requested": MasterthermNumberEntityDescription(
+        "ambient_requested": MasterthermSensorEntityDescription(
             key="hc1_ambient_requested",
             name="HC1 Ambient Requested",
-            device_class=NumberDeviceClass.TEMPERATURE,
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            native_max_value=50.0,
-            native_min_value=0.0,
-            native_step=0.1,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
         ),
         "ambient_temp": MasterthermSensorEntityDescription(
             key="hc1_ambient_temp",
             name="HC1 Ambient Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc1.ambient_requested",
+            name="HC1 Thermostat",
+            current_temperature_path="heating_circuits.hc1.ambient_temp",
+            requested_temperature_path="heating_circuits.hc1.ambient_requested",
         ),
         "pad": {
             "state": MasterthermSensorEntityDescription(
@@ -215,6 +242,12 @@ HEATING_CIRCUITS: dict = {
             name="HC2 Ambient Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc2.ambient_requested",
+            name="HC2 Thermostat",
+            current_temperature_path="heating_circuits.hc2.ambient_temp",
+            requested_temperature_path="heating_circuits.hc2.ambient_requested",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
