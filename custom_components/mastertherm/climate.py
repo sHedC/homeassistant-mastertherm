@@ -10,6 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     ATTR_TEMPERATURE,
     CONF_ENTITIES,
+    PRECISION_TENTHS,
     UnitOfTemperature,
     Platform,
 )
@@ -66,12 +67,12 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         )
 
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
+        self._attr_precision = PRECISION_TENTHS
         self._attr_min_temp = entity_description.min_temp
         self._attr_max_temp = entity_description.max_temp
         self._attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
         self._attr_hvac_modes = [HVACMode.AUTO]
         self._attr_hvac_mode = HVACMode.AUTO
-        self._attr_precision = 0.1
 
         self._current_temperature_path = entity_description.current_temperature_path
         self._target_temperature_path = entity_description.requested_temperature_path
@@ -87,6 +88,11 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._target_temperature_path
         ]
+
+    @property
+    def target_temperature_step(self) -> float:
+        """Set target temperature step to tenths."""
+        return PRECISION_TENTHS
 
     @callback
     def _handle_coordinator_update(self) -> None:
