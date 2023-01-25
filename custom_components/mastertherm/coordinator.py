@@ -182,8 +182,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         module_id = self.data["modules"][module_key]["info"]["module_id"]
         unit_id = self.data["modules"][module_key]["info"]["unit_id"]
 
-        _LOGGER.warning("Setting Entity %s with Value %s", entity_key, state)
-
         return_value = False
         try:
             return_value = await self.mt_controller.set_device_data_item(
