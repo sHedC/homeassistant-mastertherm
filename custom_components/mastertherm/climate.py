@@ -71,6 +71,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         self._attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
         self._attr_hvac_modes = [HVACMode.AUTO]
         self._attr_hvac_mode = HVACMode.AUTO
+        self._attr_precision = 0.1
 
         self._current_temperature_path = entity_description.current_temperature_path
         self._target_temperature_path = entity_description.requested_temperature_path
