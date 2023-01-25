@@ -134,7 +134,6 @@ HEATING_CIRCUITS: dict = {
             name="HC1",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc1_cooling",
@@ -204,7 +203,6 @@ HEATING_CIRCUITS: dict = {
             name="HC2",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc2_cooling",
@@ -270,7 +268,6 @@ HEATING_CIRCUITS: dict = {
             name="HC3",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc3_cooling",
@@ -336,7 +333,6 @@ HEATING_CIRCUITS: dict = {
             name="HC4",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc4_cooling",
@@ -402,7 +398,6 @@ HEATING_CIRCUITS: dict = {
             name="HC5",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc5_cooling",
@@ -468,7 +463,6 @@ HEATING_CIRCUITS: dict = {
             name="HC6",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc6_cooling",
@@ -558,7 +552,6 @@ HEATING_CIRCUITS: dict = {
             name="Pool",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "heating": MasterthermBinarySensorEntityDescription(
             key="pool_heating",
@@ -586,7 +579,6 @@ ENTITY_TYPES_MAP: dict = {
         name="HP Power",
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
-        read_only=True,
     ),
     "hp_function": MasterthermSelectEntityDescription(
         key="hp_function",

@@ -58,6 +58,8 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
             entity_description=entity_description,
         )
 
+        self._read_only = entity_description.read_only
+
     @property
     def is_on(self) -> bool | None:
         return self.coordinator.get_state(self._module_key, self._entity_key)
@@ -69,10 +71,16 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Update to turn on the given switch."""
-        await self.coordinator.update_state(self._module_key, self._entity_key, True)
+        if not self._read_only:
+            await self.coordinator.update_state(
+                self._module_key, self._entity_key, True
+            )
         self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Reset the update, not supported at this time."""
-        await self.coordinator.update_state(self._module_key, self._entity_key, False)
+        if not self._read_only:
+            await self.coordinator.update_state(
+                self._module_key, self._entity_key, False
+            )
         self.async_write_ha_state()
