@@ -608,6 +608,7 @@ ENTITY_TYPES_MAP: dict = {
         key="operating_mode",
         name="HP Operating Mode",
         icon="mdi:weather-partly-snowy-rainy",
+        translation_key="hp_season",
         icon_state_map={
             "heating": "mdi:sun-thermometer",
             "cooling": "mdi:coolant-temperature",
