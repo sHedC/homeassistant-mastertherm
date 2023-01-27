@@ -33,9 +33,11 @@
     "entity": {
         "select": {
             "hp_function": {
-                "auto": "Auto",
-                "heating": "Heating",
-                "cooling": "Cooling"
+                "state": {
+                    "auto": "Auto",
+                    "heating": "Heating",
+                    "cooling": "Cooling"
+                }
             }
         }
     }
