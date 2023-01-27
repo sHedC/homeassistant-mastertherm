@@ -8,7 +8,6 @@ from homeassistant.components.climate import (
 )
 from homeassistant.components.number import (
     NumberEntityDescription,
-    NumberDeviceClass,
 )
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -166,10 +165,11 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "ambient_temp": MasterthermNumberEntityDescription(
+        "ambient_temp": MasterthermSensorEntityDescription(
             key="hc1_ambient_temp",
             name="HC1 Ambient Temperature",
-            device_class=NumberDeviceClass.TEMPERATURE,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
         ),
         "thermostat": MasterthermClimateEntityDescription(
             key="heating_circuits.hc1.ambient_requested",
@@ -641,6 +641,12 @@ ENTITY_TYPES_MAP: dict = {
             name="DHW Required Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "control": MasterthermClimateEntityDescription(
+            key="domestic_hot_water.enabled",
+            name="DHW Control",
+            current_temperature_path="domestic_hot_water.current_temp",
+            requested_temperature_path="domestic_hot_water.required_temp",
         ),
     },
     "compressor_running": MasterthermBinarySensorEntityDescription(
