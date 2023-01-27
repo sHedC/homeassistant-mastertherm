@@ -166,11 +166,10 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "ambient_temp": MasterthermSensorEntityDescription(
+        "ambient_temp": MasterthermNumberEntityDescription(
             key="hc1_ambient_temp",
             name="HC1 Ambient Temperature",
-            device_class=SensorDeviceClass.TEMPERATURE,
-            state_class=SensorStateClass.MEASUREMENT,
+            device_class=NumberDeviceClass.TEMPERATURE,
         ),
         "thermostat": MasterthermClimateEntityDescription(
             key="heating_circuits.hc1.ambient_requested",
