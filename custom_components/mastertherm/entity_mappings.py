@@ -8,6 +8,7 @@ from homeassistant.components.climate import (
 )
 from homeassistant.components.number import (
     NumberEntityDescription,
+    NumberDeviceClass,
 )
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -25,7 +26,7 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
-from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS
+from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS, UnitOfTemperature
 
 
 @dataclass
@@ -626,6 +627,82 @@ ENTITY_TYPES_MAP: dict = {
         key="cooling_mode",
         name="Cooling Mode",
     ),
+    "control_curve_heating": {
+        "setpoint_a_outside": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_a_outside",
+            name="Heating Curve A Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=-30.0,
+            native_max_value=30.0,
+            native_step=0.1,
+        ),
+        "setpoint_a_requested": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_a_requested",
+            name="Heating Curve A Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=20.0,
+            native_max_value=50.0,
+            native_step=0.1,
+        ),
+        "setpoint_b_outside": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_b_outside",
+            name="Heating Curve B Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=-30.0,
+            native_max_value=30.0,
+            native_step=0.1,
+        ),
+        "setpoint_b_requested": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_b_requested",
+            name="Heating Curve B Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=20.0,
+            native_max_value=50.0,
+            native_step=0.1,
+        ),
+    },
+    "control_curve_cooling": {
+        "setpoint_a_outside": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_a_outside",
+            name="Cooling Curve A Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=-30.0,
+            native_max_value=30.0,
+            native_step=0.1,
+        ),
+        "setpoint_a_requested": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_a_requested",
+            name="Cooling Curve A Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=20.0,
+            native_max_value=50.0,
+            native_step=0.1,
+        ),
+        "setpoint_b_outside": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_b_outside",
+            name="Cooling Curve B Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=-30.0,
+            native_max_value=30.0,
+            native_step=0.1,
+        ),
+        "setpoint_b_requested": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_b_requested",
+            name="Cooling Curve B Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            native_min_value=20.0,
+            native_max_value=50.0,
+            native_step=0.1,
+        ),
+    },
     "domestic_hot_water": {
         "heating": MasterthermBinarySensorEntityDescription(
             key="dhw_heating",

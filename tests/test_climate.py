@@ -70,7 +70,7 @@ async def test_climate_setup(
         # Check the Temperature Sensor
         state = hass.states.get("climate.mt_1234_1_heating_circuits_hc1_thermostat")
         assert state.attributes.get("current_temperature") == 20.0
-        assert state.attributes.get("temperature") == 20.0
+        assert state.attributes.get("temperature") == 20.2
 
 
 async def test_climate_update(

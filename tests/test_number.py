@@ -32,7 +32,6 @@ def override_entity():
         yield
 
 
-@pytest.mark.skip(reason="No Entities Set Up Yes.")
 async def test_number_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
@@ -67,12 +66,15 @@ async def test_number_setup(
     ), "Numbers Failed to Create"
 
     # Check the Power Switch
-    state = hass.states.get("number.mt_1234_1_heating_circuits_hc1_ambient_requested")
+    state = hass.states.get("number.mt_1234_1_control_curve_heating_setpoint_a_outside")
     assert state.state == "20.0"
-    assert state.name == "HC1 Ambient Requested"
+    assert state.attributes.get("min") == -30.0
+    state = hass.states.get(
+        "number.mt_1234_1_control_curve_heating_setpoint_a_requested"
+    )
+    assert state.state == "27.0"
 
 
-@pytest.mark.skip(reason="No Entities Set Up Yes.")
 async def test_set_temp(
     hass: HomeAssistant,
     mock_configdata: dict,
@@ -108,12 +110,12 @@ async def test_set_temp(
             NUMBER_DOMAIN,
             SERVICE_SET_VALUE,
             {
-                ATTR_ENTITY_ID: "number.mt_1234_1_heating_circuits_hc1_ambient_requested",
+                ATTR_ENTITY_ID: "number.mt_1234_1_control_curve_heating_setpoint_a_outside",
                 "value": 20.2,
             },
             blocking=True,
         )
         await hass.async_block_till_done()
 
-    state = hass.states.get("number.mt_1234_1_heating_circuits_hc1_ambient_requested")
+    state = hass.states.get("number.mt_1234_1_control_curve_heating_setpoint_a_outside")
     assert state.state == "20.2"

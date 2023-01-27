@@ -56,7 +56,7 @@ class MasterthermNumber(MasterthermEntity, NumberEntity):
             entity_description=entity_description,
         )
 
-        self._attr_mode = ""
+        self._attr_mode = entity_description.mode
 
     @property
     def native_value(self) -> float:

@@ -99,16 +99,16 @@ async def test_select_change(
         await hass.async_block_till_done()
 
         # Check the HP Function Select
-        state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
+        state: SelectEntity = hass.states.get("select.mt_1234_2_hp_function")
         assert state.state == "heating"
 
         await hass.services.async_call(
             SELECT_DOMAIN,
             SERVICE_SELECT_OPTION,
-            {ATTR_OPTION: "auto", ATTR_ENTITY_ID: "select.mt_1234_1_hp_function"},
+            {ATTR_OPTION: "auto", ATTR_ENTITY_ID: "select.mt_1234_2_hp_function"},
             blocking=True,
         )
         await hass.async_block_till_done()
 
-        state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
+        state: SelectEntity = hass.states.get("select.mt_1234_2_hp_function")
         assert state.state == "auto"
