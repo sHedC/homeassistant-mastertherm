@@ -522,29 +522,29 @@ HEATING_CIRCUITS: dict = {
             key="solar_name",
             name="Solar Name",
         ),
-        "s1_temp": MasterthermSensorEntityDescription(
-            key="solar_s1_temp",
+        "solar_collector": MasterthermSensorEntityDescription(
+            key="solar_collector",
             name="Solar 1 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "s2_temp": MasterthermSensorEntityDescription(
-            key="solar_s2_temp",
-            name="Solar 2 Temperature",
+        "water_tank1": MasterthermSensorEntityDescription(
+            key="solar_water_tank1",
+            name="Solar Water Tank 1 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "s3_temp": MasterthermSensorEntityDescription(
-            key="solar_s3_temp",
-            name="Solar 3 Temperature",
+        "water_tank2": MasterthermSensorEntityDescription(
+            key="solar_water_tank2",
+            name="Solar Water Tank 2 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
     },
     "pool": {
         "name": MasterthermSensorEntityDescription(
-            key="solar_name",
-            name="Solar Name",
+            key="pool_name",
+            name="Pool Name",
         ),
         "on": MasterthermSwitchEntityDescription(
             key="pool_on",
@@ -557,8 +557,8 @@ HEATING_CIRCUITS: dict = {
             name="Pool Heating",
             device_class=BinarySensorDeviceClass.HEAT,
         ),
-        "s1_temp": MasterthermSensorEntityDescription(
-            key="pool_s1_temp",
+        "temp_actual": MasterthermSensorEntityDescription(
+            key="pool_temp_actual",
             name="Pool Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
@@ -568,6 +568,12 @@ HEATING_CIRCUITS: dict = {
             name="Pool Temperature Requested",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "control": MasterthermClimateEntityDescription(
+            key="heating_circuits.pool.enabled",
+            name="Pool Control",
+            current_temperature_path="heating_circuits.pool.temp_actual",
+            requested_temperature_path="heating_circuits.pool.temp_requested",
         ),
     },
 }
