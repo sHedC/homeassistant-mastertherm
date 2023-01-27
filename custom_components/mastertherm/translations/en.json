@@ -45,14 +45,18 @@
                 "state": {
                     "winter": "Winter",
                     "summer": "Summer",
-                    "auto:winter": "Winter (Auto)",
-                    "auto:summer": "Summer (Auto)",
-                    "heating": "Heating",
-                    "cooling": "Cooling",
-                    "pool": "Pool",
-                    "dhw": "Hot Water",
-                    "dpc": "Defrost Protection"
+                    "auto-winter": "Winter (Auto)",
+                    "auto-summer": "Summer (Auto)",
                 }
+            }
+        },
+        "hp_operating_mode": {
+            "state": {
+                "heating": "Heating",
+                "cooling": "Cooling",
+                "pool": "Pool",
+                "dhw": "Hot Water",
+                "dpc": "Defrost Protection"
             }
         }
     }

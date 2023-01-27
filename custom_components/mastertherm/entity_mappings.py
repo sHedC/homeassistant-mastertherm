@@ -26,7 +26,7 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchDeviceClass,
 )
-from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS, UnitOfTemperature
+from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS
 
 
 @dataclass
@@ -599,15 +599,15 @@ ENTITY_TYPES_MAP: dict = {
         icon_state_map={
             "winter": "mdi:weather-snowy-heavy",
             "summer": "mdi:weather-sunny",
-            "auto:winter": "mdi:weather-snowy-heavy",
-            "auto:summer": "mdi:weather-sunny",
+            "auto-winter": "mdi:weather-snowy-heavy",
+            "auto-summer": "mdi:weather-sunny",
         },
     ),
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
         name="HP Operating Mode",
         icon="mdi:weather-partly-snowy-rainy",
-        translation_key="hp_season",
+        translation_key="hp_operating_mode",
         icon_state_map={
             "heating": "mdi:sun-thermometer",
             "cooling": "mdi:coolant-temperature",
