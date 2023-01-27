@@ -65,11 +65,12 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
         self._reverse_map = {val: key for key, val in self._options_map.items()}
 
-        # Set Initial State
+    @property
+    def current_option(self) -> str | None:
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-        self._attr_current_option = self._reverse_map.get(state)
+        return self._reverse_map.get(state)
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -82,5 +83,6 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Update the Current Option, but don't send update."""
-        self._attr_current_option = option
+        value = self._options_map.get(option)
+        await self.coordinator.update_state(self._module_key, self._entity_key, value)
         self.async_write_ha_state()

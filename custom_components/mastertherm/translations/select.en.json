@@ -1,6 +1,6 @@
 {
     "state": {
-        "_": {
+        "hp_function": {
             "auto": "Auto",
             "heating": "Heating",
             "cooling": "Cooling"

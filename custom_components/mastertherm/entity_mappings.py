@@ -583,6 +583,7 @@ ENTITY_TYPES_MAP: dict = {
     "hp_function": MasterthermSelectEntityDescription(
         key="hp_function",
         name="HP Function",
+        translation_key="hp_function",
         options_map={
             "heating": 0,
             "cooling": 1,
@@ -594,6 +595,7 @@ ENTITY_TYPES_MAP: dict = {
     "season": MasterthermSensorEntityDescription(
         key="season",
         name="Season",
+        translation_key="hp_season",
         icon="mdi:weather-partly-snowy-rainy",
         icon_state_map={
             "winter": "mdi:weather-snowy-heavy",

@@ -1,6 +1,6 @@
 {
     "state": {
-        "_": {
+        "hp_season": {
             "winter": "Winter",
             "summer": "Summer",
             "auto:winter": "Winter (Auto)",
