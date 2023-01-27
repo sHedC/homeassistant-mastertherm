@@ -1,13 +1,6 @@
 {
-    "state": {
+    "select": {
         "hp_function": {
-            "auto": "Auto",
-            "heating": "Heating",
-            "cooling": "Cooling"
-        }
-    },
-    "hp_function": {
-        "options": {
             "auto": "Auto",
             "heating": "Heating",
             "cooling": "Cooling"
