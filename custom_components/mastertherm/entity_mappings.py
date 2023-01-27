@@ -43,8 +43,8 @@ class MasterthermClimateEntityDescription(ClimateEntityDescription):
     # the entities to lookup the states in dot notation as above.
     current_temperature_path: str = None
     requested_temperature_path: str = None
-    min_temp: int = DEFAULT_MIN_TEMP
-    max_temp: int = DEFAULT_MAX_TEMP
+    min_temp: float | str = DEFAULT_MIN_TEMP
+    max_temp: float | str = DEFAULT_MAX_TEMP
 
 
 @dataclass
@@ -645,6 +645,8 @@ ENTITY_TYPES_MAP: dict = {
         "control": MasterthermClimateEntityDescription(
             key="domestic_hot_water.enabled",
             name="DHW Control",
+            min_temp="domestic_hot_water.min_temp",
+            max_temp="domestic_hot_water.max_temp",
             current_temperature_path="domestic_hot_water.current_temp",
             requested_temperature_path="domestic_hot_water.required_temp",
         ),

@@ -68,14 +68,26 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
 
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_precision = PRECISION_TENTHS
-        self._attr_min_temp = entity_description.min_temp
-        self._attr_max_temp = entity_description.max_temp
         self._attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-        self._attr_hvac_modes = [HVACMode.AUTO]
+        self._attr_hvac_modes = []
         self._attr_hvac_mode = HVACMode.AUTO
 
         self._current_temperature_path = entity_description.current_temperature_path
         self._target_temperature_path = entity_description.requested_temperature_path
+
+        # if Min/ Max temp is a string then assume the value is looked up.
+        if isinstance(entity_description.min_temp, str):
+            self._attr_min_temp = self.coordinator.data["modules"][self._module_key][
+                "entities"
+            ][entity_description.min_temp]
+        else:
+            self._attr_min_temp = entity_description.min_temp
+        if isinstance(entity_description.max_temp, str):
+            self._attr_max_temp = self.coordinator.data["modules"][self._module_key][
+                "entities"
+            ][entity_description.max_temp]
+        else:
+            self._attr_max_temp = entity_description.max_temp
 
     @property
     def current_temperature(self) -> float | None:

@@ -8,8 +8,8 @@
         "enabled": true,
         "current_temp": 19.2,
         "required_temp": 5.0,
-        "min": 0.0,
-        "max": 48.0
+        "min_temp": 0.0,
+        "max_temp": 48.0
     },
     "pool_function": false,
     "compressor_running": true,
