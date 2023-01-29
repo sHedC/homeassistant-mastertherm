@@ -39,7 +39,7 @@
                     "cooling": "Cooling"
                 }
             },
-            "select_season": {
+            "season_select": {
                 "state": {
                     "auto": "Auto",
                     "winter": "Winter",
