@@ -116,24 +116,24 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
     def current_option(self) -> str | None:
         entities = self.coordinator.data["modules"][self._module_key]["entities"]
         if entities["season.manual_set"]:
-            return "auto"
-        else:
             return "winter" if entities["season.winter"] else "summer"
+        else:
+            return "auto"
 
     async def async_select_option(self, option: str) -> None:
         """Update the Current Option, but don't send update."""
         if option == "auto":
             await self.coordinator.update_state(
-                self._module_key, "season.manual_set", True
+                self._module_key, "season.manual_set", False
             )
         elif option == "winter":
             await self.coordinator.update_state(
-                self._module_key, "season.manual_set", False
+                self._module_key, "season.manual_set", True
             )
             await self.coordinator.update_state(self._module_key, "season.winter", True)
         else:
             await self.coordinator.update_state(
-                self._module_key, "season.manual_set", False
+                self._module_key, "season.manual_set", True
             )
             await self.coordinator.update_state(
                 self._module_key, "season.winter", False

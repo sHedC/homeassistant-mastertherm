@@ -138,7 +138,7 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
 
         # Check the HP Function Select
         state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
-        assert state.state == "auto"
+        assert state.state == "winter"
 
         await hass.services.async_call(
             SELECT_DOMAIN,
@@ -153,3 +153,17 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
 
         state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
         assert state.state == "summer"
+
+        await hass.services.async_call(
+            SELECT_DOMAIN,
+            SERVICE_SELECT_OPTION,
+            {
+                ATTR_OPTION: "auto",
+                ATTR_ENTITY_ID: "select.mt_1234_1_season_select",
+            },
+            blocking=True,
+        )
+        await hass.async_block_till_done()
+
+        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
+        assert state.state == "auto"
