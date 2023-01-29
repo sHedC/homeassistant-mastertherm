@@ -2,6 +2,13 @@
     "hp_power_state": true,
     "hp_function": 0,
     "operating_mode": "dhw",
+    "season": {
+        "mode": "winter",
+        "manual_set": true,
+        "winter": true,
+        "winter_temp": 13.0,
+        "summer_temp": 17.0
+    },
     "cooling_mode": false,
     "domestic_hot_water": {
         "function": false,
@@ -30,12 +37,6 @@
         "pump_runtime": 280,
         "aux1_runtime": 0,
         "aux2_runtime": 0
-    },
-    "season_info": {
-        "manual_set": true,
-        "winter": true,
-        "winter_temp": 13.0,
-        "summer_temp": 17.0
     },
     "error_info": {
         "some_error": false,

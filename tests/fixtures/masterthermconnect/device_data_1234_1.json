@@ -1,7 +1,13 @@
 {
     "hp_power_state": true,
-    "season": "winter",
     "operating_mode": "heating",
+    "season": {
+        "mode": "winter",
+        "manual_set": true,
+        "winter": true,
+        "winter_temp": 14.0,
+        "summer_temp": 19.0
+    },
     "cooling_mode": false,
     "control_curve_heating": {
         "setpoint_a_outside": 20.0,
@@ -35,12 +41,6 @@
         "pump_runtime": 14070,
         "aux1_runtime": 0,
         "aux2_runtime": 20
-    },
-    "season_info": {
-        "manual_set": true,
-        "winter": true,
-        "winter_temp": 14.0,
-        "summer_temp": 19.0
     },
     "error_info": {
         "some_error": false,

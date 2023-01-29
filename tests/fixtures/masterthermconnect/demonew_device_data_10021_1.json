@@ -3,6 +3,13 @@
         "hp_power_state": false,
         "hp_function": 0,
         "cooling_mode": false,
+        "season": {
+            "mode": "auto-winter",
+            "manual_set": false,
+            "winter": true,
+            "hp_season_winter": 13.0,
+            "hp_season_summer": 16.5
+        },
         "domestic_hot_water": {
             "function": false,
             "enabled": true,
@@ -30,12 +37,6 @@
             "pump_runtime": 380,
             "aux1_runtime": 30,
             "aux2_runtime": 0
-        },
-        "season_info": {
-            "manual_set": true,
-            "winter": true,
-            "hp_season_winter": 13.0,
-            "hp_season_summer": 16.5
         },
         "error_info": {
             "some_error": true,

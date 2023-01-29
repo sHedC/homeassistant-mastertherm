@@ -115,30 +115,28 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
     @property
     def current_option(self) -> str | None:
         entities = self.coordinator.data["modules"][self._module_key]["entities"]
-        if entities["season_info.manual_set"]:
+        if entities["season.manual_set"]:
             return "auto"
         else:
-            return "winter" if entities["season_info.winter"] else "summer"
+            return "winter" if entities["season.winter"] else "summer"
 
     async def async_select_option(self, option: str) -> None:
         """Update the Current Option, but don't send update."""
         if option == "auto":
             await self.coordinator.update_state(
-                self._module_key, "season_info.manual_set", True
+                self._module_key, "season.manual_set", True
             )
         elif option == "winter":
             await self.coordinator.update_state(
-                self._module_key, "season_info.manual_set", False
+                self._module_key, "season.manual_set", False
             )
-            await self.coordinator.update_state(
-                self._module_key, "season_info.winter", True
-            )
+            await self.coordinator.update_state(self._module_key, "season.winter", True)
         else:
             await self.coordinator.update_state(
-                self._module_key, "season_info.manual_set", False
+                self._module_key, "season.manual_set", False
             )
             await self.coordinator.update_state(
-                self._module_key, "season_info.winter", False
+                self._module_key, "season.winter", False
             )
 
         self.async_write_ha_state()
