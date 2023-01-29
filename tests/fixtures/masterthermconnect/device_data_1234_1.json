@@ -37,10 +37,10 @@
         "aux2_runtime": 20
     },
     "season_info": {
-        "hp_season": true,
-        "hp_seasonset": 1,
-        "hp_season_winter": 14.0,
-        "hp_season_summer": 19.0
+        "manual_set": true,
+        "winter": true,
+        "winter_temp": 14.0,
+        "summer_temp": 19.0
     },
     "error_info": {
         "some_error": false,

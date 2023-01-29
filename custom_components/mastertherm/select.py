@@ -29,7 +29,13 @@ async def async_setup_entry(
         Platform.SELECT
     ].items():
         for module_key, module in coordinator.data["modules"].items():
-            if entity_key in module[CONF_ENTITIES]:
+            if entity_key == "season_info.select_season":
+                entities.append(
+                    MasterthermSeasonSelect(
+                        coordinator, module_key, entity_key, entity_description
+                    )
+                )
+            elif entity_key in module[CONF_ENTITIES]:
                 entities.append(
                     MasterthermSelect(
                         coordinator, module_key, entity_key, entity_description
@@ -85,4 +91,54 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         """Update the Current Option, but don't send update."""
         value = self._options_map.get(option)
         await self.coordinator.update_state(self._module_key, self._entity_key, value)
+        self.async_write_ha_state()
+
+
+class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
+    """Special Class for Mastertherm Season Select, e.g. ."""
+
+    def __init__(
+        self,
+        coordinator: MasterthermDataUpdateCoordinator,
+        module_key: str,
+        entity_key: str,
+        entity_description: MasterthermSelectEntityDescription,
+    ):
+        super().__init__(
+            coordinator=coordinator,
+            module_key=module_key,
+            entity_key=entity_key,
+            entity_type=Platform.SELECT,
+            entity_description=entity_description,
+        )
+
+    @property
+    def current_option(self) -> str | None:
+        entities = self.coordinator.data["modules"][self._module_key]["entities"]
+        if entities["season_info.manual_set"]:
+            return "auto"
+        else:
+            return "winter" if entities["season_info.winter"] else "summer"
+
+    async def async_select_option(self, option: str) -> None:
+        """Update the Current Option, but don't send update."""
+        if option == "auto":
+            await self.coordinator.update_state(
+                self._module_key, "season_info.manual_set", True
+            )
+        elif option == "winter":
+            await self.coordinator.update_state(
+                self._module_key, "season_info.manual_set", False
+            )
+            await self.coordinator.update_state(
+                self._module_key, "season_info.winter", True
+            )
+        else:
+            await self.coordinator.update_state(
+                self._module_key, "season_info.manual_set", False
+            )
+            await self.coordinator.update_state(
+                self._module_key, "season_info.winter", False
+            )
+
         self.async_write_ha_state()

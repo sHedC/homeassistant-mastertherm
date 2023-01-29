@@ -38,6 +38,13 @@
                     "heating": "Heating",
                     "cooling": "Cooling"
                 }
+            },
+            "select_season": {
+                "state": {
+                    "auto": "Auto",
+                    "winter": "Winter",
+                    "summer": "Summer"
+                }
             }
         },
         "sensor": {

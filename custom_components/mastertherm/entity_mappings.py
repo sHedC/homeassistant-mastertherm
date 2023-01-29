@@ -1052,7 +1052,6 @@ ENTITY_TYPES_MAP: dict = {
             "auto": 2,
         },
         options=["heating", "cooling", "auto"],
-        read_only=True,
     ),
     "season": MasterthermSensorEntityDescription(
         key="season",
@@ -1289,17 +1288,11 @@ ENTITY_TYPES_MAP: dict = {
         ),
     },
     "season_info": {
-        "hp_season": MasterthermSwitchEntityDescription(
-            key="winter_season",
-            name="Winter Season",
-            device_class=SwitchDeviceClass.SWITCH,
-            read_only=True,
-        ),
-        "hp_seasonset": MasterthermSwitchEntityDescription(
-            key="auto_season",
-            name="Auto Season",
-            device_class=SwitchDeviceClass.SWITCH,
-            read_only=True,
+        "select_season": MasterthermSelectEntityDescription(
+            key="select_season",
+            name="Select Season",
+            translation_key="select_season",
+            options=["auto", "winter", "summer"],
         ),
     },
     "error_info": {
