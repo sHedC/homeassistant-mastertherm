@@ -130,13 +130,11 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
             await self.coordinator.update_state(
                 self._module_key, "season.manual_set", True
             )
-            await self.hass.async_block_till_done()
             await self.coordinator.update_state(self._module_key, "season.winter", True)
         else:
             await self.coordinator.update_state(
                 self._module_key, "season.manual_set", True
             )
-            await self.hass.async_block_till_done()
             await self.coordinator.update_state(
                 self._module_key, "season.winter", False
             )

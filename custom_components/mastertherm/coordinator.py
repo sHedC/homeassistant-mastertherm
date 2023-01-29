@@ -2,6 +2,7 @@
 import logging
 
 from datetime import timedelta
+from time import sleep
 from aiohttp import ClientSession
 
 from masterthermconnect import (
@@ -199,6 +200,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         # Update data internally, on failure will reset back.
         if return_value:
             self.data["modules"][module_key]["entities"][entity_key] = state
+
+        # Sleep for 1 second before returning so we don't throttle the API
+        sleep(0.5)
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
