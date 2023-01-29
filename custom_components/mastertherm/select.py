@@ -29,7 +29,7 @@ async def async_setup_entry(
         Platform.SELECT
     ].items():
         for module_key, module in coordinator.data["modules"].items():
-            if entity_key == "season_info.select_season":
+            if entity_key == "season.select":
                 entities.append(
                     MasterthermSeasonSelect(
                         coordinator, module_key, entity_key, entity_description

@@ -17,7 +17,6 @@ from custom_components.mastertherm.const import DOMAIN
 from custom_components.mastertherm.entity_mappings import (
     MasterthermSelectEntityDescription,
 )
-from custom_components.mastertherm.coordinator import MasterthermDataUpdateCoordinator
 
 from .conftest import APIMock
 
@@ -138,9 +137,7 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
         # Check the HP Function Select
-        state: SelectEntity = hass.states.get(
-            "select.mt_1234_1_season_info_select_season"
-        )
+        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
         assert state.state == "auto"
 
         await hass.services.async_call(
@@ -148,13 +145,11 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
             SERVICE_SELECT_OPTION,
             {
                 ATTR_OPTION: "summer",
-                ATTR_ENTITY_ID: "select.mt_1234_1_season_info_select_season",
+                ATTR_ENTITY_ID: "select.mt_1234_1_season_select",
             },
             blocking=True,
         )
         await hass.async_block_till_done()
 
-        state: SelectEntity = hass.states.get(
-            "select.mt_1234_1_season_info_select_season"
-        )
+        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
         assert state.state == "summer"
