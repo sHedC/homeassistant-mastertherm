@@ -6,9 +6,10 @@ import logging
 from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
+from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
 
 from .const import DOMAIN
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -80,3 +81,8 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self.async_write_ha_state()
