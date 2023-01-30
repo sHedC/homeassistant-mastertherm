@@ -178,8 +178,9 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                         "entities"
                     ] = self.__build_entities("", device_data)
 
-            asyncio.sleep(0.5)
-            return result_data
+            asyncio.sleep(0.1)
+
+        return result_data
 
     async def update_state(self, module_key: str, entity_key: str, state: any):
         """Attempt to Update the State, data is in dot notation to get parent, child."""
@@ -207,7 +208,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 self.data["modules"][module_key]["entities"][entity_key] = state
 
             # Sleep for 1 second before returning so we don't throttle the API
-            asyncio.sleep(0.5)
+            asyncio.sleep(0.1)
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
