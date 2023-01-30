@@ -125,6 +125,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         async with self.api_lock:
+            _LOGGER.warning("Starting Data Update")
             # Try to refresh, check for refresh issues
             try:
                 if self.data is None or self.temporary_exception:
@@ -178,6 +179,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                         "entities"
                     ] = self.__build_entities("", device_data)
 
+            _LOGGER.warning("Finishing Data Update")
             asyncio.sleep(0.1)
 
         return result_data

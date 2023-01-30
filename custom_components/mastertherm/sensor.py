@@ -81,8 +81,3 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        """Handle updated data from the coordinator."""
-        self.async_write_ha_state()
