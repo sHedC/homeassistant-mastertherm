@@ -49,12 +49,12 @@ To install manually, if you really want to:
 3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
 4. Download _all_ the files from the `custom_components/mastertherm/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
-6. Add the masterthermconnect module: pip install -I masterthermconnect==1.2.0
+6. Add the masterthermconnect module: pip install -I masterthermconnect==2.0.0a5
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
 ## Sensor Details
-Current version is read only, updates do not work but that will come.
+This version allows read and write, what is avaialbe in the app should be available here plus some extras.
 
 The sensors are based on observations from the Web and Android Applications, the current testing has been done on some basic setup we have not tested options with Solar and Pool but have tried to add sensors based on the apps.
 1. One Main circuit with heating and cooling and domestic hot water with attached room thermostats
@@ -67,20 +67,36 @@ Entity | Type | Description
 -- | -- | --
 hp_power_state | Switch | Turn on and off the Heat Pump
 hp_function | Select | The function is heating/ cooling or auto
-season | Sensor | Shows the Season, Winter or Summer or Auto Winter and Auto Summer
 operating_mode | Sensor | The current Operating Mode which shows 5 states: heating/ cooling/ pool/ hot water and defrost protection
 cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating)
 compressor_running | Binary Sensor | Main compressor running
 compressor2_running | Binary Sensor | Compressor 2 if installed
 circulation_pump_running | Binary Sensor | Circulating water to where it is being requested, this is always true if any circuit is requesting heating or cooling
-fan_running | Binary Sensor | Internal Fan is running
+fan_running | Binary Sensor | The brine is ciculating for ground source or the fan is running for air source
 defrost_mode | Binary Sensor | If the heat pump is in defrost mode
 aux_heater_1 | Binary Sensor | If installed indicates if the auxillary heater is on
 aux_heater_2 | Binary Sensor | If installed indicates if the second auxillary heater is on
 outside_temp | Sensor | The outside temperature
 requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached.
+actual_temp | Sensor | The actual temperature that the heat pump is up to.
 dewp_control | Binary Sensor | If Dew Point Control is active
 hdo_on | Binary Sensor | Something to do with High Tarrif Rates, do not know about this indicator
+
+#### Season Info
+Entity | Type | Description
+-- | -- | --
+mode | Sensor | The Season mode the heatpump is running on, winter/ summer/ auto winter or auto summer.
+select | Select | Ability to select the mode, Auto, Winter or Summer
+winter_temp | Number | The temperature below which is considered winter
+summer_temp | Number | The temperature above which is considered winter
+
+#### Control Curves Heating/ Cooling
+Entity | Type | Description
+-- | -- | --
+setpoint_a_outside | Number | Outside Temperature for Setpoint A
+setpoint_a_requested | Number | Temperature to set for Setpoint A
+setpoint_b_outside | Number | Outside Temperature for Setpoint B
+setpoint_b_requested | Number | Temperature to set for Setpoint B
 
 #### Domestic Hot Water
 Entity | Type | Description
@@ -99,16 +115,8 @@ pump_runtime | Sensor | The number of hours the circulation pump has run
 aux1_runtime | Sensor | The house the auxillary heaters have run
 aux2_runtime | Sensor | The house the auxillary heaters have run
 
-#### Season Info
-The switches here define if Winter/ Summer or Auto
-
-Entity | Type | Description
--- | -- | --
-hp_season | Switch | If set on then winter, if set off then summer
-hp_seasonset | Switch | If set on then Seasion is auto set.
-
 #### Error Info
-Work in Progress, error information just decoded from he web application.
+Shows Error Alerts, Not Documented at this time.
 
 Entity | Type | Description
 -- | -- | --
@@ -131,11 +139,16 @@ water_temp | Sensor | The actual water temperature for the circuit
 auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
 ambient_temp | Sensor | Ambient temperature, either from the room if the pad is installed or internal
 ambient_requested | Sensor | requested temperature, either from the room if the pad is installed or internal
+thermostat | Climate | Allows setting of the room temperature settings.
+pad.state | Sensor | The Room pad state
 pad.current_humidity | Sensor | Room Humidity, if the thermostat is installed
+control_curve_heating | None | Same as the main control curve heating
+control_curve_cooling | None | Same as the main control curve cooling
 
 #### Pool and Solar
-Some entities have been added based on debugging and best guess.
+Solar monitors outside temperature and if enabled can be used to turn on and off the hot water on the heat pump.  Used if you have PV hot water installed.
 
+Pool monitors and sets the pool temperature.
 
 ## Contributions are welcome!
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
