@@ -33,6 +33,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
 
     api_lock = asyncio.Lock()
+    auth_error = False
 
     def __init__(
         self,
@@ -125,6 +126,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         async with self.api_lock:
+            # TODO: Remove Teting Only
+            if self.auth_error:
+                raise ConfigEntryAuthFailed("Test Authentication Error")
+
             # Try to refresh, check for refresh issues
             try:
                 if self.data is None or self.temporary_exception:
@@ -191,6 +196,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
             # TODO: Remove Teting Only
             if entity_key == "heating_circuits.hc2.on":
+                self.auth_error = True
                 raise ConfigEntryAuthFailed("Test Authentication Error")
 
             return_value = False
