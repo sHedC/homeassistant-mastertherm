@@ -80,7 +80,7 @@ outside_temp | Sensor | The outside temperature
 requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached.
 actual_temp | Sensor | The actual temperature that the heat pump is up to.
 dewp_control | Binary Sensor | If Dew Point Control is active
-hdo_on | Binary Sensor | Something to do with High Tarrif Rates, do not know about this indicator
+hdo_on | Binary Sensor | High Tariff Rate active - this remotely controlled signal is used to block the operation of heat pump
 
 #### Season Info
 Entity | Type | Description
