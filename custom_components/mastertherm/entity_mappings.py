@@ -1,4 +1,5 @@
 """Contains all the Entity Mappings from the Mastertherm Connector"""
+# pylint: disable=C0302
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
@@ -43,7 +44,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc0_pad_current_humidity",
-                name="HC0 PAD Current Humidity",
+                name="HC0 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -58,7 +59,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc1_on",
-            name="HC1",
+            name="HC1 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -112,7 +113,7 @@ HEATING_CIRCUITS: dict = {
             ),
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc1_pad_current_humidity",
-                name="HC1 PAD Current Humidity",
+                name="HC1 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -179,7 +180,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc2_on",
-            name="HC2",
+            name="HC2 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -229,7 +230,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc2_pad_current_humidity",
-                name="HC2 PAD Current Humidity",
+                name="HC2 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -296,7 +297,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc3_on",
-            name="HC3",
+            name="HC3 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -346,7 +347,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc3_pad_current_humidity",
-                name="HC3 PAD Current Humidity",
+                name="HC3 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -413,7 +414,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc4_on",
-            name="HC4",
+            name="HC4 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -463,7 +464,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc4_pad_current_humidity",
-                name="HC4 PAD Current Humidity",
+                name="HC4 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -530,7 +531,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc5_on",
-            name="HC5",
+            name="HC5 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -580,7 +581,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc5_pad_current_humidity",
-                name="HC5 PAD Current Humidity",
+                name="HC5 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -647,7 +648,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc6_on",
-            name="HC6",
+            name="HC6 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
@@ -697,7 +698,7 @@ HEATING_CIRCUITS: dict = {
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc6_pad_current_humidity",
-                name="HC6 PAD Current Humidity",
+                name="HC6 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -788,7 +789,7 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="pool_on",
-            name="Pool",
+            name="Pool State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
         ),
