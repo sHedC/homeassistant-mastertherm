@@ -52,6 +52,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Temporary Exception Handling
         self.temporary_exception = False
+        self.temporary_exception_count = 0
 
         self.session = ClientSession()
         self.mt_controller: MasterthermController = MasterthermController(
@@ -137,6 +138,8 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                     _LOGGER.error("Update Failed for unknown reason")
                     raise UpdateFailed("unknown_reason")
 
+                self.temporary_exception_count = 0
+
             except MasterthermAuthenticationError as ex:
                 _LOGGER.error("Invalid credentials: %s", ex)
                 raise ConfigEntryAuthFailed("authentication_error") from ex
@@ -146,12 +149,18 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             except MasterthermConnectionError as ex:
                 _LOGGER.warning("Unable to communicate with MasterTherm API: %s", ex)
                 self.temporary_exception = True
+                self.temporary_exception_count += 1
             except MasterthermTokenInvalid as ex:
                 _LOGGER.warning("Invalid Token: %s", ex)
                 self.temporary_exception = True
+                self.temporary_exception_count += 1
             except MasterthermResponseFormatError as ex:
                 _LOGGER.warning("Response Format Error: %s", ex)
                 self.temporary_exception = True
+                self.temporary_exception_count += 1
+
+            if self.temporary_exception_count > 5:
+                raise UpdateFailed("unknown_reason")
 
             # If first run then populate the Modules.
             result_data = self.data
