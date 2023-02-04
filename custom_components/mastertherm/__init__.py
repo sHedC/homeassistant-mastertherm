@@ -14,8 +14,7 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .coordinator import MasterthermDataUpdateCoordinator
-from .const import DOMAIN, DEFAULT_REFRESH
-from .entity_mappings import ENTITIES
+from .const import DOMAIN, DEFAULT_REFRESH, ENTITIES
 
 SCAN_INTERVAL = timedelta(seconds=30)
 

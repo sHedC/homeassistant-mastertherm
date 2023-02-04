@@ -8,10 +8,9 @@ from homeassistant.const import CONF_ENTITIES, Platform
 from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermSelectEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermSelectEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -23,8 +23,8 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-from .const import DOMAIN
-from .entity_mappings import ENTITY_TYPES_MAP, ENTITIES
+from .const import DOMAIN, ENTITIES
+from .entity_mappings import ENTITY_TYPES_MAP
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -17,10 +17,9 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermClimateEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermClimateEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 

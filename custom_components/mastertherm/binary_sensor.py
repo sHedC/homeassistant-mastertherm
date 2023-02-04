@@ -7,10 +7,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import CONF_ENTITIES, Platform
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermBinarySensorEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermBinarySensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 

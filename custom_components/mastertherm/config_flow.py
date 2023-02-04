@@ -1,5 +1,4 @@
 """MasterTherm Config Flow."""
-from collections.abc import Mapping
 import logging
 from typing import Any
 import voluptuous as vol

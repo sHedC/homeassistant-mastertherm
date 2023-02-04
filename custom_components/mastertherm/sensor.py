@@ -7,14 +7,12 @@ from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
-from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermSensorEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermSensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
