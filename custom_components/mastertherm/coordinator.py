@@ -142,7 +142,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 raise ConfigEntryAuthFailed("authentication_error") from ex
             except MasterthermUnsupportedRole as ex:
                 _LOGGER.error("Unsupported role: %s", ex)
-                raise UpdateFailed("unsupported_role") from ex
+                raise ConfigEntryAuthFailed("unsupported_role") from ex
             except MasterthermConnectionError as ex:
                 _LOGGER.warning("Unable to communicate with MasterTherm API: %s", ex)
                 self.temporary_exception = True
