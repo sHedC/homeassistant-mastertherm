@@ -50,11 +50,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=scan_interval),
         )
 
-        # Temporary Exception Handling
-        self.temporary_exception = False
-        self.temporary_exception_count = 0
+        # Do we need to connect
+        self.reconnect = True
 
-        self.session = ClientSession()
+        self.session = ClientSession(timeout=25)
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
@@ -128,39 +127,30 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         async with self.api_lock:
             # Try to refresh, check for refresh issues
             try:
-                if self.data is None or self.temporary_exception:
+                if self.data is None or self.reconnect:
                     connected = await self.mt_controller.connect()
-                    self.temporary_exception = False
+                    self.reconnect = False
 
                 connected = await self.mt_controller.refresh()
 
                 if not connected:
-                    _LOGGER.error("Update Failed for unknown reason")
                     raise UpdateFailed("unknown_reason")
 
-                self.temporary_exception_count = 0
-
             except MasterthermAuthenticationError as ex:
-                _LOGGER.error("Invalid credentials: %s", ex)
+                _LOGGER.error("Invalid credentials: %s:%s", ex.status, ex.message)
                 raise ConfigEntryAuthFailed("authentication_error") from ex
             except MasterthermUnsupportedRole as ex:
-                _LOGGER.error("Unsupported role: %s", ex)
+                _LOGGER.error("Unsupported role: %s:%s", ex.status, ex.message)
                 raise ConfigEntryAuthFailed("unsupported_role") from ex
             except MasterthermConnectionError as ex:
-                _LOGGER.warning("Unable to communicate with MasterTherm API: %s", ex)
-                self.temporary_exception = True
-                self.temporary_exception_count += 1
+                _LOGGER.warning("Connection Error %s:%s", ex.status, ex.message)
+                raise UpdateFailed("connection_error") from ex
             except MasterthermTokenInvalid as ex:
-                _LOGGER.warning("Invalid Token: %s", ex)
-                self.temporary_exception = True
-                self.temporary_exception_count += 1
+                _LOGGER.warning("Invalid Token: %s:%s", ex.status, ex.message)
+                self.reconnect = True
             except MasterthermResponseFormatError as ex:
-                _LOGGER.warning("Response Format Error: %s", ex)
-                self.temporary_exception = True
-                self.temporary_exception_count += 1
-
-            if self.temporary_exception_count > 5:
-                raise UpdateFailed("unknown_reason")
+                _LOGGER.warning("Response Format Error: %s:%s", ex.status, ex.message)
+                raise UpdateFailed("response_error") from ex
 
             # If first run then populate the Modules.
             result_data = self.data
@@ -203,14 +193,14 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 return_value = await self.mt_controller.set_device_data_item(
                     module_id, unit_id, entity_key, state
                 )
-            except MasterthermConnectionError as mex:
-                _LOGGER.warning("Unable to communicate with MasterTherm API: %s", mex)
-                self.temporary_exception = True
-            except MasterthermAuthenticationError as mex:
-                _LOGGER.error("Invalid credentials: %s", mex)
-                raise ConfigEntryAuthFailed("authentication_error") from mex
-            except MasterthermEntryNotFound as mex:
-                _LOGGER.warning("Entity not found or Read Only %s", mex)
+            except MasterthermConnectionError as ex:
+                _LOGGER.warning("Connection Error %s:%s", ex.status, ex.message)
+                raise UpdateFailed("connection_error") from ex
+            except MasterthermAuthenticationError as ex:
+                _LOGGER.error("Invalid credentials: %s:%s", ex.status, ex.message)
+                raise ConfigEntryAuthFailed("authentication_error") from ex
+            except MasterthermEntryNotFound as ex:
+                _LOGGER.warning("Entity not found or Read Only %s", ex)
 
             # Update data internally, on failure will reset back.
             if return_value:

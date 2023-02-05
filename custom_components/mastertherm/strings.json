@@ -22,6 +22,7 @@
             "authentication_error": "Username/ Password is incorrect.",
             "connection_error": "Error connecting to the Mastertherm servers.",
             "unsupported_role": "Error System Role is not suppored by this integration.",
+            "response_error": "There was an error in the JSON Reponse.",
             "unknown_reason": "Update Failed for an Unknown Reason."
         },
         "abort": {
