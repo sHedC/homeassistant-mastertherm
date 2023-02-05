@@ -3,7 +3,7 @@ import logging
 import asyncio
 
 from datetime import timedelta
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientTimeout
 
 from masterthermconnect import (
     MasterthermController,
@@ -53,7 +53,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         # Do we need to connect
         self.reconnect = True
 
-        self.session = ClientSession()
+        self.session = ClientSession(timeout=ClientTimeout(total=30))
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
