@@ -50,8 +50,11 @@ class MasterthermNumberEntityDescription(NumberEntityDescription):
 
     device_class = NumberDeviceClass.TEMPERATURE
     native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    native_step: float = 0.1
+    native_step: float = 0.5
     mode: str = "auto"
+
+    min_lookup: str = None
+    max_lookup: str = None
 
 
 @dataclass

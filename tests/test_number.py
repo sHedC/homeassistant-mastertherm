@@ -72,7 +72,7 @@ async def test_number_setup(
     state = hass.states.get(
         "number.mt_1234_1_control_curve_heating_setpoint_a_requested"
     )
-    assert state.state == "27.0"
+    assert state.state == "20.0"
 
 
 async def test_set_temp(
@@ -105,6 +105,10 @@ async def test_set_temp(
     ):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
+
+        state = hass.states.get(
+            "number.mt_1234_1_control_curve_heating_setpoint_a_outside"
+        )
 
         await hass.services.async_call(
             NUMBER_DOMAIN,

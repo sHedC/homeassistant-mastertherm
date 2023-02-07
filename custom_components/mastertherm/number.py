@@ -56,6 +56,14 @@ class MasterthermNumber(MasterthermEntity, NumberEntity):
         )
 
         self._attr_mode = entity_description.mode
+        if entity_description.min_lookup:
+            self._attr_native_min_value = self.coordinator.data["modules"][
+                self._module_key
+            ]["entities"][entity_description.min_lookup]
+        if entity_description.max_lookup:
+            self._attr_native_max_value = self.coordinator.data["modules"][
+                self._module_key
+            ]["entities"][entity_description.max_lookup]
 
     @property
     def native_value(self) -> float:

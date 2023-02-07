@@ -10,6 +10,26 @@
         "summer_temp": 17.0
     },
     "cooling_mode": false,
+    "control_curve_heating": {
+        "setpoint_a_outside": 20.5,
+        "setpoint_a_requested": 29.0,
+        "setpoint_b_outside": -15.0,
+        "setpoint_b_requested": 40.0,
+        "requested_min": 20.0,
+        "requested_max": 47.5,
+        "outside_min": -30.0,
+        "outside_max": 30.0
+    },
+    "control_curve_cooling": {
+        "setpoint_a_outside": 21.0,
+        "setpoint_a_requested": 30.0,
+        "setpoint_b_outside": 20.0,
+        "setpoint_b_requested": 14.5,
+        "requested_min": 14.5,
+        "requested_max": 30.0,
+        "outside_min": 0.0,
+        "outside_max": 40.0
+    },
     "domestic_hot_water": {
         "function": false,
         "enabled": true,

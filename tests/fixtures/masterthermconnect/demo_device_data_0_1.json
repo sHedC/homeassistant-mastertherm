@@ -1,26 +1,34 @@
 {
     "hp_power_state": true,
     "hp_function": 2,
+    "operating_mode": "heating",
     "season": {
-        "mode": "auto-summer",
+        "mode": "auto-winter",
         "manual_set": false,
-        "winter": false,
+        "winter": true,
         "winter_temp": 11.0,
         "summer_temp": 14.0
     },
-    "operating_mode": "heating",
     "cooling_mode": false,
     "control_curve_heating": {
         "setpoint_a_outside": 20.5,
         "setpoint_a_requested": 29.0,
         "setpoint_b_outside": -15.0,
-        "setpoint_b_requested": 40.0
+        "setpoint_b_requested": 40.0,
+        "requested_min": 20.0,
+        "requested_max": 47.5,
+        "outside_min": -30.0,
+        "outside_max": 30.0
     },
     "control_curve_cooling": {
         "setpoint_a_outside": 21.0,
         "setpoint_a_requested": 30.0,
         "setpoint_b_outside": 20.0,
-        "setpoint_b_requested": 14.5
+        "setpoint_b_requested": 14.5,
+        "requested_min": 14.5,
+        "requested_max": 30.0,
+        "outside_min": 0.0,
+        "outside_max": 40.0
     },
     "domestic_hot_water": {
         "heating": false,
@@ -41,7 +49,7 @@
     "requested_temp": 37.6,
     "actual_temp": 35.0,
     "dewp_control": false,
-    "hdo_on": true,
+    "high_tariff_control": false,
     "runtime_info": {
         "compressor_run_time": 1300,
         "compressor_start_counter": 599,
