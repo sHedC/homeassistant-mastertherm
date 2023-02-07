@@ -1039,9 +1039,9 @@ ENTITY_TYPES_MAP: dict = {
         key="dewp_control",
         name="Dew Point Control",
     ),
-    "hdo_on": MasterthermBinarySensorEntityDescription(
-        key="hdo_on",
-        name="High Tarrif (HDO)",
+    "high_tariff_control": MasterthermBinarySensorEntityDescription(
+        key="high_tariff_control",
+        name="High Tariff Control",
     ),
     "runtime_info": {
         "compressor_run_time": MasterthermSensorEntityDescription(

@@ -80,7 +80,7 @@ outside_temp | Sensor | The outside temperature
 requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached.
 actual_temp | Sensor | The actual temperature that the heat pump is up to.
 dewp_control | Binary Sensor | If Dew Point Control is active
-hdo_on | Binary Sensor | High Tariff Rate active - this remotely controlled signal is used to block the operation of heat pump
+high_tariff_control | Binary Sensor | If the feature is enabled then this will show enabled if the system recognized high tariff.  This feature (called HDO_ON) is actually a remote on/off for features on your heatpump that use high energy such as the compressor/ aux heaters and sanitary hot water feature.  It does not disable the DHW function, which also uses the compressor. This feature is really only of use where your have variying high/ low tariff during the day and night or extended periods of low tariff as it disabled heating.
 
 #### Season Info
 Entity | Type | Description
