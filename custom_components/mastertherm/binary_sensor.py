@@ -7,7 +7,7 @@ from homeassistant.const import CONF_ENTITIES, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity_registry import (
-    async_get_registry,
+    async_get,
     async_entries_for_config_entry,
 )
 
@@ -27,9 +27,12 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     # Build a list of existing entities
-    entity_registry = await async_get_registry(hass)
+    entity_registry = async_get(hass)
     existing_entities: list[str] = []
     for entity in async_entries_for_config_entry(entity_registry, entry.entry_id):
+
+        _LOGGER.warning("Binary Sensor Found: %s:%s", entity.entity_id, entity.platform)
+
         if entity.platform == Platform.BINARY_SENSOR:
             existing_entities.append(entity.entity_id)
 
