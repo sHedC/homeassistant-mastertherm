@@ -15,13 +15,8 @@ from masterthermconnect import (
     MasterthermEntryNotFound,
 )
 
-from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
-from homeassistant.helpers.entity_registry import (
-    async_get_registry,
-    async_entries_for_config_entry,
-)
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
@@ -186,24 +181,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             asyncio.sleep(0.1)
 
         return result_data
-
-    async def async_remove_old_entities(self) -> None:
-        """Remove old entities that are no longer valid."""
-
-        # Only continue if no last exception:
-        if self.config_entry.state != ConfigEntryState.LOADED and self.last_exception:
-            return None
-
-        # Only Clean-up on re-initialize
-        if self.cleanup:
-            entity_registry = await async_get_registry(self.hass)
-            entities = async_entries_for_config_entry(
-                entity_registry, self.config_entry.entry_id
-            )
-
-            self.cleanup = False
-        else:
-            _LOGGER.warning("There was an exception in getting data, skipping cleanup.")
 
     async def update_state(self, module_key: str, entity_key: str, state: any):
         """Attempt to Update the State, data is in dot notation to get parent, child."""
