@@ -65,16 +65,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    unload_ok = all(
-        await asyncio.gather(
-            *[
-                hass.config_entries.async_forward_entry_unload(entry, platform)
-                for platform in ENTITIES.values()
-                if platform in coordinator.platforms
-            ]
-        )
-    )
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, ENTITIES)
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
 
