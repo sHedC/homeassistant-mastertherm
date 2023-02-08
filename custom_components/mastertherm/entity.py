@@ -57,15 +57,3 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             model=self.get_moduleinfo["hp_type"],
             configuration_url=self.get_moduleinfo["api_url"],
         )
-
-    async def async_added_to_hass(self) -> None:
-        """On Add to Hass Check the state, if unavailable remove."""
-        _LOGGER.warning(
-            "Entity ID %s, State %s, Enabled %s, Assumed State %s, Available %s",
-            self.entity_id,
-            self.state,
-            self.enabled,
-            self.assumed_state,
-            self.available,
-        )
-        return None

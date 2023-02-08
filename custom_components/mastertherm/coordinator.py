@@ -183,7 +183,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                         "entities"
                     ] = self.__build_entities("", device_data)
 
-            await asyncio.sleep(0.1)
+            asyncio.sleep(0.1)
 
         return result_data
 
@@ -231,7 +231,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 self.data["modules"][module_key]["entities"][entity_key] = state
 
             # Sleep for 1 second before returning so we don't throttle the API
-            await asyncio.sleep(0.1)
+            asyncio.sleep(0.1)
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
