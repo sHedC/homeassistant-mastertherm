@@ -1,11 +1,15 @@
 """Support for Mastertherm Binary Sensors."""
 import logging
 
-from homeassistant.core import HomeAssistant
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import CONF_ENTITIES, Platform
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity_registry import (
+    async_get_registry,
+    async_entries_for_config_entry,
+)
 
 from .const import DOMAIN, MasterthermBinarySensorEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -22,6 +26,13 @@ async def async_setup_entry(
     """Setup sensors from a config entry created in the integrations UI."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
+    # Build a list of existing entities
+    entity_registry = await async_get_registry(hass)
+    existing_entities: list[str] = []
+    for entity in async_entries_for_config_entry(entity_registry, entry.entry_id):
+        if entity.platform == Platform.BINARY_SENSOR:
+            existing_entities.append(entity.entity_id)
+
     entities: list[BinarySensorEntity] = []
     for entity_key, entity_description in coordinator.entity_types[
         Platform.BINARY_SENSOR
@@ -33,6 +44,10 @@ async def async_setup_entry(
                         coordinator, module_key, entity_key, entity_description
                     )
                 )
+                if entity_key in existing_entities:
+                    existing_entities.pop(entity_key)
+
+    _LOGGER.warning("Binary Sensor Remaining: %s", len(existing_entities))
 
     async_add_entities(entities, True)
 

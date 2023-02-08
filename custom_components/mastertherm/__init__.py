@@ -12,10 +12,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.entity_registry import (
-    async_get_registry,
-    async_entries_for_config_entry,
-)
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN, DEFAULT_REFRESH, ENTITIES
@@ -42,6 +38,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password = entry.data.get(CONF_PASSWORD)
         api_version = entry.data.get(CONF_API_VERSION)
         scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH)
+
         coordinator = MasterthermDataUpdateCoordinator(
             hass,
             username,
@@ -54,10 +51,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
     if not coordinator.data:
         raise ConfigEntryNotReady
-
-    entity_registry = await async_get_registry(hass)
-    entities = async_entries_for_config_entry(entity_registry, entry.entry_id)
-    _LOGGER.warning("Entities Loaded %s", len(entities))
 
     for platform in ENTITIES.values():
         if entry.options.get(platform, True):
