@@ -45,7 +45,7 @@ To install manually, if you really want to:
 3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
 4. Download _all_ the files from the `custom_components/mastertherm/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
-6. Add the masterthermconnect module: pip install -I masterthermconnect==1.2.0
+6. Add the masterthermconnect module: pip install -I masterthermconnect==2.0.0
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
