@@ -54,7 +54,7 @@ To install manually, if you really want to:
 ## Configuration is done in the UI
 
 ## Sensor Details
-See Git Hub Mastertherm Repository for more information: ![Mastertherm Hass Github][mastertherm]
+See Git Hub Mastertherm Repository for more information: ![mastertherm]
 
 ***
 
