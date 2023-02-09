@@ -79,7 +79,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         # Convert registries into Entity Platform and ID.
         for reg_entity in registry_entries:
             if not reg_entity.domain in self.old_entries:
-                self.old_entries[reg_entity.domain]: list(str) = []
+                self.old_entries[reg_entity.domain] = []
             self.old_entries[reg_entity.domain].append(reg_entity.entity_id)
 
     async def __aenter__(self):
