@@ -46,7 +46,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Get the current registry, to allow cleanup of old entities.
         # Any any changes in the Heatpump setup.
         entity_registry = async_get(hass)
-        registry_entities = async_entries_for_config_entry(
+        registry_entries = async_entries_for_config_entry(
             entity_registry, entry.entry_id
         )
 
@@ -56,7 +56,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             password,
             api_version,
             scan_interval,
-            registry_entities,
+            registry_entries,
         )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 

@@ -36,7 +36,8 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         if entity_type in coordinator.old_entries:
             if self.entity_id in coordinator.old_entries[entity_type]:
                 entity_ids: list[str] = coordinator.old_entries[entity_type]
-                entity_ids.pop(self.entity_id)
+                entity_index = entity_ids.index(self.entity_id)
+                entity_ids.pop(entity_index)
 
     @property
     def get_module(self) -> dict:
