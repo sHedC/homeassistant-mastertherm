@@ -35,6 +35,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.NUMBER)
 
 
 class MasterthermNumber(MasterthermEntity, NumberEntity):

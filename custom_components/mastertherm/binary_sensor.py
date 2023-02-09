@@ -35,12 +35,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
-
-    if Platform.BINARY_SENSOR in coordinator.old_entries:
-        _LOGGER.warning(
-            "Entities to remove %s",
-            len(coordinator.old_entries[Platform.BINARY_SENSOR]),
-        )
+    coordinator.remove_old_entities(Platform.BINARY_SENSOR)
 
 
 class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):

@@ -38,6 +38,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.SENSOR)
 
 
 class MasterthermSensor(MasterthermEntity, SensorEntity):

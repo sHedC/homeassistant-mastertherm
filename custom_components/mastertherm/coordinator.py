@@ -18,7 +18,11 @@ from masterthermconnect import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.entity_registry import RegistryEntry
+from homeassistant.helpers.entity_registry import (
+    RegistryEntry,
+    async_get,
+    async_entries_for_config_entry,
+)
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
@@ -42,7 +46,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         password: str,
         api_version: str,
         scan_interval: int,
-        registry_entries: list[RegistryEntry],
+        entry_id: str,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
@@ -75,8 +79,12 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         )
         self.platforms = []
         self.old_entries: dict[str, list[str]] = {}
+        self.entity_registry = async_get(hass)
 
         # Convert registries into Entity Platform and ID.
+        registry_entries = async_entries_for_config_entry(
+            self.entity_registry, entry_id
+        )
         for reg_entity in registry_entries:
             if not reg_entity.domain in self.old_entries:
                 self.old_entries[reg_entity.domain] = []
@@ -222,6 +230,13 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
         return self.data["modules"][module_key]["entities"][entity_key]
+
+    def remove_old_entities(self, platform: str) -> None:
+        """Remove old entities that are no longer provided."""
+        if platform in self.old_entries:
+            _LOGGER.warning(
+                "Old Entries to Remove %s:%s", platform, len(self.old_entries[platform])
+            )
 
 
 async def authenticate(username: str, password: str, api_version: str) -> dict:
