@@ -234,9 +234,13 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     def remove_old_entities(self, platform: str) -> None:
         """Remove old entities that are no longer provided."""
         if platform in self.old_entries:
-            _LOGGER.warning(
-                "Old Entries to Remove %s:%s", platform, len(self.old_entries[platform])
-            )
+            for entity_id in self.old_entries[platform]:
+                _LOGGER.warning(
+                    "Removing Old Entities for platform: %s, entity_id: %s",
+                    platform,
+                    entity_id,
+                )
+                self.entity_registry.async_remove(entity_id)
 
 
 async def authenticate(username: str, password: str, api_version: str) -> dict:
