@@ -54,91 +54,11 @@ To install manually, if you really want to:
 ## Configuration is done in the UI
 
 ## Sensor Details
-Current version is read only, updates do not work but that will come.
-
-The sensors are based on observations from the Web and Android Applications, the current testing has been done on some basic setup we have not tested options with Solar and Pool but have tried to add sensors based on the apps.
-1. One Main circuit with heating and cooling and domestic hot water with attached room thermostats
-2. Main Circuit for heating and two optional circuits for Barn and House Domestic Hot Water, no room thermostats
-
-#### Main Circuit
-These are the main entities for the heat pump, currently we understand the following.
-
-Entity | Type | Description
--- | -- | --
-hp_power_state | Switch | Turn on and off the Heat Pump
-hp_function | Select | The function is heating/ cooling or auto
-season | Sensor | Shows the Season, Winter or Summer or Auto Winter and Auto Summer
-operating_mode | Sensor | The current Operating Mode which shows 5 states: heating/ cooling/ pool/ hot water and defrost protection
-cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating)
-compressor_running | Binary Sensor | Main compressor running
-compressor2_running | Binary Sensor | Compressor 2 if installed
-circulation_pump_running | Binary Sensor | Circulating water to where it is being requested, this is always true if any circuit is requesting heating or cooling
-fan_running | Binary Sensor | Internal Fan is running
-defrost_mode | Binary Sensor | If the heat pump is in defrost mode
-aux_heater_1 | Binary Sensor | If installed indicates if the auxillary heater is on
-aux_heater_2 | Binary Sensor | If installed indicates if the second auxillary heater is on
-outside_temp | Sensor | The outside temperature
-requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached.
-dewp_control | Binary Sensor | If Dew Point Control is active
-hdo_on | Binary Sensor | Something to do with High Tarrif Rates, do not know about this indicator
-
-#### Domestic Hot Water
-Entity | Type | Description
--- | -- | --
-heating | Binary Sensor | Whether hot water is requested, also activates if HC1 to 6 is for hot water
-enabled | Binary Sensor | Not sure on mine always shows disabled.
-current_temp | Sensor | The current temperature of the hot water, should be taken from the sensor in the water tank
-required_temp | Sensor | The temperature that was set as required for your hot water.
-
-#### Run Time Info
-Entity | Type | Description
--- | -- | --
-compressor_run_time | Sensor | Number of hours the compressor has run for
-compressor_start_counter | Sensor | Probably the number of times the compressor has started
-pump_runtime | Sensor | The number of hours the circulation pump has run
-aux1_runtime | Sensor | The house the auxillary heaters have run
-aux2_runtime | Sensor | The house the auxillary heaters have run
-
-#### Season Info
-The switches here define if Winter/ Summer or Auto
-
-Entity | Type | Description
--- | -- | --
-hp_season | Switch | If set on then winter, if set off then summer
-hp_seasonset | Switch | If set on then Seasion is auto set.
-
-#### Error Info
-Work in Progress, error information just decoded from he web application.
-
-Entity | Type | Description
--- | -- | --
-
-#### Heating Circuits
-The main circuit is HC0, this is linked to the main pump but some details in this circuit are hidden if any of HC1 to HC6 optional circuits are installed.
-
-HC1 to HC6 are used to provide things like heating/ cooling to different room zones or multiple water tanks for hot water.
-
-HC0 to HC6 usually have room thermostat's installed, if used for heating/ cooling, in this case there is a pad sub-section that contains ambient temperatures and humidity.  If not installed then there is an int (internal) sub-section that has the ambient temperatures.
-
-Entity | Type | Description
--- | -- | --
-name | sensor | The name of the circuit, hc0 is usually Home
-on | Swtich | If the circuit is turns on or not
-cooling | Binary Sensor | Circuit is in cooling mode
-circulation_valve | Binary Sensor | If this circuit is requesting then this is open, this also triggers the main circulation pump
-water_requested | Sensor | The requested water temperature based on heating and cooling curves
-water_temp | Sensor | The actual water temperature for the circuit
-auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
-ambient_temp | Sensor | Ambient temperature, either from the room if the pad is installed or internal
-ambient_requested | Sensor | requested temperature, either from the room if the pad is installed or internal
-pad.current_humidity | Sensor | Room Humidity, if the thermostat is installed
-
-#### Pool and Solar
-Some entities have been added based on debugging and best guess.
+See Git Hub Mastertherm Repository for more information: [masterhterm]
 
 ***
 
-[masterthermimg]: mastertherm.png
+[masterthermimg]: https://github.com/sHedC/homeassistant-mastertherm/raw/main/mastertherm.png
 [mastertherm]: https://github.com/sHedC/homeassistant-mastertherm
 [commits-shield]: https://img.shields.io/github/commit-activity/y/sHedC/homeassistant-mastertherm?style=for-the-badge
 [commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
