@@ -8,10 +8,9 @@ from homeassistant.const import CONF_ENTITIES, Platform
 from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermSelectEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermSelectEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,7 +28,13 @@ async def async_setup_entry(
         Platform.SELECT
     ].items():
         for module_key, module in coordinator.data["modules"].items():
-            if entity_key in module[CONF_ENTITIES]:
+            if entity_key == "season.select":
+                entities.append(
+                    MasterthermSeasonSelect(
+                        coordinator, module_key, entity_key, entity_description
+                    )
+                )
+            elif entity_key in module[CONF_ENTITIES]:
                 entities.append(
                     MasterthermSelect(
                         coordinator, module_key, entity_key, entity_description
@@ -37,6 +42,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.SELECT)
 
 
 class MasterthermSelect(MasterthermEntity, SelectEntity):
@@ -65,11 +71,12 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
         self._reverse_map = {val: key for key, val in self._options_map.items()}
 
-        # Set Initial State
+    @property
+    def current_option(self) -> str | None:
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
-        self._attr_current_option = self._reverse_map.get(state)
+        return self._reverse_map.get(state)
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -82,5 +89,54 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Update the Current Option, but don't send update."""
-        self._attr_current_option = option
+        value = self._options_map.get(option)
+        await self.coordinator.update_state(self._module_key, self._entity_key, value)
+        self.async_write_ha_state()
+
+
+class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
+    """Special Class for Mastertherm Season Select, e.g. ."""
+
+    def __init__(
+        self,
+        coordinator: MasterthermDataUpdateCoordinator,
+        module_key: str,
+        entity_key: str,
+        entity_description: MasterthermSelectEntityDescription,
+    ):
+        super().__init__(
+            coordinator=coordinator,
+            module_key=module_key,
+            entity_key=entity_key,
+            entity_type=Platform.SELECT,
+            entity_description=entity_description,
+        )
+
+    @property
+    def current_option(self) -> str | None:
+        entities = self.coordinator.data["modules"][self._module_key]["entities"]
+        if entities["season.manual_set"]:
+            return "winter" if entities["season.winter"] else "summer"
+        else:
+            return "auto"
+
+    async def async_select_option(self, option: str) -> None:
+        """Update the Current Option, but don't send update."""
+        if option == "auto":
+            await self.coordinator.update_state(
+                self._module_key, "season.manual_set", False
+            )
+        elif option == "winter":
+            await self.coordinator.update_state(
+                self._module_key, "season.manual_set", True
+            )
+            await self.coordinator.update_state(self._module_key, "season.winter", True)
+        else:
+            await self.coordinator.update_state(
+                self._module_key, "season.manual_set", True
+            )
+            await self.coordinator.update_state(
+                self._module_key, "season.winter", False
+            )
+
         self.async_write_ha_state()

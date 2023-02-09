@@ -1,9 +1,0 @@
-{
-    "state": {
-        "_": {
-            "auto": "Auto",
-            "heating": "Heating",
-            "cooling": "Cooling"
-        }
-    }
-}

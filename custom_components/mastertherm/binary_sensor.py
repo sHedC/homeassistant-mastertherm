@@ -1,16 +1,15 @@
 """Support for Mastertherm Binary Sensors."""
 import logging
 
-from homeassistant.core import HomeAssistant
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import CONF_ENTITIES, Platform
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermBinarySensorEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermBinarySensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,6 +35,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.BINARY_SENSOR)
 
 
 class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):

@@ -6,15 +6,24 @@
                 "description": "Login to the Mastertherm cloud service, select the site you log in to: if pre 2022 then it is likely to be mastertherm.vip-it.cz; if post 2022 mastertherm.online.",
                 "data": {
                     "api_verson": "Login Website",
-                    "username": "username",
-                    "password": "password"
+                    "username": "Username",
+                    "password": "Password"
+                }
+            },
+            "reauth_confirm": {
+                "title": "Reauthenticate Cloud Service Login",
+                "description": "Re-Login to the Mastertherm cloud service as authentication failed.  If you need to change the user name delete and re-add the device.",
+                "data": {
+                    "password": "Password"
                 }
             }
         },
         "error": {
             "authentication_error": "Username/ Password is incorrect.",
             "connection_error": "Error connecting to the Mastertherm servers.",
-            "unsupported_role": "Error System Role is not suppored by this integration."
+            "unsupported_role": "Error System Role is not suppored by this integration.",
+            "response_error": "There was an error in the JSON Reponse.",
+            "unknown_reason": "Update Failed for an Unknown Reason."
         },
         "abort": {
             "single_instance_allowed": "Only a single instance is allowed."
@@ -26,6 +35,43 @@
                 "description": "The new mastertherm servers 'mastertherm.online' can lock out with too many requests. If you have multiple more than 2 devices attached to your username, consider 10 min refresh rate or higher. (Limits not fully tested)",
                 "data": {
                     "scan_interval": "Scan interval in minutes"
+                }
+            }
+        }
+    },
+    "entity": {
+        "select": {
+            "hp_function": {
+                "state": {
+                    "auto": "Auto",
+                    "heating": "Heating",
+                    "cooling": "Cooling"
+                }
+            },
+            "season_select": {
+                "state": {
+                    "auto": "Auto",
+                    "winter": "Winter",
+                    "summer": "Summer"
+                }
+            }
+        },
+        "sensor": {
+            "hp_season": {
+                "state": {
+                    "winter": "Winter",
+                    "summer": "Summer",
+                    "auto-winter": "Winter (Auto)",
+                    "auto-summer": "Summer (Auto)"
+                }
+            },
+            "hp_operating_mode": {
+                "state": {
+                    "heating": "Heating",
+                    "cooling": "Cooling",
+                    "pool": "Pool",
+                    "dhw": "Hot Water",
+                    "dpc": "Defrost Protection"
                 }
             }
         }

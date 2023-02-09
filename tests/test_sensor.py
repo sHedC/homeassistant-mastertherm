@@ -6,8 +6,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform, UnitOfTemperature
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
-from custom_components.mastertherm.const import DOMAIN
-from custom_components.mastertherm.entity_mappings import (
+from custom_components.mastertherm.const import (
+    DOMAIN,
     MasterthermSensorEntityDescription,
 )
 
@@ -64,6 +64,6 @@ async def test_sensor_setup(
 
     # Check the Temperature Sensor
     state = hass.states.get("sensor.mt_1234_1_outside_temp")
-    assert state.state == "2.7"
+    assert state.state == "4.9"
     assert state.name == "Outside Temperature"
     assert state.attributes.get("unit_of_measurement") == UnitOfTemperature.CELSIUS

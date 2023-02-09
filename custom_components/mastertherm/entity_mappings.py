@@ -1,58 +1,19 @@
 """Contains all the Entity Mappings from the Mastertherm Connector"""
-from dataclasses import dataclass, field
+# pylint: disable=C0302
+from homeassistant.components.number import NumberDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.switch import SwitchDeviceClass
+from homeassistant.const import PERCENTAGE, TIME_HOURS, UnitOfTemperature
 
-from homeassistant.components.sensor import (
-    SensorEntityDescription,
-    SensorDeviceClass,
-    SensorStateClass,
+from .const import (
+    MasterthermBinarySensorEntityDescription,
+    MasterthermClimateEntityDescription,
+    MasterthermNumberEntityDescription,
+    MasterthermSelectEntityDescription,
+    MasterthermSensorEntityDescription,
+    MasterthermSwitchEntityDescription,
 )
-from homeassistant.components.binary_sensor import (
-    BinarySensorEntityDescription,
-    BinarySensorDeviceClass,
-)
-from homeassistant.components.select import (
-    SelectEntityDescription,
-)
-from homeassistant.components.switch import (
-    SwitchEntityDescription,
-    SwitchDeviceClass,
-)
-from homeassistant.const import Platform, PERCENTAGE, TIME_HOURS
-
-
-@dataclass
-class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
-    """Description for the Mastertherm binary sensor entities."""
-
-
-@dataclass
-class MasterthermSelectEntityDescription(SelectEntityDescription):
-    """Description for the Mastertherm select entities."""
-
-    options_map: dict = field(default_factory=dict)
-    read_only: bool = False
-
-
-@dataclass
-class MasterthermSensorEntityDescription(SensorEntityDescription):
-    """Description for the Mastertherm sensor entities."""
-
-    icon_state_map: dict[str, str] = field(default_factory=dict[str, str])
-
-
-@dataclass
-class MasterthermSwitchEntityDescription(SwitchEntityDescription):
-    """Description for the Mastertherm switch entities."""
-
-    read_only: bool = False
-
-
-ENTITIES: dict[str, str] = {
-    MasterthermBinarySensorEntityDescription.__name__: Platform.BINARY_SENSOR,
-    MasterthermSelectEntityDescription.__name__: Platform.SELECT,
-    MasterthermSensorEntityDescription.__name__: Platform.SENSOR,
-    MasterthermSwitchEntityDescription.__name__: Platform.SWITCH,
-}
 
 # Putting all entities into a single map which hopfully makes it easier
 # to maintain, will split into usable entity lists in the coordinator.
@@ -74,10 +35,16 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc0.ambient_requested",
+            name="HC0 Thermostat",
+            current_temperature_path="heating_circuits.hc0.ambient_temp",
+            requested_temperature_path="heating_circuits.hc0.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc0_pad_current_humidity",
-                name="HC0 PAD Current Humidity",
+                name="HC0 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
@@ -92,10 +59,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc1_on",
-            name="HC1",
+            name="HC1 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc1_cooling",
@@ -134,6 +100,12 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc1.ambient_requested",
+            name="HC1 Thermostat",
+            current_temperature_path="heating_circuits.hc1.ambient_temp",
+            requested_temperature_path="heating_circuits.hc1.ambient_requested",
+        ),
         "pad": {
             "state": MasterthermSensorEntityDescription(
                 key="hc1_pad_state",
@@ -141,11 +113,63 @@ HEATING_CIRCUITS: dict = {
             ),
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc1_pad_current_humidity",
-                name="HC1 PAD Current Humidity",
+                name="HC1 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_heating.setpoint_a_outside",
+                name="HC1 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_heating.setpoint_a_requested",
+                name="HC1 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_heating.setpoint_b_outside",
+                name="HC1 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_heating.setpoint_b_requested",
+                name="HC1 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_cooling.setpoint_a_outside",
+                name="HC1 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_cooling.setpoint_a_requested",
+                name="HC1 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_cooling.setpoint_b_outside",
+                name="HC1 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc1.control_curve_cooling.setpoint_b_requested",
+                name="HC1 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -156,10 +180,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc2_on",
-            name="HC2",
+            name="HC2 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc2_cooling",
@@ -198,14 +221,72 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc2.ambient_requested",
+            name="HC2 Thermostat",
+            current_temperature_path="heating_circuits.hc2.ambient_temp",
+            requested_temperature_path="heating_circuits.hc2.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc2_pad_current_humidity",
-                name="HC2 PAD Current Humidity",
+                name="HC2 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_heating.setpoint_a_outside",
+                name="HC2 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_heating.setpoint_a_requested",
+                name="HC2 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_heating.setpoint_b_outside",
+                name="HC2 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_heating.setpoint_b_requested",
+                name="HC2 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_cooling.setpoint_a_outside",
+                name="HC2 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_cooling.setpoint_a_requested",
+                name="HC2 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_cooling.setpoint_b_outside",
+                name="HC2 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc2.control_curve_cooling.setpoint_b_requested",
+                name="HC2 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -216,10 +297,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc3_on",
-            name="HC3",
+            name="HC3 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc3_cooling",
@@ -258,14 +338,72 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc3.ambient_requested",
+            name="HC3 Thermostat",
+            current_temperature_path="heating_circuits.hc3.ambient_temp",
+            requested_temperature_path="heating_circuits.hc3.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc3_pad_current_humidity",
-                name="HC3 PAD Current Humidity",
+                name="HC3 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_heating.setpoint_a_outside",
+                name="HC3 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_heating.setpoint_a_requested",
+                name="HC3 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_heating.setpoint_b_outside",
+                name="HC3 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_heating.setpoint_b_requested",
+                name="HC3 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_cooling.setpoint_a_outside",
+                name="HC3 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_cooling.setpoint_a_requested",
+                name="HC3 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_cooling.setpoint_b_outside",
+                name="HC3 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc3.control_curve_cooling.setpoint_b_requested",
+                name="HC3 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -276,10 +414,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc4_on",
-            name="HC4",
+            name="HC4 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc4_cooling",
@@ -318,14 +455,72 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc4.ambient_requested",
+            name="HC4 Thermostat",
+            current_temperature_path="heating_circuits.hc4.ambient_temp",
+            requested_temperature_path="heating_circuits.hc4.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc4_pad_current_humidity",
-                name="HC4 PAD Current Humidity",
+                name="HC4 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_heating.setpoint_a_outside",
+                name="HC4 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_heating.setpoint_a_requested",
+                name="HC4 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_heating.setpoint_b_outside",
+                name="HC4 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_heating.setpoint_b_requested",
+                name="HC4 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_cooling.setpoint_a_outside",
+                name="HC4 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_cooling.setpoint_a_requested",
+                name="HC4 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_cooling.setpoint_b_outside",
+                name="HC4 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc4.control_curve_cooling.setpoint_b_requested",
+                name="HC4 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -336,10 +531,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc5_on",
-            name="HC5",
+            name="HC5 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc5_cooling",
@@ -378,14 +572,72 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc5.ambient_requested",
+            name="HC5 Thermostat",
+            current_temperature_path="heating_circuits.hc5.ambient_temp",
+            requested_temperature_path="heating_circuits.hc5.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc5_pad_current_humidity",
-                name="HC5 PAD Current Humidity",
+                name="HC5 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_heating.setpoint_a_outside",
+                name="HC5 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_heating.setpoint_a_requested",
+                name="HC5 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_heating.setpoint_b_outside",
+                name="HC5 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_heating.setpoint_b_requested",
+                name="HC5 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_cooling.setpoint_a_outside",
+                name="HC5 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_cooling.setpoint_a_requested",
+                name="HC5 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_cooling.setpoint_b_outside",
+                name="HC5 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc5.control_curve_cooling.setpoint_b_requested",
+                name="HC5 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -396,10 +648,9 @@ HEATING_CIRCUITS: dict = {
         ),
         "on": MasterthermSwitchEntityDescription(
             key="hc6_on",
-            name="HC6",
+            name="HC6 State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "cooling": MasterthermBinarySensorEntityDescription(
             key="hc6_cooling",
@@ -438,14 +689,72 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "thermostat": MasterthermClimateEntityDescription(
+            key="heating_circuits.hc6.ambient_requested",
+            name="HC6 Thermostat",
+            current_temperature_path="heating_circuits.hc6.ambient_temp",
+            requested_temperature_path="heating_circuits.hc6.ambient_requested",
+        ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
                 key="hc6_pad_current_humidity",
-                name="HC6 PAD Current Humidity",
+                name="HC6 Current Humidity",
                 device_class=SensorDeviceClass.HUMIDITY,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=PERCENTAGE,
                 suggested_unit_of_measurement=PERCENTAGE,
+            ),
+        },
+        "control_curve_heating": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_heating.setpoint_a_outside",
+                name="HC6 Heating Curve A Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_heating.setpoint_a_requested",
+                name="HC6 Heating Curve A Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_heating.setpoint_b_outside",
+                name="HC6 Heating Curve B Outside",
+                min_lookup="control_curve_heating.outside_min",
+                max_lookup="control_curve_heating.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_heating.setpoint_b_requested",
+                name="HC6 Heating Curve B Requested",
+                min_lookup="control_curve_heating.requested_min",
+                max_lookup="control_curve_heating.requested_max",
+            ),
+        },
+        "control_curve_cooling": {
+            "setpoint_a_outside": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_cooling.setpoint_a_outside",
+                name="HC6 Cooling Curve A Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_a_requested": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_cooling.setpoint_a_requested",
+                name="HC6 Cooling Curve A Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
+            ),
+            "setpoint_b_outside": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_cooling.setpoint_b_outside",
+                name="HC6 Cooling Curve B Outside",
+                min_lookup="control_curve_cooling.outside_min",
+                max_lookup="control_curve_cooling.outside_max",
+            ),
+            "setpoint_b_requested": MasterthermNumberEntityDescription(
+                key="hc6.control_curve_cooling.setpoint_b_requested",
+                name="HC6 Cooling Curve B Requested",
+                min_lookup="control_curve_cooling.requested_min",
+                max_lookup="control_curve_cooling.requested_max",
             ),
         },
     },
@@ -454,44 +763,43 @@ HEATING_CIRCUITS: dict = {
             key="solar_name",
             name="Solar Name",
         ),
-        "s1_temp": MasterthermSensorEntityDescription(
-            key="solar_s1_temp",
+        "solar_collector": MasterthermSensorEntityDescription(
+            key="solar_collector",
             name="Solar 1 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "s2_temp": MasterthermSensorEntityDescription(
-            key="solar_s2_temp",
-            name="Solar 2 Temperature",
+        "water_tank1": MasterthermSensorEntityDescription(
+            key="solar_water_tank1",
+            name="Solar Water Tank 1 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-        "s3_temp": MasterthermSensorEntityDescription(
-            key="solar_s3_temp",
-            name="Solar 3 Temperature",
+        "water_tank2": MasterthermSensorEntityDescription(
+            key="solar_water_tank2",
+            name="Solar Water Tank 2 Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
     },
     "pool": {
         "name": MasterthermSensorEntityDescription(
-            key="solar_name",
-            name="Solar Name",
+            key="pool_name",
+            name="Pool Name",
         ),
         "on": MasterthermSwitchEntityDescription(
             key="pool_on",
-            name="Pool",
+            name="Pool State",
             device_class=SwitchDeviceClass.SWITCH,
             icon="mdi:power",
-            read_only=True,
         ),
         "heating": MasterthermBinarySensorEntityDescription(
             key="pool_heating",
             name="Pool Heating",
             device_class=BinarySensorDeviceClass.HEAT,
         ),
-        "s1_temp": MasterthermSensorEntityDescription(
-            key="pool_s1_temp",
+        "temp_actual": MasterthermSensorEntityDescription(
+            key="pool_temp_actual",
             name="Pool Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
@@ -502,6 +810,12 @@ HEATING_CIRCUITS: dict = {
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
         ),
+        "control": MasterthermClimateEntityDescription(
+            key="heating_circuits.pool.enabled",
+            name="Pool Control",
+            current_temperature_path="heating_circuits.pool.temp_actual",
+            requested_temperature_path="heating_circuits.pool.temp_requested",
+        ),
     },
 }
 
@@ -511,34 +825,55 @@ ENTITY_TYPES_MAP: dict = {
         name="HP Power",
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:power",
-        read_only=True,
     ),
     "hp_function": MasterthermSelectEntityDescription(
         key="hp_function",
         name="HP Function",
+        translation_key="hp_function",
         options_map={
             "heating": 0,
             "cooling": 1,
             "auto": 2,
         },
         options=["heating", "cooling", "auto"],
-        read_only=True,
     ),
-    "season": MasterthermSensorEntityDescription(
-        key="season",
-        name="Season",
-        icon="mdi:weather-partly-snowy-rainy",
-        icon_state_map={
-            "winter": "mdi:weather-snowy-heavy",
-            "summer": "mdi:weather-sunny",
-            "auto:winter": "mdi:weather-snowy-heavy",
-            "auto:summer": "mdi:weather-sunny",
-        },
-    ),
+    "season": {
+        "mode": MasterthermSensorEntityDescription(
+            key="season_mode",
+            name="Season",
+            translation_key="hp_season",
+            icon="mdi:weather-partly-snowy-rainy",
+            icon_state_map={
+                "winter": "mdi:weather-snowy-heavy",
+                "summer": "mdi:weather-sunny",
+                "auto-winter": "mdi:weather-snowy-heavy",
+                "auto-summer": "mdi:weather-sunny",
+            },
+        ),
+        "select": MasterthermSelectEntityDescription(  # ID is hard codes.
+            key="season_select",
+            name="Season Select",
+            translation_key="season_select",
+            options=["auto", "winter", "summer"],
+        ),
+        "winter_temp": MasterthermNumberEntityDescription(
+            key="winter_temp",
+            name="Winter Temperature",
+            native_min_value=-20.0,
+            native_max_value=40.0,
+        ),
+        "summer_temp": MasterthermNumberEntityDescription(
+            key="summer_temp",
+            name="Summer Temperature",
+            native_min_value=-20.0,
+            native_max_value=40.0,
+        ),
+    },
     "operating_mode": MasterthermSensorEntityDescription(
         key="operating_mode",
         name="HP Operating Mode",
         icon="mdi:weather-partly-snowy-rainy",
+        translation_key="hp_operating_mode",
         icon_state_map={
             "heating": "mdi:sun-thermometer",
             "cooling": "mdi:coolant-temperature",
@@ -551,6 +886,74 @@ ENTITY_TYPES_MAP: dict = {
         key="cooling_mode",
         name="Cooling Mode",
     ),
+    "control_curve_heating": {
+        "setpoint_a_outside": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_a_outside",
+            name="Heating Curve A Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_heating.outside_min",
+            max_lookup="control_curve_heating.outside_max",
+        ),
+        "setpoint_a_requested": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_a_requested",
+            name="Heating Curve A Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_heating.requested_min",
+            max_lookup="control_curve_heating.requested_max",
+        ),
+        "setpoint_b_outside": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_b_outside",
+            name="Heating Curve B Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_heating.outside_min",
+            max_lookup="control_curve_heating.outside_max",
+        ),
+        "setpoint_b_requested": MasterthermNumberEntityDescription(
+            key="control_curve_heating.setpoint_b_requested",
+            name="Heating Curve B Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_heating.requested_min",
+            max_lookup="control_curve_heating.requested_max",
+        ),
+    },
+    "control_curve_cooling": {
+        "setpoint_a_outside": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_a_outside",
+            name="Cooling Curve A Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_cooling.outside_min",
+            max_lookup="control_curve_cooling.outside_max",
+        ),
+        "setpoint_a_requested": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_a_requested",
+            name="Cooling Curve A Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_cooling.requested_min",
+            max_lookup="control_curve_cooling.requested_max",
+        ),
+        "setpoint_b_outside": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_b_outside",
+            name="Cooling Curve B Outside",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_cooling.outside_min",
+            max_lookup="control_curve_cooling.outside_max",
+        ),
+        "setpoint_b_requested": MasterthermNumberEntityDescription(
+            key="control_curve_cooling.setpoint_b_requested",
+            name="Cooling Curve B Requested",
+            device_class=NumberDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            min_lookup="control_curve_cooling.requested_min",
+            max_lookup="control_curve_cooling.requested_max",
+        ),
+    },
     "domestic_hot_water": {
         "heating": MasterthermBinarySensorEntityDescription(
             key="dhw_heating",
@@ -572,6 +975,14 @@ ENTITY_TYPES_MAP: dict = {
             name="DHW Required Temperature",
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
+        ),
+        "control": MasterthermClimateEntityDescription(
+            key="domestic_hot_water.enabled",
+            name="DHW Control",
+            min_temp="domestic_hot_water.min_temp",
+            max_temp="domestic_hot_water.max_temp",
+            current_temperature_path="domestic_hot_water.current_temp",
+            requested_temperature_path="domestic_hot_water.required_temp",
         ),
     },
     "compressor_running": MasterthermBinarySensorEntityDescription(
@@ -628,9 +1039,9 @@ ENTITY_TYPES_MAP: dict = {
         key="dewp_control",
         name="Dew Point Control",
     ),
-    "hdo_on": MasterthermBinarySensorEntityDescription(
-        key="hdo_on",
-        name="High Tarrif (HDO)",
+    "high_tariff_control": MasterthermBinarySensorEntityDescription(
+        key="high_tariff_control",
+        name="High Tariff Control",
     ),
     "runtime_info": {
         "compressor_run_time": MasterthermSensorEntityDescription(
@@ -670,20 +1081,6 @@ ENTITY_TYPES_MAP: dict = {
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=TIME_HOURS,
             suggested_unit_of_measurement=TIME_HOURS,
-        ),
-    },
-    "season_info": {
-        "hp_season": MasterthermSwitchEntityDescription(
-            key="winter_season",
-            name="Winter Season",
-            device_class=SwitchDeviceClass.SWITCH,
-            read_only=True,
-        ),
-        "hp_seasonset": MasterthermSwitchEntityDescription(
-            key="auto_season",
-            name="Auto Season",
-            device_class=SwitchDeviceClass.SWITCH,
-            read_only=True,
         ),
     },
     "error_info": {

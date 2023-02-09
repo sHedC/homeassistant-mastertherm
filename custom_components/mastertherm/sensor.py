@@ -6,14 +6,13 @@ import logging
 from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.const import CONF_ENTITIES, UnitOfTemperature, Platform
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermSensorEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermSensorEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -39,6 +38,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.SENSOR)
 
 
 class MasterthermSensor(MasterthermEntity, SensorEntity):

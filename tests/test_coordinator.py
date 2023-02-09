@@ -3,13 +3,14 @@ from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import UpdateFailed
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from masterthermconnect import MasterthermTokenInvalid
 
 from custom_components.mastertherm.config_flow import DOMAIN
+from custom_components.mastertherm.coordinator import MasterthermDataUpdateCoordinator
 
 from .conftest import APIMock
 
@@ -69,7 +70,7 @@ async def test_multiple_token_failures(hass: HomeAssistant, mock_configdata: dic
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coordinator: DataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     # Test token failure does not crash but re-tries
     with patch(

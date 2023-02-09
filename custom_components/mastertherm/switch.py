@@ -3,16 +3,15 @@ import logging
 
 from typing import Any
 
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import CONF_ENTITIES, Platform
 
-from .const import DOMAIN
+from .const import DOMAIN, MasterthermSwitchEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
-from .entity_mappings import MasterthermSwitchEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,6 +37,7 @@ async def async_setup_entry(
                 )
 
     async_add_entities(entities, True)
+    coordinator.remove_old_entities(Platform.SWITCH)
 
 
 class MasterthermSwitch(MasterthermEntity, SwitchEntity):
@@ -58,16 +58,29 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
             entity_description=entity_description,
         )
 
+        self._read_only = entity_description.read_only
+
     @property
     def is_on(self) -> bool | None:
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
+        return self.coordinator.get_state(self._module_key, self._entity_key)
 
-    def turn_on(self, **kwargs: Any) -> None:
-        """Reset the update, not supported at this time."""
-        self.schedule_update_ha_state()
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self.async_write_ha_state()
 
-    def turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Update to turn on the given switch."""
+        if not self._read_only:
+            await self.coordinator.update_state(
+                self._module_key, self._entity_key, True
+            )
+        self.async_write_ha_state()
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
         """Reset the update, not supported at this time."""
-        self.schedule_update_ha_state()
+        if not self._read_only:
+            await self.coordinator.update_state(
+                self._module_key, self._entity_key, False
+            )
+        self.async_write_ha_state()

@@ -1,25 +1,19 @@
-"""Mastertherm Switch Tests."""
+"""MasterTherm Climate Tests."""
 from unittest.mock import patch
-
 import pytest
 
+from homeassistant.components.climate import (
+    DOMAIN as CLIMATE_DOMAIN,
+    SERVICE_SET_TEMPERATURE,
+)
+from homeassistant.const import Platform, ATTR_ENTITY_ID, ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
-from homeassistant.components.switch import (
-    DOMAIN as SWITCH_DOMAIN,
-    SERVICE_TURN_OFF,
-    SERVICE_TURN_ON,
-)
-from homeassistant.const import (
-    Platform,
-    ATTR_ENTITY_ID,
-    STATE_ON,
-    STATE_OFF,
-)
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
 from custom_components.mastertherm.const import (
     DOMAIN,
-    MasterthermSwitchEntityDescription,
+    MasterthermClimateEntityDescription,
 )
 
 from .conftest import APIMock
@@ -27,54 +21,65 @@ from .conftest import APIMock
 
 @pytest.fixture(autouse=True)
 def override_entity():
-    """Override the ENTITIES to test Switches."""
+    """Override the ENTITIES to test Climate."""
     with patch(
         "custom_components.mastertherm.ENTITIES",
-        {MasterthermSwitchEntityDescription.__name__: Platform.SWITCH},
+        {MasterthermClimateEntityDescription.__name__: Platform.CLIMATE},
     ), patch(
         "custom_components.mastertherm.coordinator.ENTITIES",
-        {MasterthermSwitchEntityDescription.__name__: Platform.SWITCH},
+        {MasterthermClimateEntityDescription.__name__: Platform.CLIMATE},
     ):
         yield
 
 
-async def test_switch_setup(
+async def test_climate_setup(
     hass: HomeAssistant,
     mock_configdata: dict,
-    mock_entitydata: dict,
 ):
-    """Test Switches are Created and Updated."""
+    """Test Climate Entities are Created and Updated."""
+    # Setting up using Mock requires the actual config not the Domain
+    # changed the way the test works to send without domain.
+    api_mock = APIMock()
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 
-    # Patch the Autentication and setup the entry.
     with patch(
-        (
-            "custom_components.mastertherm.coordinator."
-            "MasterthermDataUpdateCoordinator._async_update_data"
-        ),
-        return_value=mock_entitydata,
-    ) as mock_updater:
+        "custom_components.mastertherm.config_flow.authenticate",
+        return_value={"status": "success"},
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.connect",
+        side_effect=api_mock.connect,
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.refresh",
+        side_effect=api_mock.refresh,
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.get_devices",
+        side_effect=api_mock.get_devices,
+    ), patch(
+        "custom_components.mastertherm.coordinator.MasterthermController.get_device_data",
+        side_effect=api_mock.get_device_data,
+    ):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    # Check we called the Mock and we have a Sensor.
-    assert len(mock_updater.mock_calls) >= 1, "Mock Entity was not called."
-    assert (
-        hass.states.async_entity_ids_count(Platform.SWITCH) > 0
-    ), "Switches Failed to Create"
+        # Check we called the Mock and we have a Sensor.
+        assert (
+            hass.states.async_entity_ids_count(Platform.CLIMATE) > 0
+        ), "Climate Entities Failed to Create"
 
-    # Check the Power Switch
-    state = hass.states.get("switch.mt_1234_1_hp_power_state")
-    assert state.state
-    assert state.name == "HP Power"
+        # Check the Temperature Sensor
+        state = hass.states.get("climate.mt_1234_1_heating_circuits_hc1_thermostat")
+        assert state.attributes.get("current_temperature") == 20.0
+        assert state.attributes.get("temperature") == 20.0
 
 
-async def test_switch_on(
+async def test_climate_update(
     hass: HomeAssistant,
     mock_configdata: dict,
 ):
-    """Test switching on updates."""
+    """Test Climate Entities are UPdated."""
+    # Setting up using Mock requires the actual config not the Domain
+    # changed the way the test works to send without domain.
     api_mock = APIMock()
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
@@ -101,62 +106,16 @@ async def test_switch_on(
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-        state = hass.states.get("switch.mt_1234_1_hp_power_state")
-        assert state.state == STATE_ON
-
         await hass.services.async_call(
-            SWITCH_DOMAIN,
-            SERVICE_TURN_OFF,
-            {ATTR_ENTITY_ID: "switch.mt_1234_1_hp_power_state"},
+            CLIMATE_DOMAIN,
+            SERVICE_SET_TEMPERATURE,
+            {
+                ATTR_ENTITY_ID: "climate.mt_1234_1_heating_circuits_hc1_thermostat",
+                ATTR_TEMPERATURE: 20.2,
+            },
             blocking=True,
         )
         await hass.async_block_till_done()
 
-    state = hass.states.get("switch.mt_1234_1_hp_power_state")
-    assert state.state == STATE_OFF
-
-
-async def test_dot_switch_on(
-    hass: HomeAssistant,
-    mock_configdata: dict,
-):
-    """Test switching parent child on works."""
-    api_mock = APIMock()
-    entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
-    entry.add_to_hass(hass)
-
-    with patch(
-        "custom_components.mastertherm.config_flow.authenticate",
-        return_value={"status": "success"},
-    ), patch(
-        "custom_components.mastertherm.coordinator.MasterthermController.connect",
-        side_effect=api_mock.connect,
-    ), patch(
-        "custom_components.mastertherm.coordinator.MasterthermController.refresh",
-        side_effect=api_mock.refresh,
-    ), patch(
-        "custom_components.mastertherm.coordinator.MasterthermController.get_devices",
-        side_effect=api_mock.get_devices,
-    ), patch(
-        "custom_components.mastertherm.coordinator.MasterthermController.get_device_data",
-        side_effect=api_mock.get_device_data,
-    ), patch(
-        "custom_components.mastertherm.coordinator.MasterthermController.set_device_data_item",
-        side_effect=api_mock.set_device_data_item,
-    ):
-        await hass.config_entries.async_setup(entry.entry_id)
-        await hass.async_block_till_done()
-
-        state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
-        assert state.state == STATE_OFF
-
-        await hass.services.async_call(
-            SWITCH_DOMAIN,
-            SERVICE_TURN_ON,
-            {ATTR_ENTITY_ID: "switch.mt_1234_1_heating_circuits_hc1_on"},
-            blocking=True,
-        )
-        await hass.async_block_till_done()
-
-    state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
-    assert state.state == STATE_ON
+        state = hass.states.get("climate.mt_1234_1_heating_circuits_hc1_thermostat")
+        assert state.attributes.get("temperature") == 20.2

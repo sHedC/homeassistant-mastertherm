@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - sHedC/issue21
+      - nextrelease
 
 jobs:
   validate:

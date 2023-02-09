@@ -1,8 +1,9 @@
 """Helper and wrapper classes for MasterTherm module."""
 import logging
+import asyncio
 
 from datetime import timedelta
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientTimeout
 
 from masterthermconnect import (
     MasterthermController,
@@ -11,24 +12,32 @@ from masterthermconnect import (
     MasterthermUnsupportedRole,
     MasterthermTokenInvalid,
     MasterthermResponseFormatError,
+    MasterthermEntryNotFound,
 )
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.entity_registry import (
+    RegistryEntry,
+    async_get,
+    async_entries_for_config_entry,
+)
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
 
-from .const import DOMAIN
-from .entity_mappings import ENTITY_TYPES_MAP, ENTITIES
+from .const import DOMAIN, ENTITIES
+from .entity_mappings import ENTITY_TYPES_MAP
 
 _LOGGER = logging.getLogger(__name__)
 
 
 class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     """MasterTherm Device and Data Updater from single HTTPS Session."""
+
+    api_lock = asyncio.Lock()
 
     def __init__(
         self,
@@ -37,6 +46,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         password: str,
         api_version: str,
         scan_interval: int,
+        entry_id: str,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
@@ -46,10 +56,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=scan_interval),
         )
 
-        # Temporary Exception Handling
-        self.temporary_exception = False
+        # Do we need to connect
+        self.reconnect = True
+        self.cleanup = True
 
-        self.session = ClientSession()
+        self.session = ClientSession(timeout=ClientTimeout(total=10))
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
@@ -67,7 +78,17 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             ENTITY_TYPES_MAP
         )
         self.platforms = []
-        self._modules = []
+        self.old_entries: dict[str, list[str]] = {}
+        self.entity_registry = async_get(hass)
+
+        # Convert registries into Entity Platform and ID.
+        registry_entries = async_entries_for_config_entry(
+            self.entity_registry, entry_id
+        )
+        for reg_entity in registry_entries:
+            if not reg_entity.domain in self.old_entries:
+                self.old_entries[reg_entity.domain] = []
+            self.old_entries[reg_entity.domain].append(reg_entity.entity_id)
 
     async def __aenter__(self):
         """Return Self."""
@@ -121,60 +142,105 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
-        # Try to refresh, check for refresh issues
-        try:
-            if self.data is None or self.temporary_exception:
-                connected = await self.mt_controller.connect()
-                self.temporary_exception = False
+        async with self.api_lock:
+            # Try to refresh, check for refresh issues
+            try:
+                if self.data is None or self.reconnect:
+                    connected = await self.mt_controller.connect()
+                    self.reconnect = False
 
-            connected = await self.mt_controller.refresh()
+                connected = await self.mt_controller.refresh()
 
-            if not connected:
-                _LOGGER.error("Update Failed for unknown reason")
-                raise UpdateFailed("unknown_reason")
+                if not connected:
+                    raise UpdateFailed("unknown_reason")
 
-        except MasterthermAuthenticationError as ex:
-            _LOGGER.error("Invalid credentials: %s", ex)
-            raise ConfigEntryAuthFailed("authentication_error") from ex
-        except MasterthermUnsupportedRole as ex:
-            _LOGGER.error("Unsupported role: %s", ex)
-            raise UpdateFailed("unsupported_role") from ex
-        except MasterthermConnectionError as ex:
-            _LOGGER.warning("Unable to communicate with MasterTherm API: %s", ex)
-            self.temporary_exception = True
-        except MasterthermTokenInvalid as ex:
-            _LOGGER.warning("Invalid Token: %s", ex)
-            self.temporary_exception = True
-        except MasterthermResponseFormatError as ex:
-            _LOGGER.warning("Response Format Error: %s", ex)
-            self.temporary_exception = True
+            except MasterthermAuthenticationError as ex:
+                _LOGGER.error("Invalid credentials: %s:%s", ex.status, ex.message)
+                raise ConfigEntryAuthFailed("authentication_error") from ex
+            except MasterthermUnsupportedRole as ex:
+                _LOGGER.error("Unsupported role: %s:%s", ex.status, ex.message)
+                raise ConfigEntryAuthFailed("unsupported_role") from ex
+            except MasterthermConnectionError as ex:
+                _LOGGER.warning("Connection Error %s:%s", ex.status, ex.message)
+                raise UpdateFailed("connection_error") from ex
+            except MasterthermTokenInvalid as ex:
+                _LOGGER.warning("Invalid Token: %s:%s", ex.status, ex.message)
+                self.reconnect = True
+            except MasterthermResponseFormatError as ex:
+                _LOGGER.warning("Response Format Error: %s:%s", ex.status, ex.message)
+                raise UpdateFailed("response_error") from ex
 
-        # If first run then populate the Modules.
-        result_data = self.data
-        if result_data is None:
-            result_data = {"modules": {}}
-            devices = self.mt_controller.get_devices()
-            for device_id, device in devices.items():
-                result_data["modules"][device_id] = {"info": device}
+            # If first run then populate the Modules.
+            result_data = self.data
+            if result_data is None:
+                result_data = {"modules": {}}
+                devices = self.mt_controller.get_devices()
+                for device_id, device in devices.items():
+                    result_data["modules"][device_id] = {"info": device}
 
-        # Retrieve the data and merge into the current data set based
-        # based on the sensor configuration.
-        for device_id, device in result_data["modules"].items():
-            device_data = self.mt_controller.get_device_data(
-                device["info"]["module_id"], device["info"]["unit_id"]
-            )
-
-            # Process Device Data and populate the data to pass to the Entities
-            if "entities" in result_data["modules"][device_id]:
-                result_data["modules"][device_id]["entities"].update(
-                    self.__build_entities("", device_data)
+            # Retrieve the data and merge into the current data set based
+            # based on the sensor configuration.
+            for device_id, device in result_data["modules"].items():
+                device_data = self.mt_controller.get_device_data(
+                    device["info"]["module_id"], device["info"]["unit_id"]
                 )
-            else:
-                result_data["modules"][device_id]["entities"] = self.__build_entities(
-                    "", device_data
-                )
+
+                # Process Device Data and populate the data to pass to the Entities
+                if "entities" in result_data["modules"][device_id]:
+                    result_data["modules"][device_id]["entities"].update(
+                        self.__build_entities("", device_data)
+                    )
+                else:
+                    result_data["modules"][device_id][
+                        "entities"
+                    ] = self.__build_entities("", device_data)
+
+            asyncio.sleep(0.1)
 
         return result_data
+
+    async def update_state(self, module_key: str, entity_key: str, state: any):
+        """Attempt to Update the State, data is in dot notation to get parent, child."""
+        async with self.api_lock:
+            # Get the Module and Unit ID.
+            module_id = self.data["modules"][module_key]["info"]["module_id"]
+            unit_id = self.data["modules"][module_key]["info"]["unit_id"]
+
+            return_value = False
+            try:
+                return_value = await self.mt_controller.set_device_data_item(
+                    module_id, unit_id, entity_key, state
+                )
+            except MasterthermConnectionError as ex:
+                _LOGGER.warning("Connection Error %s:%s", ex.status, ex.message)
+                raise UpdateFailed("connection_error") from ex
+            except MasterthermAuthenticationError as ex:
+                _LOGGER.error("Invalid credentials: %s:%s", ex.status, ex.message)
+                raise ConfigEntryAuthFailed("authentication_error") from ex
+            except MasterthermEntryNotFound as ex:
+                _LOGGER.warning("Entity not found or Read Only %s", ex)
+
+            # Update data internally, on failure will reset back.
+            if return_value:
+                self.data["modules"][module_key]["entities"][entity_key] = state
+
+            # Sleep for 1 second before returning so we don't throttle the API
+            asyncio.sleep(0.1)
+
+    def get_state(self, module_key: str, entity_key: str) -> any:
+        """Get the State from the core data."""
+        return self.data["modules"][module_key]["entities"][entity_key]
+
+    def remove_old_entities(self, platform: str) -> None:
+        """Remove old entities that are no longer provided."""
+        if platform in self.old_entries:
+            for entity_id in self.old_entries[platform]:
+                _LOGGER.warning(
+                    "Removing Old Entities for platform: %s, entity_id: %s",
+                    platform,
+                    entity_id,
+                )
+                self.entity_registry.async_remove(entity_id)
 
 
 async def authenticate(username: str, password: str, api_version: str) -> dict:

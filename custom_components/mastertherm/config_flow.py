@@ -1,9 +1,15 @@
 """MasterTherm Config Flow."""
 import logging
+from typing import Any
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
-from homeassistant import config_entries
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    OptionsFlow,
+    CONN_CLASS_CLOUD_POLL,
+)
 from homeassistant.core import callback
 from homeassistant.const import (
     CONF_PASSWORD,
@@ -11,6 +17,7 @@ from homeassistant.const import (
     CONF_API_VERSION,
     CONF_SCAN_INTERVAL,
 )
+from homeassistant.data_entry_flow import FlowResult
 
 from .const import DOMAIN, API_VERSIONS, DEFAULT_REFRESH
 from .coordinator import authenticate
@@ -21,18 +28,21 @@ MASTERTHERM_OUR = {""}
 DEFAULT_PORT = 80
 
 
-class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for MasterTherm."""
 
     # Used to call the migration method if the verison changes.
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
+    CONNECTION_CLASS = CONN_CLASS_CLOUD_POLL
 
-    def __init__(self):
-        """Initialize."""
+    def __init__(self) -> None:
+        """Initialize the Masterhterm Flow."""
+        self.reauth_entry: ConfigEntry | None = None
         self._errors = {}
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle a flow initialized by the user."""
         self._errors = {}
 
@@ -65,12 +75,51 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_create_entry(title=user_input[CONF_USERNAME], data=user_input)
 
+    async def async_step_reauth_confirm(
+        self,
+        user_input: dict[str, Any] | None = None,  # pylint: disable=unused-argument
+    ) -> FlowResult:
+        """Handle reauth confirmation."""
+        assert self.reauth_entry is not None
+
+        # if there is no user input then re-direct the user step.
+        if user_input is not None:
+            entry_data = self.reauth_entry.data
+
+            auth_result = await authenticate(
+                entry_data[CONF_USERNAME],
+                user_input[CONF_PASSWORD],
+                entry_data[CONF_API_VERSION],
+            )
+
+            if auth_result["status"] == "success":
+                self.hass.config_entries.async_update_entry(
+                    self.reauth_entry, data={**entry_data, **user_input}
+                )
+                await self.hass.config_entries.async_reload(self.reauth_entry.entry_id)
+                return self.async_abort(reason="reauth_successful")
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=vol.Schema({vol.Required(CONF_PASSWORD): cv.string}),
+            errors=self._errors,
+        )
+
+    async def async_step_reauth(
+        self, user_input: dict[str, Any]  # pylint: disable=unused-argument
+    ) -> FlowResult:
+        """Handle configuration by re-auth."""
+        self.reauth_entry = self.hass.config_entries.async_get_entry(
+            self.context["entry_id"]
+        )
+        return await self.async_step_reauth_confirm()
+
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
         return MasterthermOptionsFlowHandler(config_entry)
 
-    async def _show_config_form(self, user_input: dict):
+    async def _show_config_form(self, user_input: dict[str, Any]):
         """Show the configuration form to edit location data."""
         return self.async_show_form(
             step_id="user",
@@ -91,19 +140,24 @@ class MasterthermFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
 
-class MasterthermOptionsFlowHandler(config_entries.OptionsFlow):
+class MasterthermOptionsFlowHandler(OptionsFlow):
     """Mastertherm config options flow handler."""
 
-    def __init__(self, config_entry):
+    def __init__(self, config_entry: ConfigEntry) -> None:
         """Initialize HACS options flow."""
         self.config_entry = config_entry
         self.options = dict(config_entry.options)
 
-    async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
+    async def async_step_init(
+        self,
+        user_input: dict[str, Any] | None = None,  # pylint: disable=unused-argument
+    ) -> FlowResult:
         """Manage the options."""
         return await self.async_step_user()
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle a flow initialized by the user."""
         if user_input is not None:
             self.options.update(user_input)
@@ -121,7 +175,7 @@ class MasterthermOptionsFlowHandler(config_entries.OptionsFlow):
             ),
         )
 
-    async def _update_options(self):
+    async def _update_options(self) -> FlowResult:
         """Update config entry options."""
         return self.async_create_entry(
             title=self.config_entry.data.get(CONF_USERNAME), data=self.options

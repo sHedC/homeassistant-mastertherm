@@ -1,219 +1,120 @@
 {
-    "0_1": {
-        "hp_power_state": false,
-        "hp_function": 0,
-        "cooling_mode": false,
-        "domestic_hot_water": {
-            "function": false,
+    "hp_power_state": true,
+    "hp_function": 2,
+    "operating_mode": "heating",
+    "season": {
+        "mode": "auto-winter",
+        "manual_set": false,
+        "winter": true,
+        "winter_temp": 11.0,
+        "summer_temp": 14.0
+    },
+    "cooling_mode": false,
+    "control_curve_heating": {
+        "setpoint_a_outside": 20.5,
+        "setpoint_a_requested": 29.0,
+        "setpoint_b_outside": -15.0,
+        "setpoint_b_requested": 40.0,
+        "requested_min": 20.0,
+        "requested_max": 47.5,
+        "outside_min": -30.0,
+        "outside_max": 30.0
+    },
+    "control_curve_cooling": {
+        "setpoint_a_outside": 21.0,
+        "setpoint_a_requested": 30.0,
+        "setpoint_b_outside": 20.0,
+        "setpoint_b_requested": 14.5,
+        "requested_min": 14.5,
+        "requested_max": 30.0,
+        "outside_min": 0.0,
+        "outside_max": 40.0
+    },
+    "domestic_hot_water": {
+        "heating": false,
+        "enabled": true,
+        "current_temp": 54.8,
+        "required_temp": 40.0,
+        "min_temp": 0.0,
+        "max_temp": 45.0
+    },
+    "compressor_running": false,
+    "compressor2_running": false,
+    "circulation_pump_running": true,
+    "fan_running": true,
+    "defrost_mode": false,
+    "aux_heater_1": false,
+    "aux_heater_2": false,
+    "outside_temp": 8.3,
+    "requested_temp": 37.6,
+    "actual_temp": 35.0,
+    "dewp_control": false,
+    "high_tariff_control": false,
+    "runtime_info": {
+        "compressor_run_time": 1300,
+        "compressor_start_counter": 599,
+        "pump_runtime": 1460,
+        "aux1_runtime": 0,
+        "aux2_runtime": 0
+    },
+    "error_info": {
+        "some_error": false,
+        "three_errors": false,
+        "reset_3e": false,
+        "safety_tstat": true,
+        "alarm_a": 0,
+        "alarm_b": 0,
+        "alarm_c": 0,
+        "alarm_d": 0,
+        "alarm_e": 0,
+        "alarm_f": 3,
+        "alarm_g": 0,
+        "alarm_h": 0,
+        "alarm_i": 0,
+        "alarm_j": 0,
+        "alarm_k": 0,
+        "alarm_l": 0,
+        "alarm_m": 0
+    },
+    "heating_circuits": {
+        "hc1": {
             "enabled": true,
-            "current_temp": 54.8,
-            "required_temp": 45.0,
-            "min": 0.0,
-            "max": 45.0
-        },
-        "pool_function": false,
-        "compressor_running": false,
-        "compressor2_running": false,
-        "circulation_pump_running": true,
-        "fan_running": true,
-        "defrost_mode": false,
-        "aux_heater_1": false,
-        "aux_heater_2": false,
-        "outside_temp": 8.3,
-        "requested_temp": 37.6,
-        "actual_temp": 35.0,
-        "dewp_control": false,
-        "hdo_on": true,
-        "runtime_info": {
-            "compressor_run_time": 1300,
-            "compressor_start_counter": 599,
-            "pump_runtime": 1460,
-            "aux1_runtime": 0,
-            "aux2_runtime": 0
-        },
-        "season_info": {
-            "hp_season": true,
-            "hp_seasonset": 1,
-            "hp_season_winter": 10.5,
-            "hp_season_summer": 14.0
-        },
-        "error_info": {
-            "some_error": false,
-            "three_errors": false,
-            "reset_3e": false,
-            "safety_tstat": true,
-            "alarm_a": 0,
-            "alarm_b": 0,
-            "alarm_c": 0,
-            "alarm_d": 0,
-            "alarm_e": 0,
-            "alarm_f": 3,
-            "alarm_g": 0,
-            "alarm_h": 0,
-            "alarm_i": 0,
-            "alarm_j": 0,
-            "alarm_k": 0,
-            "alarm_l": 0,
-            "alarm_m": 0
-        },
-        "heating_circuits": {
-            "hc0": {
-                "enabled": false,
-                "name": "Důmek",
-                "on": false,
-                "ambient_temp": 21.0,
-                "ambient_requested": 20.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 24.0,
-                    "setpoint_a_requested": 27.0,
-                    "setpoint_b_outside": -24.5,
-                    "setpoint_b_requested": 38.5
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 18.5,
-                    "setpoint_a_requested": 24.5,
-                    "setpoint_b_outside": 29.5,
-                    "setpoint_b_requested": 14.0
-                }
+            "name": "Dílna",
+            "on": true,
+            "cooling": false,
+            "circulation_valve": true,
+            "water_temp": 21.0,
+            "water_requested": 27.5,
+            "auto": 2,
+            "ambient_requested": 21.7,
+            "ambient_temp": 20.0,
+            "control_curve_heating": {
+                "setpoint_a_outside": 20.0,
+                "setpoint_a_requested": 22.5,
+                "setpoint_b_outside": -15.0,
+                "setpoint_b_requested": 22.5
             },
-            "hc1": {
-                "enabled": true,
-                "name": "Dílna",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": true,
-                "water_temp": 21.0,
-                "water_requested": 27.5,
-                "ambient_temp": 20.0,
-                "ambient_requested": 22.8,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 13.5,
-                    "setpoint_a_requested": 30.5,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 47.5
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 19.5,
-                    "setpoint_a_requested": 29.5,
-                    "setpoint_b_outside": 19.5,
-                    "setpoint_b_requested": 14.5
-                }
-            },
-            "hc2": {
-                "enabled": false,
-                "name": "Bazén",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": false,
-                "water_temp": 21.0,
-                "water_requested": 25.3,
-                "ambient_temp": 20.0,
-                "ambient_requested": 21.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 30.0
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 14.5,
-                    "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 14.5
-                }
-            },
-            "hc3": {
-                "enabled": false,
-                "name": "PAD-13",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": false,
-                "water_temp": 0.0,
-                "water_requested": 25.3,
-                "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 30.0
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 14.5,
-                    "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 14.5
-                }
-            },
-            "hc4": {
-                "enabled": false,
-                "name": "PAD-14",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": false,
-                "water_temp": 0.0,
-                "water_requested": 25.3,
-                "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 30.0
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 14.5,
-                    "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 14.5
-                }
-            },
-            "hc5": {
-                "enabled": false,
-                "name": "PAD-15",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": false,
-                "water_temp": 0.0,
-                "water_requested": 25.3,
-                "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 30.0
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 14.5,
-                    "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 14.5
-                }
-            },
-            "hc6": {
-                "enabled": false,
-                "name": "PAD-16",
-                "on": false,
-                "cooling": false,
-                "circulation_valve": false,
-                "water_temp": 0.0,
-                "water_requested": 25.3,
-                "ambient_temp": 20.0,
-                "ambient_requested": 20.0,
-                "control_curve_heating": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 20.0,
-                    "setpoint_b_outside": -15.0,
-                    "setpoint_b_requested": 30.0
-                },
-                "control_curve_cooling": {
-                    "setpoint_a_outside": 20.0,
-                    "setpoint_a_requested": 14.5,
-                    "setpoint_b_outside": 30.0,
-                    "setpoint_b_requested": 14.5
-                }
+            "control_curve_cooling": {
+                "setpoint_a_outside": 20.0,
+                "setpoint_a_requested": 20.0,
+                "setpoint_b_outside": 30.0,
+                "setpoint_b_requested": 14.5
             }
+        },
+        "solar": {
+            "enabled": true,
+            "name": "Solar",
+            "solar_collector": 59.4,
+            "water_tank1": 54.8,
+            "water_tank2": 35.0
+        },
+        "pool": {
+            "name": "Pool",
+            "enabled": true,
+            "on": true,
+            "heating": false,
+            "temp_actual": 28.5,
+            "temp_requested": 21.7
         }
     }
 }

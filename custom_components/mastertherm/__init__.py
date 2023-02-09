@@ -14,8 +14,7 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .coordinator import MasterthermDataUpdateCoordinator
-from .const import DOMAIN, DEFAULT_REFRESH
-from .entity_mappings import ENTITIES
+from .const import DOMAIN, DEFAULT_REFRESH, ENTITIES
 
 SCAN_INTERVAL = timedelta(seconds=30)
 
@@ -39,12 +38,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password = entry.data.get(CONF_PASSWORD)
         api_version = entry.data.get(CONF_API_VERSION)
         scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH)
+
         coordinator = MasterthermDataUpdateCoordinator(
             hass,
             username,
             password,
             api_version,
             scan_interval,
+            entry.entry_id,
         )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
@@ -66,16 +67,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    unload_ok = all(
-        await asyncio.gather(
-            *[
-                hass.config_entries.async_forward_entry_unload(entry, platform)
-                for platform in ENTITIES.values()
-                if platform in coordinator.platforms
-            ]
-        )
-    )
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, ENTITIES)
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
 
