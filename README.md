@@ -49,12 +49,14 @@ To install manually, if you really want to:
 3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
 4. Download _all_ the files from the `custom_components/mastertherm/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
-6. Add the masterthermconnect module: pip install -I masterthermconnect==2.0.0a5
+6. Add the masterthermconnect module: pip install -I masterthermconnect==2.0.0
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
 ## Sensor Details
-This version allows read and write, what is avaialbe in the app should be available here plus some extras.
+This version allows read and write, what is avaialbe in the app should be available here plus some extras.  There are controls in place to set the min and max values based on what is configured in your heatpump, in addition some features show or are hidden based on your setup, for example if cooling is not installed or disabled it is not shown in Home Assistant.
+
+> :warning: **Heat Pump Configuration Changes:** Changing the configuration of the pump should only be done under the advise of your installer, the changes avaialable to home assistant are based only on the APP UI and some additional from the Thermostats if installed.
 
 The sensors are based on observations from the Web and Android Applications, the current testing has been done on some basic setup we have not tested options with Solar and Pool but have tried to add sensors based on the apps.
 1. One Main circuit with heating and cooling and domestic hot water with attached room thermostats
