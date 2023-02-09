@@ -93,12 +93,15 @@ winter_temp | Number | The temperature below which is considered winter
 summer_temp | Number | The temperature above which is considered winter
 
 #### Control Curves Heating/ Cooling
+These are the min and max values to control the heating and cooling curves used by the Heatpump to control the warter temperature.
+
 Entity | Type | Description
 -- | -- | --
-setpoint_a_outside | Number | Outside Temperature for Setpoint A
-setpoint_a_requested | Number | Temperature to set for Setpoint A
-setpoint_b_outside | Number | Outside Temperature for Setpoint B
-setpoint_b_requested | Number | Temperature to set for Setpoint B
+setpoint_a_outside | Number | Outside Temperature for Setpoint A, min/ max values are controlled by pump configuration.
+setpoint_a_requested | Number | Temperature to set for Setpoint A, min/ max values are controlled by pump configuration.
+setpoint_b_outside | Number | Outside Temperature for Setpoint B, min/ max values are controlled by pump configuration.
+setpoint_b_requested | Number | Temperature to set for Setpoint B, min/ max values are controlled by pump configuration.
+
 
 #### Domestic Hot Water
 Entity | Type | Description
@@ -106,7 +109,7 @@ Entity | Type | Description
 heating | Binary Sensor | Whether hot water is requested, also activates if HC1 to 6 is for hot water
 enabled | Binary Sensor | Not sure on mine always shows disabled.
 current_temp | Sensor | The current temperature of the hot water, should be taken from the sensor in the water tank
-required_temp | Sensor | The temperature that was set as required for your hot water.
+required_temp | Sensor | The temperature that was set as required for your hot water, min/ max values are controlled by pump configuration.
 
 #### Run Time Info
 Entity | Type | Description
@@ -122,13 +125,18 @@ Shows Error Alerts, Not Documented at this time.
 
 Entity | Type | Description
 -- | -- | --
+some_errror | BinarySensor | No Information Yet
+three_errors | BinarySensor | No Information Yet
+reset_3e | BinarySensor | No Information Yet
+safety_tstat | BinarySensor | No Information Yet
+
 
 #### Heating Circuits
 The main circuit is HC0, this is linked to the main pump but some details in this circuit are hidden if any of HC1 to HC6 optional circuits are installed.
 
 HC1 to HC6 are used to provide things like heating/ cooling to different room zones or multiple water tanks for hot water.
 
-HC0 to HC6 usually have room thermostat's installed, if used for heating/ cooling, in this case there is a pad sub-section that contains ambient temperatures and humidity.  If not installed then there is an int (internal) sub-section that has the ambient temperatures.
+HC0 to HC6 may have room thermostat's installed, if used for heating/ cooling, in this case there is a pad sub-section that contains ambient temperatures and humidity.  If not installed then there is an int (internal) sub-section that has the ambient temperatures.
 
 Entity | Type | Description
 -- | -- | --
@@ -138,7 +146,7 @@ cooling | Binary Sensor | Circuit is in cooling mode
 circulation_valve | Binary Sensor | If this circuit is requesting then this is open, this also triggers the main circulation pump
 water_requested | Sensor | The requested water temperature based on heating and cooling curves
 water_temp | Sensor | The actual water temperature for the circuit
-auto | Sensor | No idea, it can be set on the thermostats but not sure what it does.
+auto | Sensor | I believe this controls if the water temperature requested is manually set or automatic based ont he heating/ cooling curves.
 ambient_temp | Sensor | Ambient temperature, either from the room if the pad is installed or internal
 ambient_requested | Sensor | requested temperature, either from the room if the pad is installed or internal
 thermostat | Climate | Allows setting of the room temperature settings.
@@ -157,6 +165,21 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 Also to determine mappings use the mastertherm connect module directly from the command line where you can get a list of current registers for your heatpump.
 
+Entity | Type | Description
+-- | -- | --
+name | Sensor | Always Solar
+solar_collector | Sensor | Solar PV Temperatures
+water_tank1 | Sensor | Water Tank 1 Temperature
+water_tank2 | Sensor | Water Tank 2 Temperature
+
+Entity | Type | Description
+-- | -- | --
+name | Sensor | Always Pool
+on | Switch | Whether the pool heating is on or not
+heating | BinarySensor | If pool is heating or not
+temp_actual | Sensor | The temperature of the pool
+temp_requested | Sensor | The temperature requested
+control | Climate | Allows control of the requested temp
 
 ***
 
