@@ -32,6 +32,11 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         self._attr_unique_id = slugify(f"mt_{module_key}_{entity_key}")
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
 
+        # If the entity is found in existing entities, remove it.
+        if entity_type in coordinator.old_entries:
+            if self.entity_id in coordinator.old_entries[entity_type]:
+                coordinator.old_entries[entity_type].pop(self.entity_id)
+
     @property
     def get_module(self) -> dict:
         """Get the data for this module"""

@@ -18,6 +18,7 @@ from masterthermconnect import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.entity_registry import RegistryEntry
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
@@ -41,6 +42,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         password: str,
         api_version: str,
         scan_interval: int,
+        registry_entries: list[RegistryEntry],
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
@@ -72,6 +74,13 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             ENTITY_TYPES_MAP
         )
         self.platforms = []
+        self.old_entries = {}
+
+        # Convert registries into Entity Platform and ID.
+        for reg_entity in registry_entries:
+            if not reg_entity.domain in self.old_entries:
+                self.old_entries[reg_entity.domain] = []
+            self.old_entries[reg_entity.domain].append(reg_entity.entity_id)
 
     async def __aenter__(self):
         """Return Self."""

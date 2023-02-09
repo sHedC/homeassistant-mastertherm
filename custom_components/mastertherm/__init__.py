@@ -12,6 +12,10 @@ from homeassistant.const import (
 )
 from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers.entity_registry import (
+    async_get,
+    async_entries_for_config_entry,
+)
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN, DEFAULT_REFRESH, ENTITIES
@@ -39,12 +43,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         api_version = entry.data.get(CONF_API_VERSION)
         scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH)
 
+        # Get the current registry, to allow cleanup of old entities.
+        # Any any changes in the Heatpump setup.
+        entity_registry = async_get(hass)
+        registry_entities = async_entries_for_config_entry(
+            entity_registry, entry.entry_id
+        )
+
         coordinator = MasterthermDataUpdateCoordinator(
             hass,
             username,
             password,
             api_version,
             scan_interval,
+            registry_entities,
         )
         hass.data[DOMAIN][entry.entry_id] = coordinator
 
