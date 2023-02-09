@@ -69,8 +69,8 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_precision = PRECISION_TENTHS
         self._attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-        self._attr_hvac_modes = [HVACMode.AUTO]
-        self._attr_hvac_mode = HVACMode.AUTO
+        self._attr_hvac_modes = [HVACMode.HEAT_COOL]
+        self._attr_hvac_mode = HVACMode.HEAT_COOL
 
         self._current_temperature_path = entity_description.current_temperature_path
         self._target_temperature_path = entity_description.requested_temperature_path
