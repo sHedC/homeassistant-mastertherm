@@ -71,7 +71,9 @@
                     "cooling": "Cooling",
                     "pool": "Pool",
                     "dhw": "Hot Water",
-                    "dpc": "Defrost Protection"
+                    "dpc": "Defrost Protection",
+                    "idle": "Idle",
+                    "aux_heater": "Aux Heater"
                 }
             }
         }
