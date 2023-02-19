@@ -105,6 +105,7 @@ HEATING_CIRCUITS: dict = {
             name="HC1 Thermostat",
             current_temperature_path="heating_circuits.hc1.ambient_temp",
             requested_temperature_path="heating_circuits.hc1.ambient_requested",
+            power_state_path="heating_circuits.hc1.pad.state",
         ),
         "pad": {
             "state": MasterthermSensorEntityDescription(
@@ -226,6 +227,7 @@ HEATING_CIRCUITS: dict = {
             name="HC2 Thermostat",
             current_temperature_path="heating_circuits.hc2.ambient_temp",
             requested_temperature_path="heating_circuits.hc2.ambient_requested",
+            power_state_path="heating_circuits.hc2.pad.state",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -343,6 +345,7 @@ HEATING_CIRCUITS: dict = {
             name="HC3 Thermostat",
             current_temperature_path="heating_circuits.hc3.ambient_temp",
             requested_temperature_path="heating_circuits.hc3.ambient_requested",
+            power_state_path="heating_circuits.hc3.pad.state",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -460,6 +463,7 @@ HEATING_CIRCUITS: dict = {
             name="HC4 Thermostat",
             current_temperature_path="heating_circuits.hc4.ambient_temp",
             requested_temperature_path="heating_circuits.hc4.ambient_requested",
+            power_state_path="heating_circuits.hc4.pad.state",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -577,6 +581,7 @@ HEATING_CIRCUITS: dict = {
             name="HC5 Thermostat",
             current_temperature_path="heating_circuits.hc5.ambient_temp",
             requested_temperature_path="heating_circuits.hc5.ambient_requested",
+            power_state_path="heating_circuits.hc5.pad.state",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -694,6 +699,7 @@ HEATING_CIRCUITS: dict = {
             name="HC6 Thermostat",
             current_temperature_path="heating_circuits.hc6.ambient_temp",
             requested_temperature_path="heating_circuits.hc6.ambient_requested",
+            power_state_path="heating_circuits.hc6.pad.state",
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(

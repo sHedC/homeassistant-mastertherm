@@ -40,6 +40,7 @@ class MasterthermClimateEntityDescription(ClimateEntityDescription):
     # the entities to lookup the states in dot notation as above.
     current_temperature_path: str = None
     requested_temperature_path: str = None
+    power_state_path: str = None
     min_temp: float | str = DEFAULT_MIN_TEMP
     max_temp: float | str = DEFAULT_MAX_TEMP
 

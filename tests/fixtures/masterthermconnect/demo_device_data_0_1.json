@@ -11,10 +11,10 @@
     },
     "cooling_mode": false,
     "control_curve_heating": {
-        "setpoint_a_outside": 20.5,
-        "setpoint_a_requested": 29.0,
+        "setpoint_a_outside": 10.0,
+        "setpoint_a_requested": 25.0,
         "setpoint_b_outside": -15.0,
-        "setpoint_b_requested": 40.0,
+        "setpoint_b_requested": 35.0,
         "requested_min": 20.0,
         "requested_max": 47.5,
         "outside_min": -30.0,
@@ -34,7 +34,7 @@
         "heating": false,
         "enabled": true,
         "current_temp": 54.8,
-        "required_temp": 40.0,
+        "required_temp": 45.0,
         "min_temp": 0.0,
         "max_temp": 45.0
     },
@@ -88,6 +88,7 @@
             "auto": 2,
             "ambient_requested": 21.7,
             "ambient_temp": 20.0,
+            "loop_type": 2,
             "control_curve_heating": {
                 "setpoint_a_outside": 20.0,
                 "setpoint_a_requested": 22.5,

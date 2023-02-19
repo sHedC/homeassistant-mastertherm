@@ -118,6 +118,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         },
         "hc2": {
@@ -141,6 +145,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         },
         "hc3": {
@@ -164,6 +172,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         },
         "hc4": {
@@ -187,6 +199,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         },
         "hc5": {
@@ -210,6 +226,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         },
         "hc6": {
@@ -233,6 +253,10 @@
                 "setpoint_a_requested": 14.5,
                 "setpoint_b_outside": 30.0,
                 "setpoint_b_requested": 14.5
+            },
+            "pad": {
+                "state": 2,
+                "current_humidity": 50.0
             }
         }
     }
