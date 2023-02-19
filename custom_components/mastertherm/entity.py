@@ -32,6 +32,8 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         self._attr_unique_id = slugify(f"mt_{module_key}_{entity_key}")
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
 
+        self.entities = self.coordinator.data["modules"][self._module_key]["entities"]
+
         # If the entity is found in existing entities, remove it.
         if entity_type in coordinator.old_entries:
             if self.entity_id in coordinator.old_entries[entity_type]:
