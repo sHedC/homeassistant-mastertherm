@@ -886,6 +886,8 @@ ENTITY_TYPES_MAP: dict = {
             "pool": "mdi:pool",
             "dhw": "mdi:water-pump",
             "dpc": "mdi:snowflake-melt",
+            "idle": "mdi:hourglass_empty",
+            "aux_heater": "mdi:heating-coil",
         },
     ),
     "cooling_mode": MasterthermBinarySensorEntityDescription(
