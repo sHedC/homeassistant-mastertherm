@@ -73,7 +73,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
 
         # Is HVAC Mode available or not.
         self._hvac_mode_enabled = False
-        self._attr_hvac_modes = None
+        self._attr_hvac_modes = []
         if entity_description.power_state_path in self.entities:
             self._attr_hvac_modes = [HVACMode.OFF, HVACMode.AUTO]
             self._hvac_mode_enabled = True
