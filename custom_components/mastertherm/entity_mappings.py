@@ -105,7 +105,7 @@ HEATING_CIRCUITS: dict = {
             name="HC1 Thermostat",
             current_temperature_path="heating_circuits.hc1.ambient_temp",
             requested_temperature_path="heating_circuits.hc1.ambient_requested",
-            power_state_path="heating_circuits.hc1.on",
+            power_state_path="heating_circuits.hc1.pad.state",
             power_state_off=0,
             power_state_on=2,
         ),
@@ -1004,6 +1004,9 @@ ENTITY_TYPES_MAP: dict = {
             max_temp="domestic_hot_water.max_temp",
             current_temperature_path="domestic_hot_water.current_temp",
             requested_temperature_path="domestic_hot_water.required_temp",
+            power_state_path="domestic_hot_water.state",
+            power_state_off=False,
+            power_state_on=True,
         ),
     },
     "compressor_running": MasterthermBinarySensorEntityDescription(
