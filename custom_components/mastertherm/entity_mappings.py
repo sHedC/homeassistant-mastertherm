@@ -106,6 +106,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc1.ambient_temp",
             requested_temperature_path="heating_circuits.hc1.ambient_requested",
             power_state_path="heating_circuits.hc1.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "state": MasterthermSensorEntityDescription(
@@ -228,6 +230,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc2.ambient_temp",
             requested_temperature_path="heating_circuits.hc2.ambient_requested",
             power_state_path="heating_circuits.hc2.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -346,6 +350,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc3.ambient_temp",
             requested_temperature_path="heating_circuits.hc3.ambient_requested",
             power_state_path="heating_circuits.hc3.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -464,6 +470,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc4.ambient_temp",
             requested_temperature_path="heating_circuits.hc4.ambient_requested",
             power_state_path="heating_circuits.hc4.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -582,6 +590,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc5.ambient_temp",
             requested_temperature_path="heating_circuits.hc5.ambient_requested",
             power_state_path="heating_circuits.hc5.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -700,6 +710,8 @@ HEATING_CIRCUITS: dict = {
             current_temperature_path="heating_circuits.hc6.ambient_temp",
             requested_temperature_path="heating_circuits.hc6.ambient_requested",
             power_state_path="heating_circuits.hc6.pad.state",
+            power_state_off=0,
+            power_state_on=2,
         ),
         "pad": {
             "current_humidity": MasterthermSensorEntityDescription(
@@ -887,7 +899,7 @@ ENTITY_TYPES_MAP: dict = {
             "pool": "mdi:pool",
             "dhw": "mdi:water-pump",
             "dpc": "mdi:snowflake-melt",
-            "idle": "mdi:timer-sand-empty",
+            "idle": "mdi:timer-sand-complete",
             "aux_heater": "mdi:heating-coil",
         },
     ),
@@ -992,6 +1004,9 @@ ENTITY_TYPES_MAP: dict = {
             max_temp="domestic_hot_water.max_temp",
             current_temperature_path="domestic_hot_water.current_temp",
             requested_temperature_path="domestic_hot_water.required_temp",
+            power_state_path="hp_power_state",
+            power_state_off=False,
+            power_state_on=True,
         ),
     },
     "compressor_running": MasterthermBinarySensorEntityDescription(

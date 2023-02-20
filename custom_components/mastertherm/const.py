@@ -41,6 +41,8 @@ class MasterthermClimateEntityDescription(ClimateEntityDescription):
     current_temperature_path: str = None
     requested_temperature_path: str = None
     power_state_path: str = None
+    power_state_on: int | bool | None = None
+    power_state_off: int | bool | None = None
     min_temp: float | str = DEFAULT_MIN_TEMP
     max_temp: float | str = DEFAULT_MAX_TEMP
 
