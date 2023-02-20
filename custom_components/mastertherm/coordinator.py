@@ -19,7 +19,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.entity_registry import (
-    RegistryEntry,
     async_get,
     async_entries_for_config_entry,
 )
@@ -142,18 +141,15 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
+        refreshed = True
         async with self.api_lock:
             # Try to refresh, check for refresh issues
             try:
                 if self.data is None or self.reconnect:
-                    connected = await self.mt_controller.connect()
+                    refreshed = await self.mt_controller.connect()
                     self.reconnect = False
 
-                connected = await self.mt_controller.refresh()
-
-                if not connected:
-                    raise UpdateFailed("unknown_reason")
-
+                refreshed = await self.mt_controller.refresh()
             except MasterthermAuthenticationError as ex:
                 _LOGGER.error("Invalid credentials: %s:%s", ex.status, ex.message)
                 raise ConfigEntryAuthFailed("authentication_error") from ex
@@ -169,6 +165,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             except MasterthermResponseFormatError as ex:
                 _LOGGER.warning("Response Format Error: %s:%s", ex.status, ex.message)
                 raise UpdateFailed("response_error") from ex
+
+            # Check update was successful.
+            if not refreshed:
+                raise UpdateFailed("unknown_reason")
 
             # If first run then populate the Modules.
             result_data = self.data
