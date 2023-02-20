@@ -69,14 +69,11 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_precision = PRECISION_TENTHS
         self._attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-
-        self._current_temperature_path = entity_description.current_temperature_path
-        self._target_temperature_path = entity_description.requested_temperature_path
+        self._descrption = entity_description
 
         # Is HVAC Mode available or not.
         self._hvac_mode_enabled = False
-        self._attr_hvac_modes = [HVACMode.OFF]
-        self._power_state_path = entity_description.power_state_path
+        self._attr_hvac_modes = [HVACMode.AUTO]
         if entity_description.power_state_path in self.entities:
             self._attr_hvac_modes = [HVACMode.OFF, HVACMode.AUTO]
             self._hvac_mode_enabled = True
@@ -95,19 +92,26 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
     def hvac_mode(self) -> HVACMode | str | None:
         """If HVACMode enabled then check what state"""
         # 0 is perm off, 1 or 2 is AUTO for on or scheduled off.
-        hvac_mode = HVACMode.OFF
-        if self._hvac_mode_enabled and self.entities[self._power_state_path] in [1, 2]:
+        if self._hvac_mode_enabled:
+            if (
+                self.entities[self._descrption.power_state_path]
+                != self._descrption.power_state_off
+            ):
+                hvac_mode = HVACMode.AUTO
+            else:
+                hvac_mode = HVACMode.OFF
+        else:
             hvac_mode = HVACMode.AUTO
 
         return hvac_mode
 
     @property
     def current_temperature(self) -> float | None:
-        return self.entities[self._current_temperature_path]
+        return self.entities[self._descrption.current_temperature_path]
 
     @property
     def target_temperature(self) -> float | None:
-        return self.entities[self._target_temperature_path]
+        return self.entities[self._descrption.requested_temperature_path]
 
     @property
     def target_temperature_step(self) -> float:
@@ -123,7 +127,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         """Write the updated temperature to mastertherm."""
         temp = kwargs.get(ATTR_TEMPERATURE)
         await self.coordinator.update_state(
-            self._module_key, self._target_temperature_path, temp
+            self._module_key, self._descrption.requested_temperature_path, temp
         )
         self.async_write_ha_state()
 
@@ -132,11 +136,18 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         if self._hvac_mode_enabled:
             if hvac_mode == HVACMode.OFF:
                 await self.coordinator.update_state(
-                    self._module_key, self._power_state_path, 0
+                    self._module_key,
+                    self._descrption.power_state_path,
+                    self._descrption.power_state_off,
                 )
-            elif self.entities[self._power_state_path] == 0:
+            elif (
+                self.entities[self._descrption.power_state_path]
+                == self._descrption.power_state_off
+            ):
                 await self.coordinator.update_state(
-                    self._module_key, self._power_state_path, 2
+                    self._module_key,
+                    self._descrption.power_state_path,
+                    self._descrption.power_state_on,
                 )
 
         self.async_write_ha_state()
