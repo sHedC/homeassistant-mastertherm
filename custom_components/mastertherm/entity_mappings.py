@@ -105,7 +105,7 @@ HEATING_CIRCUITS: dict = {
             name="HC1 Thermostat",
             current_temperature_path="heating_circuits.hc1.ambient_temp",
             requested_temperature_path="heating_circuits.hc1.ambient_requested",
-            power_state_path="heating_circuits.hc1.state",
+            power_state_path="heating_circuits.hc1.on",
             power_state_off=0,
             power_state_on=2,
         ),
