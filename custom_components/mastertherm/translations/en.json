@@ -67,6 +67,7 @@
             },
             "hp_operating_mode": {
                 "state": {
+                    "offline": "Pump Offline",
                     "heating": "Heating",
                     "cooling": "Cooling",
                     "pool": "Pool",
