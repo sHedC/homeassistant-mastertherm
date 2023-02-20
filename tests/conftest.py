@@ -53,6 +53,7 @@ TEST_ENTITIES = {
             },
             "entities": {
                 "hp_power_state": True,
+                "operating_mode": "idle",
                 "compressor_running": True,
                 "hp_function": 0,
                 "outside_temp": 8.4,
@@ -83,6 +84,8 @@ def auto_enable_custom_integrations(
 class APIMock:
     """Mock up the API responses."""
 
+    error = ""
+
     def __init__(self):
         """Initialize the Mock API"""
 
@@ -111,6 +114,8 @@ class APIMock:
         )
         if info is None:
             info = {}
+        elif self.error == "offline":
+            info["operating_mode"] = "offline"
 
         return info
 

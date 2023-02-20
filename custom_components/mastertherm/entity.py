@@ -42,6 +42,14 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
                 entity_ids.pop(entity_index)
 
     @property
+    def available(self) -> bool:
+        """Return if entity is available."""
+        if self.entities["operating_mode"] == "offline":
+            return self._entity_key == "operating_mode"
+        else:
+            return self.coordinator.last_update_success
+
+    @property
     def get_module(self) -> dict:
         """Get the data for this module"""
         return self.coordinator.data["modules"][self._module_key]

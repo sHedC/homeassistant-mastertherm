@@ -881,6 +881,7 @@ ENTITY_TYPES_MAP: dict = {
         icon="mdi:weather-partly-snowy-rainy",
         translation_key="hp_operating_mode",
         icon_state_map={
+            "offline": "mdi:wifi-strength-off",
             "heating": "mdi:sun-thermometer",
             "cooling": "mdi:coolant-temperature",
             "pool": "mdi:pool",
