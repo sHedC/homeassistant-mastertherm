@@ -75,6 +75,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             model="HeatPump (" + self.get_moduleinfo["output"] + ")",
             configuration_url=self.get_moduleinfo["api_url"],
             sw_version=VERSION,
+            hw_version=VERSION,
             via_device=(DOMAIN, self.get_moduleinfo["version"]),
             entry_type=DeviceEntryType.SERVICE,
         )
