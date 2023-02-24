@@ -2,6 +2,7 @@
 import logging
 
 from homeassistant.const import CONF_ENTITIES
+from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import slugify
@@ -69,10 +70,11 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         """Return the device_info of the device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self._module_key)},
-            name="HeatPump (" + self.get_moduleinfo["output"] + ")",
+            name="HeatPump (" + self.get_moduleinfo["version"] + ")",
             manufacturer="Mastertherm",
-            model=self.get_moduleinfo["hp_type"],
+            model="HeatPump (" + self.get_moduleinfo["output"] + ")",
             configuration_url=self.get_moduleinfo["api_url"],
             sw_version=VERSION,
             via_device=(DOMAIN, self.get_moduleinfo["version"]),
+            entry_type=DeviceEntryType.SERVICE,
         )
