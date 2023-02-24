@@ -195,7 +195,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                         "entities"
                     ] = self.__build_entities("", device_data)
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.2)
 
         return result_data
 
@@ -227,7 +227,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 raise UpdateFailed("Command Failed to Set Value to HeatPump.")
 
             # Sleep for 1 second before returning so we don't throttle the API
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.2)
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
