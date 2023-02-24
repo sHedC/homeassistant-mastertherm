@@ -23,6 +23,7 @@
         "pade": "kuchyň",
         "padf": "seti",
         "padz": "Basement",
-        "api_url": "https://mastertherm.online"
+        "api_url": "https://mastertherm.online",
+        "version": "2.1.0"
     }
 }
