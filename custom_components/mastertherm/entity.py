@@ -70,12 +70,11 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         """Return the device_info of the device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self._module_key)},
-            name="HeatPump (" + self.get_moduleinfo["version"] + ")",
+            name=self._module_key,
+            model="HeatPump (" + self.get_moduleinfo["hp_type"] + ")",
             manufacturer="Mastertherm",
-            model="HeatPump (" + self.get_moduleinfo["output"] + ")",
             configuration_url=self.get_moduleinfo["api_url"],
             sw_version=VERSION,
-            hw_version=VERSION,
+            hw_version=self.get_moduleinfo["output"],
             via_device=(DOMAIN, self.get_moduleinfo["version"]),
-            # entry_type=DeviceEntryType.SERVICE,
         )
