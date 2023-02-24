@@ -7,7 +7,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import slugify
 
 from .coordinator import MasterthermDataUpdateCoordinator
-from .const import DOMAIN
+from .const import DOMAIN, VERSION
 
 _LOGGER = logging.getLogger(__package__)
 
@@ -69,8 +69,10 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         """Return the device_info of the device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self._module_key)},
-            name=self.get_moduleinfo["module_name"],
+            name="HeatPump (" + self.get_moduleinfo["output"] + ")",
             manufacturer="Mastertherm",
             model=self.get_moduleinfo["hp_type"],
             configuration_url=self.get_moduleinfo["api_url"],
+            sw_version=VERSION,
+            via_device=(DOMAIN, self.get_moduleinfo["version"]),
         )
