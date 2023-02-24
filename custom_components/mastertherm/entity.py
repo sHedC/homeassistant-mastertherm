@@ -77,5 +77,5 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             sw_version=VERSION,
             hw_version=VERSION,
             via_device=(DOMAIN, self.get_moduleinfo["version"]),
-            entry_type=DeviceEntryType.SERVICE,
+            # entry_type=DeviceEntryType.SERVICE,
         )
