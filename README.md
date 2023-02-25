@@ -160,27 +160,17 @@ Solar monitors outside temperature and if enabled can be used to turn on and off
 
 Pool monitors and sets the pool temperature.
 
+## Development Envionrment
+I have set this up to be able to run development or testing using Visual Studio Code with Docker or Podman in line with the integration blueprint.
+
+To setup just copy the .devcontainer-template.json to .devcontainer.json
+- If using podman uncomment the section runArgs to avoid permission issues.
+- Update BUILD_TYPE to "run" to run an instance of Home Assistant and "dev" to do development with pytest.
+
 ## Contributions are welcome!
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
 Also to determine mappings use the mastertherm connect module directly from the command line where you can get a list of current registers for your heatpump.
-
-Entity | Type | Description
--- | -- | --
-name | Sensor | Always Solar
-solar_collector | Sensor | Solar PV Temperatures
-water_tank1 | Sensor | Water Tank 1 Temperature
-water_tank2 | Sensor | Water Tank 2 Temperature
-
-Entity | Type | Description
--- | -- | --
-name | Sensor | Always Pool
-on | Switch | Whether the pool heating is on or not
-heating | BinarySensor | If pool is heating or not
-temp_actual | Sensor | The temperature of the pool
-temp_requested | Sensor | The temperature requested
-control | Climate | Allows control of the requested temp
-
 ***
 
 [masterthermimg]: mastertherm.png
@@ -202,5 +192,5 @@ control | Climate | Allows control of the requested temp
 [stable-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?style=flat
 [latest-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?include_prereleases&style=flat
 
-[workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
-[workflow-lastest]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/push.yml/badge.svg
+[workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/validate.yml/badge.svg
+[workflow-lastest]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/validate.yml/badge.svg
