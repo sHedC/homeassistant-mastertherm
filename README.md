@@ -26,7 +26,7 @@ This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat 
 - mastertherm.online - This is the server for 2022 onward
 
 NOTES:
-- materhterm.online is sensitive to too many requests, for this reason by default it defaults to updates every 2 minutes, the App updates every 30 seconds. To help the Info updates every 30 min, data can be set in the options down to 30 seconds.
+- materhterm.online seems to be sensitive to too many requests, for this reason by default it defaults to updates every 2 minutes, the App updates every 30 seconds. To help the Info updates every 30 min, data can be set in the options down to 30 seconds.
 - if multiple requests are sent at the same time (i.e. from home assistant/ the app and web) some will be refused by the servers, its temporary.  The updates have been built to report but ignore these.
 
 ## Installation
