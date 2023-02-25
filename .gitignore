@@ -16,7 +16,7 @@ coverage.xml
 .storage
 automations.yaml
 blueprints
-#configuration.yaml
+configuration.yaml
 deps
 home-assistant_v2*
 home-assistant.log*
@@ -25,4 +25,4 @@ scenes.yaml
 scripts.yaml
 secrets.yaml
 
-#.devcontainer.json
+.devcontainer.json
