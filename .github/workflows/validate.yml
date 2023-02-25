@@ -5,8 +5,6 @@ on:
   schedule:
     - cron:  "0 0 * * *"
   push:
-    branches:
-      - "main"
   pull_request:
     branches:
       - "main"
@@ -68,3 +66,7 @@ jobs:
             -o console_output_style=count \
             -p no:sugar \
             tests
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
