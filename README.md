@@ -171,6 +171,9 @@ To setup just copy the .devcontainer-template.json to .devcontainer.json
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
 Also to determine mappings use the mastertherm connect module directly from the command line where you can get a list of current registers for your heatpump.
+
+Or just raise a feature request, would be useful to have a use-case, what system you have and what you want to get done.
+
 ***
 
 [masterthermimg]: mastertherm.png
