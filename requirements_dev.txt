@@ -1,3 +1,5 @@
-bumpver==2022.1120
+pip>=21.0,<23.1
+bumpver
+colorlog
+pytest-homeassistant-custom-component
 masterthermconnect==2.1.0b3
-homeassistant
