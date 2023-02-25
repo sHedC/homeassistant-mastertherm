@@ -2,7 +2,7 @@
   Copy this file to .devcontainer.json
   if using PODMAN, instead of DOCKER, uncomment the runArgs section
 
-  Copy sample.configuration.yaml to configuration.yaml
+  Change BUILD_TYPE to "dev" to use pytests and develop and "run" to use homeassistant
 */
 {
     "name": "sHedC/homeassistant-mastertherm",
@@ -11,6 +11,9 @@
     "forwardPorts": [
         8123
     ],
+    "containerEnv": {
+        "BUILD_TYPE": "run"
+    },
     "customizations": {
         "vscode": {
             "extensions": [
