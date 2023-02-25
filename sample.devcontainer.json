@@ -1,3 +1,9 @@
+/*
+  Copy this file to .devcontainer.json
+  if using PODMAN, instead of DOCKER, uncomment the runArgs section
+
+  Copy sample.configuration.yaml to configuration.yaml
+*/
 {
     "name": "sHedC/homeassistant-mastertherm",
     "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye",
@@ -34,7 +40,6 @@
     "remoteUser": "vscode",
     "containerUser": "vscode",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
-    // uncomment if using PODMAN instead of DOCKER.
     //"runArgs": [
     //    "--userns=keep-id"
     //],
