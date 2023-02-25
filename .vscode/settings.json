@@ -1,16 +1,10 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.pythonPath": "/usr/local/bin/python",
     "files.associations": {
         "*.yaml": "home-assistant"
     },
     "python.testing.pytestArgs": [],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "docker.composeCommand": "podman-compose",
-    "docker.dockerPath": "podman",
-    "docker.environment": {
-        "DOCKER_HOST": "unix:///run/user/1000/podman/podman.sock"
-    }
 }
