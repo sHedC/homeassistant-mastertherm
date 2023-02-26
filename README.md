@@ -70,17 +70,19 @@ To install manually, if you really want to: I won't support this.
 7. Restart Home Assistant
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
+## Example HASS View
+Example View, I don't have thermostats so not shown here.
+<img src="/images/dashboard.jpg" width="50%" height="50%">
+
 ## Sensor Details
-This version allows read and write, what is avaialbe in the app should be available here plus some extras.  There are controls in place to set the min and max values based on what is configured in your heatpump, in addition some features show or are hidden based on your setup, for example if cooling is not installed or disabled it is not shown in Home Assistant.
+What is avaialbe in the app should be available here plus some extras.  There are controls in place to set the min and max values based on what is configured in your heatpump, in addition some features show or are hidden based on your setup, for example if cooling is not installed or disabled it is not shown in Home Assistant.
 
 > :warning: **Heat Pump Configuration Changes:** Changing the configuration of the pump should only be done under the advise of your installer, the changes avaialable to home assistant are based only on the APP UI and some additional from the Thermostats if installed.
 
-The sensors are based on observations from the Web and Android Applications, the current testing has been done on some basic setup we have not tested options with Solar and Pool but have tried to add sensors based on the apps.
-1. One Main circuit with heating and cooling and domestic hot water with attached room thermostats
-2. Main Circuit for heating and two optional circuits for Barn and House Domestic Hot Water, no room thermostats
+A lot of the temperature and modifiable settings have limits that come from the Heatpump, if you want to change these you should speak to your installer.
 
 #### Main Circuit
-These are the main entities for the heat pump, currently we understand the following.
+This section covers entities that are linked tot he Main Heatpump, not all sensors will show up in your configuration depending on your installed configuration.
 
 Entity | Type | Description
 -- | -- | --
