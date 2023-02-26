@@ -41,17 +41,6 @@
     },
     "entity": {
         "select": {
-            "hp_type": {
-                "state": {
-                    "0": "Air Source",
-                    "1": "Ground Source",
-                    "2": "Water Source",
-                    "3": "Unknown",
-                    "4": "Air Source with Cooling",
-                    "5": "Ground Source with Cooling",
-                    "6": "Water Source with Cooling"
-                }
-            },
             "hp_function": {
                 "state": {
                     "auto": "Auto",
@@ -68,6 +57,17 @@
             }
         },
         "sensor": {
+            "hp_type": {
+                "state": {
+                    "0": "Air Source",
+                    "1": "Ground Source",
+                    "2": "Water Source",
+                    "3": "Unknown",
+                    "4": "Air Source with Cooling",
+                    "5": "Ground Source with Cooling",
+                    "6": "Water Source with Cooling"
+                }
+            },
             "hp_season": {
                 "state": {
                     "winter": "Winter",
