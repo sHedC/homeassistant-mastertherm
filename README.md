@@ -28,29 +28,34 @@ If you feel like donating, my wife is rasing money for and the Salvation Army he
 ## About the Integration
 ![mastertherm][masterthermimg]
 
-This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
+An integration for homeassistant (via HACS) to connect to Mastertherm Heat Pumps, Air Source/ Ground Source and Water Source. There are two entry points for the Mastertherm Heat Pumps:
 - mastertherm.vip-it.cz - This is the server for pre 2022 heat pumps
 - mastertherm.online - This is the server for 2022 onward
 
 NOTES:
-- materhterm.online seems to be sensitive to too many requests, for this reason by default it defaults to updates every 2 minutes, the App updates every 30 seconds. To help the Info updates every 30 min, data can be set in the options down to 30 seconds.
-- if multiple requests are sent at the same time (i.e. from home assistant/ the app and web) some will be refused by the servers, its temporary.  The updates have been built to report but ignore these.
-
-## Installation
-The preferred and easiest way to install this is from the Home Assistant Community Store (HACS).  Follow the link in the badge above for details on HACS.
-
-At this time its not automatically part of HACS, so after installing HACS, visit the HACS _Integrations_ pane and add `https://github.com/sHedC/homeassistant-mastertherm.git` as an `Integration` by following [these instructions](https://hacs.xyz/docs/faq/custom_repositories/). You'll then be able to install it through the _Integrations_ pane.
-
-Once installed go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
-- Select the correct mastertherm login version, if not sure try online directly to see which server you use.
-- Once connected you can change the refresh time in the options
+- The systems do not like multipel requests at the same time from the same IP and this leads to Server Disconnect messages, so using the App and this integration it could cause intermittent disconnects.
+- The integration restricts requests to one request every 0.2 seconds to avoid intermittent errors, this means if you trigger 10 updates at the same time it will take 2 seconds to complete the updates to the Heat Pump.
+- Mastertherm.Online is sensitive to too many login attempts and requests, to avoid issues the minimum update time is 30 seconds and pump information is updated every 30 minutes. Additionally the integration will only attempt to re-login if the token expires or becomes invalid.  It reports on other types of temporary issues but does not try to re-log in until those issues stop e.g. API is unavailable.
 
 Mastertherm only allows a single install, mutliple accounts are not currently supported.  Additionally if you have an installation with more than 2 units/ devices keep the refresh rate as at least 2 min or even increase it, the app/ web only connects to a single device/ unit at a time and refreshes every 30 seconds but this integration retrieves all device and unit combinations.
 
 Local connection is not possible at this time, it seems the heat pumps connect to the servers using SSH.
 
+## Installation
+The preferred and easiest way to install this is from the Home Assistant Community Store (HACS).  Follow the link in the badge above for details on HACS, the integration will soon be part of the default integration.
+
+Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
+- Select the correct mastertherm login version, if not sure try online directly to see which server you use.
+- Once connected you can change the refresh time in the options
+
+If you want to see Beta versions open the Mastertherm in HACS, after download, and click the three dots on the top right and select re-download. Here you will se an option to see beta versions.
+
+If you do the above and Mastertherm is not there it means its not yet been accepted into the default repository, hopfully this will only be a couple of weeks. In this case:
+
+Visit the HACS _Integrations_ pane and add `https://github.com/sHedC/homeassistant-mastertherm.git` as an `Integration` by following [these instructions](https://hacs.xyz/docs/faq/custom_repositories/). You'll then be able to install it through the _Integrations_ pane.
+
 #### Manual Install
-To install manually, if you really want to:
+To install manually, if you really want to: I won't support this.
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder) there, you need to create it.
 3. In the `custom_components` directory (folder) create a new folder called `mastertherm`.
