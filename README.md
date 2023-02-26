@@ -203,6 +203,8 @@ Or just raise a feature request, would be useful to have a use-case, what system
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
 
 [buymecoffee_sebs]: https://www.buymeacoffee.com/sebs89
+[buymecoffeebadge_sebs]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=flat
+
 [buymecoffee]: https://www.buymeacoffee.com/sHedC
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 
