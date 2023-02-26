@@ -6,6 +6,7 @@
 [![hacs][hacsbadge]][hacs]
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
+[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 Stable -
 [![GitHub Release][stable-release-shield]][releases]
@@ -15,10 +16,13 @@ Latest -
 [![workflow-lastest]][workflows]
 
 
-## About
+## Please Read
+My friend who helps a lot with debugging and identifying details for this integration broke his system during this process and had to pay a couple of hundred Euros for it to be re-initialised:  If you would like to support him  to recover some of this, this is his link: [![BuyMeCoffee][buymecoffeebadge]][buymecoffee_sebs]
+
 If you feel like donating, my wife is rasing money for and the Salvation Army here:
 <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
+## About the Mastertherm Integration
 ![mastertherm][masterthermimg]
 
 This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
@@ -182,6 +186,10 @@ Or just raise a feature request, would be useful to have a use-case, what system
 [commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
 [license-shield]: https://img.shields.io/github/license/sHedC/homeassistant-mastertherm.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Richard%20Holmes%20%40shedc-blue.svg?style=for-the-badge
+
+[buymecoffee_sebs]: https://www.buymeacoffee.com/sebs89
+[buymecoffee]: https://www.buymeacoffee.com/sHedC
+[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
