@@ -17,15 +17,15 @@ Latest -
 
 
 ## Please Read
-My friend who helps a lot with debugging and identifying details for this integration broke his system during this process and had to pay a couple of hundred Euros for it to be re-initialised:  If you would like to support him  to recover some of this, this is his link:
+My friend who helps a lot with debugging and identifying details for this integration broke his system during this process and had to pay a couple of hundred Euros for it to be re-initialised. If you would like to support him to recover some of this please buy him a coffee.
 
 SeBsZ Link: [![BuyMeCoffee][buymecoffeebadge]][buymecoffee_sebs]
 
 If you feel like donating, my wife is rasing money for and the Salvation Army here:
 <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
-## About the Mastertherm Integration
-![mastertherm][masterthermimg]
+## About the Integration
+![mastertherm][masterthermimg] <!-- .element height="50%" width="50%" -->
 
 This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
 - mastertherm.vip-it.cz - This is the server for pre 2022 heat pumps
@@ -182,7 +182,7 @@ Or just raise a feature request, would be useful to have a use-case, what system
 
 ***
 
-[masterthermimg]: mastertherm.png
+[masterthermimg]: https://github.com/sHedC/homeassistant-mastertherm/raw/main/mastertherm.png
 [mastertherm]: https://github.com/sHedC/homeassistant-mastertherm
 [commits-shield]: https://img.shields.io/github/commit-activity/y/sHedC/homeassistant-mastertherm?style=for-the-badge
 [commits]: https://github.com/shedc/homeassistant-mastertherm/commits/main
