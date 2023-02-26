@@ -841,6 +841,14 @@ HEATING_CIRCUITS: dict = {
 }
 
 ENTITY_TYPES_MAP: dict = {
+    "hp_type": MasterthermSensorEntityDescription(
+        key="hp_type",
+        name="HP Type",
+        translation_key="hp_type",
+        device_class=SensorDeviceClass.ENUM,
+        icon="mdi:heat-pump",
+        options=["0", "1", "2", "3", "4", "5", "6"],
+    ),
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
         name="HP Power",
@@ -1027,9 +1035,9 @@ ENTITY_TYPES_MAP: dict = {
         name="Circulation Pump",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
-    "fan_running": MasterthermBinarySensorEntityDescription(
-        key="fan_running",
-        name="Fan/Brine/Water Pump",
+    "thermal_pump_running": MasterthermBinarySensorEntityDescription(
+        key="thermal_pump_running",
+        name="Thermal Pump",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
     "defrost_mode": MasterthermBinarySensorEntityDescription(
