@@ -10,6 +10,7 @@
 
 Stable -
 [![GitHub Release][stable-release-shield]][releases]
+[![workflow-release]][workflows-release]
 [![codecov][codecov-shield]][codecov-link]
 
 Latest -
@@ -71,8 +72,8 @@ To install manually, if you really want to: I won't support this.
 8. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Mastertherm"
 
 ## Example HASS View
-Example View, I don't have thermostats so not shown here.
-<img src="/images/dashboard.jpg" width="50%" height="50%">
+Example View, I don't have thermostats so they are not shown here:
+<img src="/images/dashboard.jpg">
 
 ## Sensor Details
 What is avaialbe in the app should be available here plus some extras.  There are controls in place to set the min and max values based on what is configured in your heatpump, in addition some features show or are hidden based on your setup, for example if cooling is not installed or disabled it is not shown in Home Assistant.
@@ -88,7 +89,9 @@ Entity | Type | Description
 -- | -- | --
 hp_power_state | Switch | Turn on and off the Heat Pump
 hp_function | Select | The function is heating/ cooling or auto
-operating_mode | Sensor | The current Operating Mode which shows 5 states: heating/ cooling/ pool/ hot water and defrost protection
+operating_mode | Sensor | The current Operating Mode which shows different states:
+- unavailable
+- heating/ cooling/ pool/ hot water and defrost protection
 cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating)
 compressor_running | Binary Sensor | Main compressor running
 compressor2_running | Binary Sensor | Compressor 2 if installed
@@ -227,3 +230,5 @@ Or just raise a feature request, would be useful to have a use-case, what system
 
 [workflows]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/validate.yml/badge.svg
 [workflow-lastest]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/validate.yml/badge.svg
+[workflows-release]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/release.yml/badge.svg
+[workflow-release]: https://github.com/sHedC/homeassistant-mastertherm/actions/workflows/release.yml/badge.svg
