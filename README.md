@@ -57,6 +57,8 @@ Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" a
 - Select the correct login version, if not sure try online directly to see which server you use.
 - Once connected you can change the refresh time in the options
 
+Updating Options immediately after setup may cause an error in the logs, this can be ignored.
+
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/login.jpg?raw=true" width="50%" height="50%">
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/options.jpg?raw=true" width="50%" height="50%">
 
