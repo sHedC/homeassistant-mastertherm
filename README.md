@@ -85,13 +85,11 @@ A lot of the temperature and modifiable settings have limits that come from the 
 #### Main Circuit
 This section covers entities that are linked tot he Main Heatpump, not all sensors will show up in your configuration depending on your installed configuration.
 
-Entity | Type | Description
--- | -- | --
-hp_power_state | Switch | Turn on and off the Heat Pump
-hp_function | Select | The function is heating/ cooling or auto
-operating_mode | Sensor | The current Operating Mode which shows different states:
-- unavailable
-- heating/ cooling/ pool/ hot water and defrost protection
+| Entity | Type | Description |
+| ------ | ---- | ----------- |
+| hp_power_state | Switch | Turn on and off the Heat Pump |
+| hp_function | Select | The function is heating/ cooling or auto |
+| operating_mode | Sensor | The current Operating Mode which shows different states: <br/> - unavailable </br>- heating/ cooling/ pool/ hot water and defrost protection |
 cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating)
 compressor_running | Binary Sensor | Main compressor running
 compressor2_running | Binary Sensor | Compressor 2 if installed
