@@ -10,6 +10,8 @@
 
 Stable -
 [![GitHub Release][stable-release-shield]][releases]
+[![codecov][codecov-shield]][codecov-link]
+[![issues][issues-shield]][issues-link]
 
 Latest -
 [![GitHub Release][latest-release-shield]][releases]
@@ -200,6 +202,11 @@ Or just raise a feature request, would be useful to have a use-case, what system
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
 
+[codecov-shield]: https://codecov.io/gh/sHedC/homeassistant-mastertherm/branch/sHedC/issue63/graph/badge.svg?token=Z7VVO035GY
+[codecov-link]: https://codecov.io/gh/sHedC/homeassistant-mastertherm
+
+[issues-shield]: https://img.shields.io/github/issues/shedc/homeassistant-mastertherm?style=flat
+[issues-link]: https://github.com/sHedC/homeassistant-mastertherm/issues
 
 [releases]: https://github.com/shedc/homeassistant-mastertherm/releases
 [stable-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?style=flat
