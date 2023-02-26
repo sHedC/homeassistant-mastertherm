@@ -25,7 +25,7 @@ If you feel like donating, my wife is rasing money for and the Salvation Army he
 <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
 
 ## About the Integration
-![mastertherm](masterthermimg) <!-- .element height="50%" width="50%" -->
+![mastertherm](/mastertherm.png) <!-- .element height="50%" width="50%" -->
 
 This adds an integration to homeassistant (HACS) to connect to Mastertherm Heat Pumps. There are two entry points for the Mastertherm Heat Pumps:
 - mastertherm.vip-it.cz - This is the server for pre 2022 heat pumps
