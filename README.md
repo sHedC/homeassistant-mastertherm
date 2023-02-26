@@ -89,20 +89,20 @@ This section covers entities that are linked tot he Main Heatpump, not all senso
 | ------ | ---- | ----------- |
 | hp_power_state | Switch | Turn on and off the Heat Pump |
 | hp_function | Select | The function is heating/ cooling or auto |
-| operating_mode | Sensor | The current Operating Mode which shows different states: <br/> - unavailable </br>- heating/ cooling/ pool/ hot water and defrost protection |
-cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating)
-compressor_running | Binary Sensor | Main compressor running
-compressor2_running | Binary Sensor | Compressor 2 if installed
-circulation_pump_running | Binary Sensor | Circulating water to where it is being requested, this is always true if any circuit is requesting heating or cooling
-fan_running | Binary Sensor | The brine is ciculating for ground source or the fan is running for air source
-defrost_mode | Binary Sensor | If the heat pump is in defrost mode
-aux_heater_1 | Binary Sensor | If installed indicates if the auxillary heater is on
-aux_heater_2 | Binary Sensor | If installed indicates if the second auxillary heater is on
-outside_temp | Sensor | The outside temperature
-requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached.
-actual_temp | Sensor | The actual temperature that the heat pump is up to.
-dewp_control | Binary Sensor | If Dew Point Control is active
-high_tariff_control | Binary Sensor | If the feature is enabled then this will show enabled if the system recognized high tariff.  This feature (called HDO_ON) is actually a remote on/off for features on your heatpump that use high energy such as the compressor/ aux heaters and sanitary hot water feature.  It does not disable the DHW function, which also uses the compressor. This feature is really only of use where your have variying high/ low tariff during the day and night or extended periods of low tariff as it disabled heating.
+| operating_mode | Sensor | The current Operating Mode which shows different states: <br/>- Unavailable: The Mastertherm API is uavailable.</br>- Pump Offline: The HP is offline or unavailable.</br>- Idle: HP is doing nothing.<br>- Heating: HP is Heating.</br>- Cooling: HP is Cooling.</br>- Pool: HP is heating the Pool.</br>- Hot Water: HP is heating domestic hot water.<br/>- Defrost Protection: HP is in defrost protection mode.</br>- Aux Heater: Aux Heater is being used. |
+| cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating) |
+| compressor_running | Binary Sensor | Main compressor running |
+| compressor2_running | Binary Sensor | Compressor 2 if installed |
+| circulation_pump_running | Binary Sensor | Circulating water to where it is being requested, this is always true if any circuit is requesting heating or cooling |
+| fan_running | Binary Sensor | The brine is ciculating for ground source or the fan is running for air source |
+| defrost_mode | Binary Sensor | If the heat pump is in defrost mode |
+| aux_heater_1 | Binary Sensor | If installed indicates if the auxillary heater is on |
+| aux_heater_2 | Binary Sensor | If installed indicates if the second auxillary heater is on |
+| outside_temp | Sensor | The outside temperature |
+| requested_temp | Sensor | This is the temperature that the heat pump is requesting, it is calcuated by an unknown algorithm and can go higher than expected. An example here is when heating is initially requested it goes higher than needed then reduces as room temperature is reached. |
+| actual_temp | Sensor | The actual temperature that the heat pump is up to. |
+| dewp_control | Binary Sensor | If Dew Point Control is active |
+| high_tariff_control | Binary Sensor | If the feature is enabled then this will show enabled if the system recognized high tariff.  This feature (called HDO_ON) is actually a remote on/off for features on your heatpump that use high energy such as the compressor/ aux heaters and sanitary hot water feature.  It does not disable the DHW function, which also uses the compressor. This feature is really only of use where your have variying high/ low tariff during the day and night or extended periods of low tariff as it disabled heating. |
 
 #### Season Info
 Entity | Type | Description
