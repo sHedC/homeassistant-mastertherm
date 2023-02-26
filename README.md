@@ -49,8 +49,7 @@ Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" a
 - Once connected you can change the refresh time in the options
 
 ### Install
-![Install Image](https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/login.jpg?raw=true)
-![Install Image](/images/login.jpg)
+![Install Image](/images/login.jpg | width=100)
 
 ### Beta Versions
 If you want to see Beta versions open the Mastertherm in HACS, after download, and click the three dots on the top right and select re-download. Here you will se an option to see beta versions.
