@@ -59,7 +59,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         self.reconnect = True
         self.cleanup = True
 
-        self.session = ClientSession(timeout=ClientTimeout(total=10))
+        self.session = ClientSession(timeout=ClientTimeout(total=120))
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
