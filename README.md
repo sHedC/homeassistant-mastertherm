@@ -48,13 +48,13 @@ Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" a
 - Select the correct login version, if not sure try online directly to see which server you use.
 - Once connected you can change the refresh time in the options
 
-### Install
 <img src="/images/login.jpg" width="50%" height="50%">
+<img src="/images/options.jpg" width="50%" height="50%">
 
-### Beta Versions
+#### Beta Versions
 If you want to see Beta versions open the Mastertherm in HACS, after download, and click the three dots on the top right and select re-download. Here you will se an option to see beta versions.
 
-### If Not Available in HACS Yet
+#### If Not Available in HACS Yet
 If you do the above and Mastertherm is not there it means its not yet been accepted into the default repository, hopfully this will only be a couple of weeks. In this case:
 
 Visit the HACS _Integrations_ pane and add `https://github.com/sHedC/homeassistant-mastertherm.git` as an `Integration` by following [these instructions](https://hacs.xyz/docs/faq/custom_repositories/). You'll then be able to install it through the _Integrations_ pane.
