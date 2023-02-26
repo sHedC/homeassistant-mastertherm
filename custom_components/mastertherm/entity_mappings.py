@@ -833,6 +833,9 @@ HEATING_CIRCUITS: dict = {
             name="Pool Control",
             current_temperature_path="heating_circuits.pool.temp_actual",
             requested_temperature_path="heating_circuits.pool.temp_requested",
+            power_state_path="heating_circuits.pool.on",
+            power_state_off=False,
+            power_state_on=True,
         ),
     },
 }
@@ -1026,7 +1029,7 @@ ENTITY_TYPES_MAP: dict = {
     ),
     "fan_running": MasterthermBinarySensorEntityDescription(
         key="fan_running",
-        name="Fan",
+        name="Fan/Brine/Water Pump",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
     "defrost_mode": MasterthermBinarySensorEntityDescription(

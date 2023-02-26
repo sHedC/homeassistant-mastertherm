@@ -1,15 +1,8 @@
-name: "Validate"
+name: "Release"
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron:  "0 0 * * *"
-  push:
-    branches:
-      - "main"
-  pull_request:
-    branches:
-      - "main"
+  release:
+    types: [released]
 
 jobs:
   hassfest: # https://developers.home-assistant.io/blog/2020/04/16/hassfest
@@ -64,10 +57,6 @@ jobs:
             --timeout=9 \
             --durations=10 \
             -n auto \
-            --cov custom_components.mastertherm \
-            --cov-report=xml \
             -o console_output_style=count \
             -p no:sugar \
             tests
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
