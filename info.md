@@ -3,11 +3,9 @@
 
 [![hacs][hacsbadge]][hacs] [![Discord][discord-shield]][discord] [![Community Forum][forum-shield]][forum] [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
-Stable -
-[![GitHub Release][stable-release-shield]][releases] [![workflow-release]][workflows-release] [![codecov][codecov-shield]][codecov-link]
+Stable - [![GitHub Release][stable-release-shield]][releases] [![workflow-release]][workflows-release] [![codecov][codecov-shield]][codecov-link]
 
-Latest -
-[![GitHub Release][latest-release-shield]][releases] [![workflow-lastest]][workflows] [![issues][issues-shield]][issues-link]
+Latest - [![GitHub Release][latest-release-shield]][releases] [![workflow-lastest]][workflows] [![issues][issues-shield]][issues-link]
 
 ## Please Read
 My friend who helps a lot with debugging and identifying details for this integration broke his system during this process and had to pay a couple of hundred Euros for it to be re-initialised. If you would like to support him to recover some of this please buy him a coffee.
