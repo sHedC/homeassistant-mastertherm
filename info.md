@@ -92,6 +92,9 @@ Example View, I don't have thermostats so they are not shown here:
 [codecov-shield]: https://codecov.io/gh/sHedC/homeassistant-mastertherm/branch/main/graph/badge.svg?token=Z7VVO035GY
 [codecov-link]: https://codecov.io/gh/sHedC/homeassistant-mastertherm
 
+[issues-shield]: https://img.shields.io/github/issues/shedc/homeassistant-mastertherm?style=flat
+[issues-link]: https://github.com/sHedC/homeassistant-mastertherm/issues
+
 [releases]: https://github.com/shedc/homeassistant-mastertherm/releases
 [stable-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?style=flat
 [latest-release-shield]: https://img.shields.io/github/v/release/shedc/homeassistant-mastertherm?include_prereleases&style=flat
