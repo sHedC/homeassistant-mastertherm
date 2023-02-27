@@ -31,35 +31,19 @@ async def async_setup(
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MasterTherm integration from a config entry."""
     hass.data.setdefault(DOMAIN, {})
-
-    if not (coordinator := hass.data[DOMAIN].get(entry.entry_id)):
-        # Initiate the Coordinator, not sure if I will need separate session for separate users
-        username = entry.data.get(CONF_USERNAME)
-        password = entry.data.get(CONF_PASSWORD)
-        api_version = entry.data.get(CONF_API_VERSION)
-        scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH)
-
-        coordinator = MasterthermDataUpdateCoordinator(
-            hass,
-            username,
-            password,
-            api_version,
-            scan_interval,
-            entry.entry_id,
-        )
-        hass.data[DOMAIN][entry.entry_id] = coordinator
+    coordinator = MasterthermDataUpdateCoordinator(
+        hass,
+        entry.data.get(CONF_USERNAME),
+        entry.data.get(CONF_PASSWORD),
+        entry.data.get(CONF_API_VERSION),
+        entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
+        entry.entry_id,
+    )
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await coordinator.async_config_entry_first_refresh()
-    if not coordinator.data:
-        raise ConfigEntryNotReady
 
-    for platform in ENTITIES.values():
-        if entry.options.get(platform, True):
-            coordinator.platforms.append(platform)
-            hass.async_add_job(
-                hass.config_entries.async_forward_entry_setup(entry, platform)
-            )
-
+    await hass.config_entries.async_forward_entry_setups(entry, ENTITIES.values())
     entry.async_on_unload(entry.add_update_listener(async_reload_entry))
 
     return True
@@ -67,8 +51,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, ENTITIES)
-    if unload_ok:
+    if unload_ok := await hass.config_entries.async_unload_platforms(
+        entry, ENTITIES.values()
+    ):
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
