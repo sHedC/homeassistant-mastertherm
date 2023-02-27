@@ -1,4 +1,5 @@
 {
+    "hp_type": 3,
     "hp_power_state": true,
     "hp_function": 0,
     "cooling_mode": false,

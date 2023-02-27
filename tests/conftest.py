@@ -54,6 +54,7 @@ TEST_ENTITIES = {
                 "version": "2.1.0",
             },
             "entities": {
+                "hp_type": 1,
                 "hp_power_state": True,
                 "operating_mode": "idle",
                 "compressor_running": True,

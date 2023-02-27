@@ -17,8 +17,6 @@ from .conftest import APIMock
 
 async def test_coordinator_setup(hass: HomeAssistant, mock_configdata: dict):
     """Test the Coordinator"""
-    # username = os.environ.get("MASTERTHERM_USER")
-    # password = os.environ.get("MASTERTHERM_PASS")
     api_mock = APIMock()
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)

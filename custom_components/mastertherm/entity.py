@@ -67,9 +67,27 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
     @property
     def device_info(self):
         """Return the device_info of the device."""
+        hp_type_desc = "Not Available"
+        hp_type = self.get_module[CONF_ENTITIES]["hp_type"]
+        match hp_type:
+            case 0:
+                hp_type_desc = "Air Source"
+            case 1:
+                hp_type_desc = "Ground Source"
+            case 2:
+                hp_type_desc = "Water Source"
+            case 3:
+                hp_type_desc = "Unknown D/W"
+            case 4:
+                hp_type_desc = "Air Source with Cooling"
+            case 5:
+                hp_type_desc = "Ground Source with Cooling"
+            case 6:
+                hp_type_desc = "Water Source with Cooling"
+
         return DeviceInfo(
             identifiers={(DOMAIN, self._module_key)},
-            name="Mastertherm HeatPump (" + self._module_key + ")",
+            name=f"Mastertherm HeatPump ({hp_type_desc})",
             model="HeatPump (" + self.get_moduleinfo["hp_type"] + ")",
             manufacturer="Mastertherm",
             configuration_url=self.get_moduleinfo["api_url"],
