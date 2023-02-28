@@ -1035,9 +1035,14 @@ ENTITY_TYPES_MAP: dict = {
         name="Circulation Pump",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
-    "thermal_pump_running": MasterthermBinarySensorEntityDescription(
-        key="thermal_pump_running",
-        name="Thermal Pump",
+    "fan_running": MasterthermBinarySensorEntityDescription(
+        key="fan",
+        name="Fan",
+        device_class=BinarySensorDeviceClass.RUNNING,
+    ),
+    "brine_pump_running": MasterthermBinarySensorEntityDescription(
+        key="brine_pump",
+        name="Brine Pump",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
     "defrost_mode": MasterthermBinarySensorEntityDescription(

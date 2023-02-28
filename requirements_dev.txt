@@ -2,4 +2,4 @@ pip>=21.0,<23.1
 bumpver
 colorlog
 pytest-homeassistant-custom-component
-masterthermconnect==2.1.0b5
+masterthermconnect==2.2.0
