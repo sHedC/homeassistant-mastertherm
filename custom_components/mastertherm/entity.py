@@ -71,19 +71,19 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         hp_type = self.get_module[CONF_ENTITIES]["hp_type"]
         match hp_type:
             case 0:
-                hp_type_desc = "Air Source"
+                hp_type_desc = "Air Source A/W"
             case 1:
-                hp_type_desc = "Ground Source"
+                hp_type_desc = "Ground Source G/W"
             case 2:
-                hp_type_desc = "Water Source"
+                hp_type_desc = "Water Source W/W"
             case 3:
-                hp_type_desc = "Unknown D/W"
+                hp_type_desc = "DX Ground Source DX/W"
             case 4:
-                hp_type_desc = "Air Source with Cooling"
+                hp_type_desc = "Air Source A/WR"
             case 5:
-                hp_type_desc = "Ground Source with Cooling"
+                hp_type_desc = "Ground Source G/WR"
             case 6:
-                hp_type_desc = "Water Source with Cooling"
+                hp_type_desc = "Water Source W/WR"
 
         return DeviceInfo(
             identifiers={(DOMAIN, self._module_key)},

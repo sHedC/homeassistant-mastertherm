@@ -62,10 +62,10 @@
                     "0": "Air Source",
                     "1": "Ground Source",
                     "2": "Water Source",
-                    "3": "Unknown",
-                    "4": "Air Source with Cooling",
-                    "5": "Ground Source with Cooling",
-                    "6": "Water Source with Cooling"
+                    "3": "DX Ground Source",
+                    "4": "Air Source R",
+                    "5": "Ground Source R",
+                    "6": "Water Source R"
                 }
             },
             "hp_season": {
