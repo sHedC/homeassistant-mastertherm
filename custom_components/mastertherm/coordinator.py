@@ -1,6 +1,7 @@
 """Helper and wrapper classes for MasterTherm module."""
 import logging
 import asyncio
+import time
 
 from datetime import timedelta
 from aiohttp import ClientSession, ClientTimeout
@@ -201,6 +202,8 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def update_state(self, module_key: str, entity_key: str, state: any):
         """Attempt to Update the State, data is in dot notation to get parent, child."""
+        start = time.perf_counter()
+
         async with self.api_lock:
             # Get the Module and Unit ID.
             module_id = self.data["modules"][module_key]["info"]["module_id"]
@@ -225,6 +228,10 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 self.data["modules"][module_key]["entities"][entity_key] = state
             else:
                 raise UpdateFailed("Command Failed to Set Value to HeatPump.")
+
+            stop = time.perf_counter()
+            run_time = round(stop - start, 4)
+            _LOGGER.debug("Finished setting mastertherm data in %s seconds", run_time)
 
             # Sleep for 1 second before returning so we don't throttle the API
             await asyncio.sleep(0.2)
