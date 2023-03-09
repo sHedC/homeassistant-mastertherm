@@ -42,11 +42,8 @@
     },
     "remoteUser": "vscode",
     "containerUser": "vscode",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
     //"runArgs": [
     //    "--userns=keep-id"
     //],
-    "features": {
-        "rust": "latest"
-    }
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z"
 }
