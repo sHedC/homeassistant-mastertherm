@@ -7,4 +7,5 @@
     "python.testing.pytestArgs": [],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "docker.host": "unix:///run/user/1000/podman/podman.sock",
 }
