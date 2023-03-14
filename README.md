@@ -57,13 +57,25 @@ Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" a
 - Select the correct login version, if not sure try online directly to see which server you use.
 - Once connected you can change the refresh time in the options
 
-Updating Options immediately after setup may cause an error in the logs, this can be ignored.
-
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/login.jpg?raw=true" width="50%" height="50%">
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/options.jpg?raw=true" width="50%" height="50%">
 
 #### Beta Versions
 If you want to see Beta versions open the Mastertherm in HACS, after download, and click the three dots on the top right and select re-download. Here you will se an option to see beta versions.
+
+#### Debugging
+It is possible to show the info and debug logs for the mastertherm integration and mastertherm connect, to do this you need to enable logging in the configuration.yaml, example below:
+
+Logs do not remove sensitive information so careful what you share, you should always remove the module number replace with xxxx.
+
+```
+logger:
+  default: warning
+  logs:
+    # Log for Mastertherm
+    custom_components.mastertherm: info
+    masterthermconnect: info
+```
 
 #### Manual Install
 To install manually, if you really want to: I won't support this.
@@ -80,6 +92,65 @@ To install manually, if you really want to: I won't support this.
 Example View, I don't have thermostats so they are not shown here:
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/dashboard.jpg?raw=true">
 
+## Automation
+To set Thermostats such as requested temperature use the Call Service: Climate feature.
+
+For Automation when looking for conditions some of the states are translated so for a condition what is on the screen is not what should be used in the automation:
+
+Translations are as follows, example for hp_operating_mode shows in the UI "Pump Offline" but for automations its "offline"
+
+```
+"select": {
+    "hp_function": {
+        "state": {
+            "auto": "Auto",
+            "heating": "Heating",
+            "cooling": "Cooling"
+        }
+    },
+    "season_select": {
+        "state": {
+            "auto": "Auto",
+            "winter": "Winter",
+            "summer": "Summer"
+        }
+    }
+},
+"sensor": {
+    "hp_type": {
+        "state": {
+            "0": "Air Source",
+            "1": "Ground Source",
+            "2": "Water Source",
+            "3": "DX Ground Source",
+            "4": "Air Source R",
+            "5": "Ground Source R",
+            "6": "Water Source R"
+        }
+    },
+    "hp_season": {
+        "state": {
+            "winter": "Winter",
+            "summer": "Summer",
+            "auto-winter": "Winter (Auto)",
+            "auto-summer": "Summer (Auto)"
+        }
+    },
+    "hp_operating_mode": {
+        "state": {
+            "offline": "Pump Offline",
+            "heating": "Heating",
+            "cooling": "Cooling",
+            "pool": "Pool",
+            "dhw": "Hot Water",
+            "dpc": "Defrost Protection",
+            "idle": "Idle",
+            "aux_heater": "Aux Heater"
+        }
+    }
+}
+```
+
 ## Sensor Details
 What is avaialbe in the app should be available here plus some extras.  There are controls in place to set the min and max values based on what is configured in your heatpump, in addition some features show or are hidden based on your setup, for example if cooling is not installed or disabled it is not shown in Home Assistant.
 
@@ -94,7 +165,7 @@ This section covers entities that are linked tot he Main Heatpump, not all senso
 | ------ | ---- | ----------- |
 | hp_power_state | Switch | Turn on and off the Heat Pump |
 | hp_function | Select | The function is heating/ cooling or auto |
-| operating_mode | Sensor | The current Operating Mode which shows different states: <br/>- Unavailable: The Mastertherm API is uavailable.</br>- Pump Offline: The HP is offline or unavailable.</br>- Idle: HP is doing nothing.<br>- Heating: HP is Heating.</br>- Cooling: HP is Cooling.</br>- Pool: HP is heating the Pool.</br>- Hot Water: HP is heating domestic hot water.<br/>- Defrost Protection: HP is in defrost protection mode.</br>- Aux Heater: Aux Heater is being used. |
+| operating_mode | Sensor | The current Operating Mode which shows different states: <br/>- Unavailable: The Mastertherm API is uavailable.<br/>- Pump Offline: The HP is offline or unavailable.<br/>- Idle: HP is doing nothing.<br/>- Heating: HP is Heating.<br/>- Cooling: HP is Cooling.<br/>- Pool: HP is heating the Pool.<br/>- Hot Water: HP is heating domestic hot water.<br/>- Defrost Protection: HP is in defrost protection mode.<br/>- Aux Heater: Aux Heater is being used. |
 | cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating) |
 | compressor_running | Binary Sensor | Main compressor running |
 | compressor2_running | Binary Sensor | Compressor 2 if installed |
