@@ -77,9 +77,9 @@ Example View, I don't have thermostats so they are not shown here:
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/dashboard.jpg?raw=true">
 
 ## Automation
-For Automation when looking for conditions some of the states are translated so for a condition what is on the screen is not what should be used in the automation:
+To set Thermostats such as requested temperature use the Call Service: Climate feature.
 
-Translations are as follows, example for hp_operating_mode shows in the UI "Pump Offline" but for automations its "offline"
+For Automation when looking for conditions some of the states are translated so for a condition what is on the screen is not what should be used in the automation. Translations are as follows, example for hp_operating_mode shows in the UI "Pump Offline" but for automations its "offline"
 
 ```
 "select": {
