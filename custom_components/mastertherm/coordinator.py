@@ -18,7 +18,7 @@ from masterthermconnect import (
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
-from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.entity_registry import (
     async_get,
     async_entries_for_config_entry,
@@ -143,6 +143,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict:
         """Refresh the data from the API endpoint and process."""
         refreshed = True
+        first_run = False
         async with self.api_lock:
             # Try to refresh, check for refresh issues
             try:
@@ -174,6 +175,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             # If first run then populate the Modules.
             result_data = self.data
             if result_data is None:
+                first_run = True
                 result_data = {"modules": {}}
                 devices = self.mt_controller.get_devices()
                 for device_id, device in devices.items():
@@ -185,6 +187,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                 device_data = self.mt_controller.get_device_data(
                     device["info"]["module_id"], device["info"]["unit_id"]
                 )
+
+                # If First Run check for pump offline:
+                if first_run and device_data["operating_mode"] == "offline":
+                    await self.session.close()
+                    raise ConfigEntryNotReady(f"Pump {device_id} is offline.")
 
                 # Process Device Data and populate the data to pass to the Entities
                 if "entities" in result_data["modules"][device_id]:
