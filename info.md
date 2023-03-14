@@ -76,6 +76,63 @@ See Git Hub Mastertherm Repository for more information: [HASS Mastertherm][mast
 Example View, I don't have thermostats so they are not shown here:
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/dashboard.jpg?raw=true">
 
+## Automation
+For Automation when looking for conditions some of the states are translated so for a condition what is on the screen is not what should be used in the automation:
+
+Translations are as follows, example for hp_operating_mode shows in the UI "Pump Offline" but for automations its "offline"
+
+```
+"select": {
+    "hp_function": {
+        "state": {
+            "auto": "Auto",
+            "heating": "Heating",
+            "cooling": "Cooling"
+        }
+    },
+    "season_select": {
+        "state": {
+            "auto": "Auto",
+            "winter": "Winter",
+            "summer": "Summer"
+        }
+    }
+},
+"sensor": {
+    "hp_type": {
+        "state": {
+            "0": "Air Source",
+            "1": "Ground Source",
+            "2": "Water Source",
+            "3": "DX Ground Source",
+            "4": "Air Source R",
+            "5": "Ground Source R",
+            "6": "Water Source R"
+        }
+    },
+    "hp_season": {
+        "state": {
+            "winter": "Winter",
+            "summer": "Summer",
+            "auto-winter": "Winter (Auto)",
+            "auto-summer": "Summer (Auto)"
+        }
+    },
+    "hp_operating_mode": {
+        "state": {
+            "offline": "Pump Offline",
+            "heating": "Heating",
+            "cooling": "Cooling",
+            "pool": "Pool",
+            "dhw": "Hot Water",
+            "dpc": "Defrost Protection",
+            "idle": "Idle",
+            "aux_heater": "Aux Heater"
+        }
+    }
+}
+```
+
 ***
 
 [masterthermimg]: https://github.com/sHedC/homeassistant-mastertherm/raw/main/mastertherm.png
