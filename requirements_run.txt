@@ -1,4 +1,4 @@
 pip>=21.0,<23.1
 colorlog
 homeassistant
-masterthermconnect==2.2.2
+masterthermconnect==2.2.3
