@@ -14,7 +14,15 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .coordinator import MasterthermDataUpdateCoordinator
-from .const import DOMAIN, DEFAULT_REFRESH, ENTITIES
+from .const import (
+    CONF_FULL_REFRESH,
+    CONF_REFRESH_OFFSET,
+    DOMAIN,
+    DEFAULT_REFRESH,
+    DEFAULT_FULL_REFRESH,
+    DEFAULT_REFRESH_OFFSET,
+    ENTITIES,
+)
 
 SCAN_INTERVAL = timedelta(seconds=30)
 
@@ -37,6 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         entry.data.get(CONF_PASSWORD),
         entry.data.get(CONF_API_VERSION),
         entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
+        entry.options.get(CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH),
+        entry.options.get(CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET),
         entry.entry_id,
     )
     hass.data[DOMAIN][entry.entry_id] = coordinator

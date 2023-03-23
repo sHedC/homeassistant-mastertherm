@@ -24,6 +24,11 @@ API_VERSIONS = {
 
 # Default Refresh Rate in Seconds
 DEFAULT_REFRESH = 120
+DEFAULT_FULL_REFRESH = 15
+DEFAULT_REFRESH_OFFSET = 5
+
+CONF_FULL_REFRESH = "full_refresh_interval"
+CONF_REFRESH_OFFSET = "data_refresh_offset"
 
 
 @dataclass

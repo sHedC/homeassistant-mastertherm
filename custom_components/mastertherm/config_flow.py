@@ -19,7 +19,15 @@ from homeassistant.const import (
 )
 from homeassistant.data_entry_flow import FlowResult
 
-from .const import DOMAIN, API_VERSIONS, DEFAULT_REFRESH
+from .const import (
+    CONF_FULL_REFRESH,
+    CONF_REFRESH_OFFSET,
+    DOMAIN,
+    DEFAULT_FULL_REFRESH,
+    DEFAULT_REFRESH_OFFSET,
+    API_VERSIONS,
+    DEFAULT_REFRESH,
+)
 from .coordinator import authenticate
 
 _LOGGER = logging.getLogger(__name__)
@@ -170,7 +178,19 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
                     vol.Required(
                         CONF_SCAN_INTERVAL,
                         default=self.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=30))
+                    ): vol.All(vol.Coerce(int), vol.Range(min=30)),
+                    vol.Required(
+                        CONF_FULL_REFRESH,
+                        default=self.options.get(
+                            CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=5, max=360)),
+                    vol.Required(
+                        CONF_REFRESH_OFFSET,
+                        default=self.options.get(
+                            CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=0, max=30)),
                 }
             ),
         )
