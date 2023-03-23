@@ -57,6 +57,10 @@ Go to the Home Assistant UI, go to "Configuration" -> "Integrations" click "+" a
 - Select the correct login version, if not sure try online directly to see which server you use.
 - Once connected you can change the refresh time in the options
 
+Two additonal options are given, as most updates are delta updates sometimes the Web API does not report a change, probably because of timeing issues.  These settings are used to avoid that.
+- Minutes between full data refresh - this tells the coordinator to do a full data refresh every x minutes
+- Offset last data update time - this tells a delta update to look back in time from when the Web API reports the last update
+
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/login.jpg?raw=true" width="50%" height="50%">
 <img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/options.jpg?raw=true" width="50%" height="50%">
 

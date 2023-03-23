@@ -46,6 +46,8 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         password: str,
         api_version: str,
         scan_interval: int,
+        full_refresh_interval: int,
+        data_refresh_offset: int,
         entry_id: str,
     ):
         """Initialise the MasterTherm Update Coordinator class."""
@@ -73,6 +75,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             self.mt_controller.set_refresh_rate(data_refresh_seconds=scan_interval - 10)
         else:
             self.mt_controller.set_refresh_rate(data_refresh_seconds=60)
+
+        self.mt_controller.set_refresh_rate(
+            data_offset_seconds=data_refresh_offset,
+            full_refresh_minutes=full_refresh_interval,
+        )
 
         self.entity_types: dict[str, EntityDescription] = self.__build_entity_types(
             ENTITY_TYPES_MAP
