@@ -122,9 +122,9 @@ For Automation when looking for conditions some of the states are translated so 
             "offline": "Pump Offline",
             "heating": "Heating",
             "cooling": "Cooling",
+            "cooling_dpc": "Cooling (DPC)",
             "pool": "Pool",
             "dhw": "Hot Water",
-            "dpc": "Defrost Protection",
             "idle": "Idle",
             "aux_heater": "Aux Heater"
         }

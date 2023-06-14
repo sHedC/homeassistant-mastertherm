@@ -140,9 +140,9 @@ Translations are as follows, example for hp_operating_mode shows in the UI "Pump
             "offline": "Pump Offline",
             "heating": "Heating",
             "cooling": "Cooling",
+            "cooling_dpc": "Cooling (DPC)",
             "pool": "Pool",
             "dhw": "Hot Water",
-            "dpc": "Defrost Protection",
             "idle": "Idle",
             "aux_heater": "Aux Heater"
         }
@@ -164,7 +164,7 @@ This section covers entities that are linked tot he Main Heatpump, not all senso
 | ------ | ---- | ----------- |
 | hp_power_state | Switch | Turn on and off the Heat Pump |
 | hp_function | Select | The function is heating/ cooling or auto |
-| operating_mode | Sensor | The current Operating Mode which shows different states: <br/>- Unavailable: The Mastertherm API is uavailable.<br/>- Pump Offline: The HP is offline or unavailable.<br/>- Idle: HP is doing nothing.<br/>- Heating: HP is Heating.<br/>- Cooling: HP is Cooling.<br/>- Pool: HP is heating the Pool.<br/>- Hot Water: HP is heating domestic hot water.<br/>- Defrost Protection: HP is in defrost protection mode.<br/>- Aux Heater: Aux Heater is being used. |
+| operating_mode | Sensor | The current Operating Mode which shows different states: <br/>- Unavailable: The Mastertherm API is uavailable.<br/>- Pump Offline: The HP is offline or unavailable.<br/>- Idle: HP is doing nothing.<br/>- Heating: HP is Heating.<br/>- Cooling: HP is Cooling.<br/>- Cooling (DPC): HP is Cooling with Dew Point Protection.<br/>- Pool: HP is heating the Pool.<br/>- Hot Water: HP is heating domestic hot water.<br/>- Aux Heater: Aux Heater is being used. |
 | cooling_mode | Binary Sensor | Whether the pump is in cooling mode or not (if not its heating) |
 | compressor_running | Binary Sensor | Main compressor running |
 | compressor2_running | Binary Sensor | Compressor 2 if installed |
