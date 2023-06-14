@@ -1,4 +1,4 @@
-"""Test the Coordinator Bridge"""
+"""Test the Coordinator Bridge."""
 from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
@@ -16,7 +16,7 @@ from .conftest import APIMock
 
 
 async def test_coordinator_setup(hass: HomeAssistant, mock_configdata: dict):
-    """Test the Coordinator"""
+    """Test the Coordinator."""
     api_mock = APIMock()
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)

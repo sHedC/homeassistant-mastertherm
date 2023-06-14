@@ -184,8 +184,8 @@ async def test_update_options(
 
     # show user form
     result = await hass.config_entries.options.async_init(entry.entry_id)
-    assert "form" == result["type"]
-    assert "user" == result["step_id"]
+    assert result["type"] == "form"
+    assert result["step_id"] == "user"
 
     # Populate with updated options
     with patch(
@@ -201,7 +201,7 @@ async def test_update_options(
         )
         await hass.async_block_till_done()
 
-    assert "create_entry" == result["type"]
+    assert result["type"] == "create_entry"
     assert result["result"] is True
 
     # Check the Refresh Interval was updated
