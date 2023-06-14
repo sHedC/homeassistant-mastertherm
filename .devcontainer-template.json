@@ -22,7 +22,8 @@
                 "ryanluker.vscode-coverage-gutters",
                 "ms-python.vscode-pylance",
                 "mikestead.dotenv",
-                "github.vscode-pull-request-github"
+                "github.vscode-pull-request-github",
+                "charliermarsh.ruff"
             ],
             "settings": {
                 "files.eol": "\n",
