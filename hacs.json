@@ -1,7 +1,7 @@
 {
     "name": "Mastertherm",
-    "hacs": "1.29.0",
-    "homeassistant": "2022.3.5",
+    "hacs": "1.32.1",
+    "homeassistant": "2023.6.1",
     "country": "GB",
     "hide_default_branch": true
 }
