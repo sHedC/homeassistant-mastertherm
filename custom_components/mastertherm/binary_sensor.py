@@ -19,7 +19,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup sensors from a config entry created in the integrations UI."""
+    """Load Binary Sensors from the config settings."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[BinarySensorEntity] = []
@@ -48,6 +48,7 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
         entity_key: str,
         entity_description: MasterthermBinarySensorEntityDescription,
     ):
+        """Initialize the binary sensor."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,

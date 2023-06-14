@@ -22,7 +22,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup sensors from a config entry created in the integrations UI."""
+    """Load Sensors from the config settings."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SensorEntity] = []
@@ -51,6 +51,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
         entity_key: str,
         entity_description: MasterthermSensorEntityDescription,
     ):
+        """Initialize the sensor."""
         self._icon_state_map = entity_description.icon_state_map
 
         if entity_description.device_class == SensorDeviceClass.TEMPERATURE:
@@ -77,6 +78,7 @@ class MasterthermSensor(MasterthermEntity, SensorEntity):
 
     @property
     def native_value(self) -> StateType | date | datetime | Decimal:
+        """Return the sensor value."""
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]

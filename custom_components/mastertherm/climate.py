@@ -29,7 +29,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup climate entities from a config entry created in the integrations UI."""
+    """Load the Climate entity from the config entries."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[ClimateEntity] = []
@@ -58,6 +58,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         entity_key: str,
         entity_description: MasterthermClimateEntityDescription,
     ):
+        """Initialize the Climate Entries."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -90,7 +91,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
 
     @property
     def hvac_mode(self) -> HVACMode | str | None:
-        """If HVACMode enabled then check what state"""
+        """If HVACMode enabled then check what state."""
         # 0 is perm off, 1 or 2 is AUTO for on or scheduled off.
         if self._hvac_mode_enabled:
             if (
@@ -107,10 +108,12 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
 
     @property
     def current_temperature(self) -> float | None:
+        """Return the current temperature."""
         return self.entities[self._descrption.current_temperature_path]
 
     @property
     def target_temperature(self) -> float | None:
+        """Return the target temperature."""
         return self.entities[self._descrption.requested_temperature_path]
 
     @property
@@ -132,7 +135,7 @@ class MasterthermClimate(MasterthermEntity, ClimateEntity):
         self.async_write_ha_state()
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
-        """Currently this is not supported, display a warning."""
+        """Set HVAC Mode."""
         if self._hvac_mode_enabled:
             if hvac_mode == HVACMode.OFF:
                 await self.coordinator.update_state(

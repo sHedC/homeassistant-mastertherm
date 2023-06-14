@@ -21,7 +21,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup sensors from a config entry created in the integrations UI."""
+    """Load Switches from the config settings."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SwitchEntity] = []
@@ -50,6 +50,7 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
         entity_key: str,
         entity_description: MasterthermSwitchEntityDescription,
     ):
+        """Initialize the switches."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -62,6 +63,7 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
 
     @property
     def is_on(self) -> bool | None:
+        """Return if switch is on or off."""
         return self.coordinator.get_state(self._module_key, self._entity_key)
 
     @callback

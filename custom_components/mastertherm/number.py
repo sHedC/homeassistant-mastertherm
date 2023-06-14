@@ -19,7 +19,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup numbers from a config entry created in the integrations UI."""
+    """Load Number Sensors from the config settings."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[NumberEntity] = []
@@ -48,6 +48,7 @@ class MasterthermNumber(MasterthermEntity, NumberEntity):
         entity_key: str,
         entity_description: MasterthermNumberEntityDescription,
     ):
+        """Initialize the number sensor."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -68,6 +69,7 @@ class MasterthermNumber(MasterthermEntity, NumberEntity):
 
     @property
     def native_value(self) -> float:
+        """Return the native value."""
         return self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]

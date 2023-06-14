@@ -23,7 +23,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         entity_key: str,
         entity_type: str,
     ):
-        """Initialisation for all Mastertherm Entities"""
+        """Initialize class properties."""
         super().__init__(coordinator)
 
         self._module_key = module_key
@@ -51,17 +51,17 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
 
     @property
     def get_module(self) -> dict:
-        """Get the data for this module"""
+        """Get the data for this module."""
         return self.coordinator.data["modules"][self._module_key]
 
     @property
     def get_moduleinfo(self) -> dict:
-        """Get the Information for this Module"""
+        """Get the Information for this Module."""
         return self.get_module["info"]
 
     @property
     def get_entity(self):
-        """Get the specifi Entity data"""
+        """Get the specifi Entity data."""
         return self.get_module[CONF_ENTITIES][self._entity_key]
 
     @property

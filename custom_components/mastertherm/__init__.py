@@ -1,9 +1,8 @@
 """Mastertherm integration to integrate Mastertherm Heatpumps with Home Assistant."""
-import asyncio
 from datetime import timedelta
 import logging
 
-from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
@@ -11,7 +10,6 @@ from homeassistant.const import (
     CONF_SCAN_INTERVAL,
 )
 from homeassistant.core import Config, HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import (

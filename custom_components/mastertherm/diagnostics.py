@@ -1,4 +1,4 @@
-"""Diagnostics support for Mastertherm"""
+"""Diagnostics support for Mastertherm."""
 from __future__ import annotations
 
 from typing import Any
