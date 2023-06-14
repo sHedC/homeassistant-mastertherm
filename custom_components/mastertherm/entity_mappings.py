@@ -907,10 +907,10 @@ ENTITY_TYPES_MAP: dict = {
         icon_state_map={
             "offline": "mdi:wifi-strength-off",
             "heating": "mdi:sun-thermometer",
-            "cooling": "mdi:coolant-temperature",
+            "cooling": "mdi:snowflake",
+            "cooling_dpc": "mdi:snowflake-melt",
             "pool": "mdi:pool",
             "dhw": "mdi:water-pump",
-            "dpc": "mdi:snowflake-melt",
             "idle": "mdi:timer-sand-complete",
             "aux_heater": "mdi:heating-coil",
         },
