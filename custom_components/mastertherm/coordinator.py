@@ -247,8 +247,8 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             run_time = round(stop - start, 4)
             _LOGGER.debug("Finished setting mastertherm data in %s seconds", run_time)
 
-            # Sleep for 1 second before returning so we don't throttle the API
-            await asyncio.sleep(0.2)
+            # Sleep a little before returning so we don't throttle the API
+            await asyncio.sleep(0.5)
 
     def get_state(self, module_key: str, entity_key: str) -> any:
         """Get the State from the core data."""
