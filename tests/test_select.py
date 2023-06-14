@@ -37,7 +37,7 @@ def override_entity():
 async def test_select_setup(
     hass: HomeAssistant, mock_configdata: dict, mock_entitydata: dict
 ):
-    """Test Select Entities are Created"""
+    """Test Select Entities are Created."""
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
 

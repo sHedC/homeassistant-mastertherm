@@ -125,6 +125,7 @@ class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        """Return the option flow handler."""
         return MasterthermOptionsFlowHandler(config_entry)
 
     async def _show_config_form(self, user_input: dict[str, Any]):

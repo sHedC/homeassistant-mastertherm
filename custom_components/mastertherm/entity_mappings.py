@@ -1,4 +1,5 @@
-"""Contains all the Entity Mappings from the Mastertherm Connector"""
+"""Contains all the Entity Mappings from the Mastertherm Connector."""
+# Disable Too Many Lines Warning
 # pylint: disable=C0302
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass

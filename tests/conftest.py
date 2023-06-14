@@ -80,7 +80,7 @@ def load_fixture(folder, filename):
 def auto_enable_custom_integrations(
     enable_custom_integrations,
 ):  # pylint: disable=unused-argument
-    """This ficture enables loading custom integrations in all tess."""
+    """Ficture enables loading custom integrations in all tess."""
     yield
 
 
@@ -90,14 +90,14 @@ class APIMock:
     error = ""
 
     def __init__(self):
-        """Initialize the Mock API"""
+        """Initialize the Mock API."""
 
     async def connect(self):
-        """Simulate the Connect and Update method"""
+        """Simulate the Connect and Update method."""
         return True
 
     def refresh(self, full_load=False):  # pylint: disable=unused-argument
-        """Mock the Refresh Method"""
+        """Mock the Refresh Method."""
         return True
 
     def get_devices(self):
@@ -126,7 +126,7 @@ class APIMock:
     async def set_device_data_item(
         self, module_id: str, unit_id: str, entry: str, value: any
     ) -> bool:
-        """Sets the Device Data"""
+        """Set the Device Data."""
         return True
 
 
@@ -150,7 +150,7 @@ def mock_moduledata():
 
 @pytest.fixture
 def mock_entitydata():
-    """Returns a default set of Entities."""
+    """Return a default set of Entities."""
     return TEST_ENTITIES
 
 

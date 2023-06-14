@@ -20,7 +20,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Setup select from a config entry created in the integrations UI."""
+    """Load Select entities from the config settings."""
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SelectEntity] = []
@@ -55,6 +55,7 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         entity_key: str,
         entity_description: MasterthermSelectEntityDescription,
     ):
+        """Initialize the select sensor."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -73,6 +74,7 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
 
     @property
     def current_option(self) -> str | None:
+        """Return the current select option."""
         state = self.coordinator.data["modules"][self._module_key]["entities"][
             self._entity_key
         ]
@@ -104,6 +106,7 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
         entity_key: str,
         entity_description: MasterthermSelectEntityDescription,
     ):
+        """Initialize the season sensor."""
         super().__init__(
             coordinator=coordinator,
             module_key=module_key,
@@ -114,6 +117,7 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
 
     @property
     def current_option(self) -> str | None:
+        """Return the current season option."""
         entities = self.coordinator.data["modules"][self._module_key]["entities"]
         if entities["season.manual_set"]:
             return "winter" if entities["season.winter"] else "summer"

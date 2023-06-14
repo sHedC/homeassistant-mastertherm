@@ -58,8 +58,7 @@ async def test_setup_unload_and_reload_entry(
 async def test_unload_entry(
     hass: HomeAssistant, mock_configdata: dict, mock_entitydata: dict
 ):
-    """Test being able to unload an entry, may fail is PLATFORM is setup and
-    sensors fail to set up."""
+    """Test being able to unload an entry."""
     entry = MockConfigEntry(
         domain=DOMAIN, data=mock_configdata[DOMAIN], entry_id="test"
     )

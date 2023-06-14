@@ -93,7 +93,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             self.entity_registry, entry_id
         )
         for reg_entity in registry_entries:
-            if not reg_entity.domain in self.old_entries:
+            if reg_entity.domain not in self.old_entries:
                 self.old_entries[reg_entity.domain] = []
             self.old_entries[reg_entity.domain].append(reg_entity.entity_id)
 
