@@ -1,6 +1,6 @@
 pip>=21.0,<23.2
 bumpver==2023.1124
 colorlog==6.7.0
-ruff==0.0.272
+ruff==0.0.277
 chardet==5.1.0
 homeassistant==2023.6.1
