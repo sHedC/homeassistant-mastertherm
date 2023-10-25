@@ -4,7 +4,7 @@ import asyncio
 import time
 
 from datetime import timedelta
-from aiohttp import ClientSession, ClientTimeout
+from aiohttp import ClientSession
 
 from masterthermconnect import (
     MasterthermController,
@@ -27,6 +27,7 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, ENTITIES
 from .entity_mappings import ENTITY_TYPES_MAP
@@ -62,7 +63,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
         self.reconnect = True
         self.cleanup = True
 
-        self.session = ClientSession(timeout=ClientTimeout(total=15))
+        self.session = async_get_clientsession(hass)
         self.mt_controller: MasterthermController = MasterthermController(
             username,
             password,
@@ -96,14 +97,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             if reg_entity.domain not in self.old_entries:
                 self.old_entries[reg_entity.domain] = []
             self.old_entries[reg_entity.domain].append(reg_entity.entity_id)
-
-    async def __aenter__(self):
-        """Return Self."""
-        return self
-
-    async def __aexit__(self, *excinfo):
-        """Close Session before class is destroyed."""
-        await self.session.close()
 
     def __build_entity_types(
         self, entity_map: dict, parent: str = ""
