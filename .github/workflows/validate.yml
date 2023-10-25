@@ -17,7 +17,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
         - name: "Checkout the repository"
-          uses: "actions/checkout@v3.4.0"
+          uses: "actions/checkout@v4"
 
         - name: "Run hassfest validation"
           uses: "home-assistant/actions/hassfest@master"
@@ -27,7 +27,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
         - name: "Checkout the repository"
-          uses: "actions/checkout@v3.4.0"
+          uses: "actions/checkout@v4"
 
         - name: "Run HACS validation"
           uses: "hacs/action@main"
@@ -38,7 +38,7 @@ jobs:
     runs-on: "ubuntu-latest"
     name: Check style formatting
     steps:
-        - uses: "actions/checkout@v3"
+        - uses: "actions/checkout@v4"
         - uses: "actions/setup-python@v4"
           with:
             python-version: "3.11"
@@ -50,7 +50,7 @@ jobs:
     name: Run tests
     steps:
       - name: Check out code from GitHub
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: Setup Python
         uses: "actions/setup-python@v4"
         with:
