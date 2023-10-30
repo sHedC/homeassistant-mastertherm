@@ -4,4 +4,4 @@ colorlog==6.7.0
 ruff==0.1.1
 chardet==5.2.0
 pytest-homeassistant-custom-component==0.13.68
-masterthermconnect==2.2.6
+masterthermconnect==2.2.9
