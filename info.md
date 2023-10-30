@@ -12,8 +12,6 @@ My friend who helps a lot with debugging and identifying details for this integr
 
 SeBsZ Link: [![BuyMeCoffee][buymecoffeebadge_sebs]][buymecoffee_sebs]
 
-If you feel like donating, my wife is rasing money for and the Salvation Army here: <a href="https://www.justgiving.com/fundraising/jackie-holmes1933" target="_blank"><img src="https://github.com/sHedC/homeassistant-mastertherm/blob/main/images/salvationarmy.jpg?raw=true" alt="Charity Link" style="width:125px;height:20px;"></a>
-
 ## About the Integration
 ![mastertherm][masterthermimg]
 
