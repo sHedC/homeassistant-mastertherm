@@ -34,6 +34,7 @@ async def test_binary_sensor_setup(
     """Test Sensors are Created and Updated."""
     # Setting up using Mock requires the actual config not the Domain
     # changed the way the test works to send without domain.
+
     api_mock = APIMock()
     entry = MockConfigEntry(domain=DOMAIN, data=mock_configdata[DOMAIN])
     entry.add_to_hass(hass)
