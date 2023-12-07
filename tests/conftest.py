@@ -3,7 +3,6 @@ import json
 import os
 from unittest.mock import patch
 import pytest
-import pytest_socket
 
 from homeassistant.const import (
     CONF_PASSWORD,

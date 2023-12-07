@@ -1,7 +1,6 @@
 """Mastertherm Binary Sensor Tests."""
 from unittest.mock import patch
 import pytest
-import pytest_socket
 
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
