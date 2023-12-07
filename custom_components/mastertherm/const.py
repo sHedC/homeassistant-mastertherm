@@ -15,7 +15,7 @@ from homeassistant.components.switch import SwitchEntityDescription
 
 NAME = "Mastertherm"
 DOMAIN = "mastertherm"
-VERSION = "1.1.8"
+VERSION = "1.1.9"
 
 API_VERSIONS = {
     "v1": "mastertherm.vip-it.cz (< 2022)",
