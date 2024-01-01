@@ -3,4 +3,4 @@ bumpver==2023.1129
 colorlog==6.8.0
 ruff==0.1.9
 chardet==5.2.0
-homeassistant==2023.11.0
+homeassistant==2023.12.4
