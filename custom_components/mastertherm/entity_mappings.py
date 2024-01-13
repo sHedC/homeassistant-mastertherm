@@ -5,7 +5,7 @@ from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.switch import SwitchDeviceClass
-from homeassistant.const import PERCENTAGE, TIME_HOURS, UnitOfTemperature
+from homeassistant.const import PERCENTAGE, UnitOfTemperature, UnitOfTime
 
 from .const import (
     MasterthermBinarySensorEntityDescription,
@@ -1090,8 +1090,8 @@ ENTITY_TYPES_MAP: dict = {
             name="Compressor Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=TIME_HOURS,
-            suggested_unit_of_measurement=TIME_HOURS,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
         "compressor_start_counter": MasterthermSensorEntityDescription(
             key="compressor_start_counter",
@@ -1104,24 +1104,24 @@ ENTITY_TYPES_MAP: dict = {
             name="Pump Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=TIME_HOURS,
-            suggested_unit_of_measurement=TIME_HOURS,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
         "aux1_runtime": MasterthermSensorEntityDescription(
             key="aux1_runtime",
             name="Aux 1 Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=TIME_HOURS,
-            suggested_unit_of_measurement=TIME_HOURS,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
         "aux2_runtime": MasterthermSensorEntityDescription(
             key="aux2_runtime",
             name="Aux 2 Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
-            native_unit_of_measurement=TIME_HOURS,
-            suggested_unit_of_measurement=TIME_HOURS,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
     },
     "error_info": {
