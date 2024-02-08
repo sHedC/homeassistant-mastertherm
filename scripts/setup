@@ -4,6 +4,10 @@ set -e
 
 cd "$(dirname "$0")/.."
 
+sudo apt -y update
+sudo apt -y dist-upgrade
+sudo apt -y install ffmpeg
+
 pip install --upgrade pip
 
 if [ ! -f ./configuration.yaml ]; then
