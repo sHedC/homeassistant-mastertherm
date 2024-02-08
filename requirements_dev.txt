@@ -1,7 +1,7 @@
-pip>=21.0,<23.4
+pip>=21.3.1
 bumpver==2023.1129
 colorlog==6.8.2
 ruff==0.2.1
 chardet==5.2.0
 pytest-homeassistant-custom-component==0.13.98
-masterthermconnect==2.2.11
+masterthermconnect==2.3.0a0
