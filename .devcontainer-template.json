@@ -1,16 +1,24 @@
 /*
-  Copy this file to .devcontainer.json
-  if using PODMAN, instead of DOCKER, uncomment the runArgs section
+    Copy this file to .devcontainer.json
+    if using PODMAN, instead of DOCKER, uncomment the runArgs section
 
-  Change BUILD_TYPE to "dev" to use pytests and develop and "run" to use homeassistant
+    Change BUILD_TYPE to "dev" to use pytests and develop and "run" to use homeassistant
+
+    NOTE: Python 3.12 does not stop at breakpoints for debugging in VS Code.
 */
 {
     "name": "sHedC/homeassistant-mastertherm",
-    "image": "mcr.microsoft.com/vscode/devcontainers/python:1-3.12",
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:1-3.11",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
         8123
     ],
+    "portsAttributes": {
+		"8123": {
+			"label": "localhost",
+			"protocol": "http"
+		}
+	},
     "containerEnv": {
         "BUILD_TYPE": "run"
     },

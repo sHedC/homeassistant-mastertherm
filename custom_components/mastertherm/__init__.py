@@ -1,4 +1,5 @@
 """Mastertherm integration to integrate Mastertherm Heatpumps with Home Assistant."""
+
 from datetime import timedelta
 import logging
 
