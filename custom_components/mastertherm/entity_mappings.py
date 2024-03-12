@@ -1,4 +1,5 @@
 """Contains all the Entity Mappings from the Mastertherm Connector."""
+
 # Disable Too Many Lines Warning
 # pylint: disable=C0302
 from homeassistant.components.number import NumberDeviceClass
@@ -1090,6 +1091,7 @@ ENTITY_TYPES_MAP: dict = {
             name="Compressor Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
+            device_class=SensorDeviceClass.DURATION,
             native_unit_of_measurement=UnitOfTime.HOURS,
             suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
@@ -1104,6 +1106,7 @@ ENTITY_TYPES_MAP: dict = {
             name="Pump Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
+            device_class=SensorDeviceClass.DURATION,
             native_unit_of_measurement=UnitOfTime.HOURS,
             suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
@@ -1112,6 +1115,7 @@ ENTITY_TYPES_MAP: dict = {
             name="Aux 1 Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
+            device_class=SensorDeviceClass.DURATION,
             native_unit_of_measurement=UnitOfTime.HOURS,
             suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
@@ -1120,6 +1124,7 @@ ENTITY_TYPES_MAP: dict = {
             name="Aux 2 Runtime",
             icon="mdi:progress-clock",
             state_class=SensorStateClass.TOTAL_INCREASING,
+            device_class=SensorDeviceClass.DURATION,
             native_unit_of_measurement=UnitOfTime.HOURS,
             suggested_unit_of_measurement=UnitOfTime.HOURS,
         ),
