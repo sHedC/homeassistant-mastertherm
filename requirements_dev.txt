@@ -3,5 +3,5 @@ bumpver==2023.1129
 colorlog==6.8.2
 ruff==0.3.0
 chardet==5.2.0
-pytest-homeassistant-custom-component==0.13.119
+pytest-homeassistant-custom-component==0.13.127
 masterthermconnect==2.3.0
