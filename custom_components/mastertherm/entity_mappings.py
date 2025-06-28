@@ -1131,7 +1131,7 @@ ENTITY_TYPES_MAP: dict = {
     },
     "error_info": {
         "some_error": MasterthermBinarySensorEntityDescription(
-            key="somer_error",
+            key="some_error",
             name="Some Error",
         ),
         "three_errors": MasterthermBinarySensorEntityDescription(
@@ -1144,7 +1144,85 @@ ENTITY_TYPES_MAP: dict = {
         ),
         "safety_tstat": MasterthermBinarySensorEntityDescription(
             key="safety_tstat",
-            name="Reset 3E",
+            name="Safety TStat",
+        ),
+        "alarm_a": MasterthermSensorEntityDescription(
+            key="alarm_a",
+            name="Alarm A Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_b": MasterthermSensorEntityDescription(
+            key="alarm_b",
+            name="Alarm B Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_c": MasterthermSensorEntityDescription(
+            key="alarm_c",
+            name="Alarm C Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_d": MasterthermSensorEntityDescription(
+            key="alarm_d",
+            name="Alarm 'Low Evaporating Temperature' Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_e": MasterthermSensorEntityDescription(
+            key="alarm_e",
+            name="Alarm 'Low Flow Rate' Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_f": MasterthermSensorEntityDescription(
+            key="alarm_f",
+            name="Alarm F Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_g": MasterthermSensorEntityDescription(
+            key="alarm_g",
+            name="Alarm 'Fan Temperature Protection' Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_h": MasterthermSensorEntityDescription(
+            key="alarm_h",
+            name="Alarm H Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_i": MasterthermSensorEntityDescription(
+            key="alarm_i",
+            name="Alarm I Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_j": MasterthermSensorEntityDescription(
+            key="alarm_j",
+            name="Alarm J Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_k": MasterthermSensorEntityDescription(
+            key="alarm_k",
+            name="Alarm K Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_l": MasterthermSensorEntityDescription(
+            key="alarm_l",
+            name="Alarm L Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        "alarm_m": MasterthermSensorEntityDescription(
+            key="alarm_m",
+            name="Alarm M Counter",
+            icon="mdi:alert-octagon-outline",
+            state_class=SensorStateClass.TOTAL_INCREASING,
         ),
     },
     "heating_circuits": HEATING_CIRCUITS,
