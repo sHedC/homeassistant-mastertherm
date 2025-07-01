@@ -91,7 +91,7 @@ async def test_form_reauth(hass: HomeAssistant):
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
         return_value={"status": "success"},
-    ), patch("custom_components.mastertherm.async_setup", return_value=True), patch(
+    ), patch(
         "custom_components.mastertherm.async_setup_entry", return_value=True
     ):
         result2 = await hass.config_entries.flow.async_configure(
@@ -102,7 +102,7 @@ async def test_form_reauth(hass: HomeAssistant):
         )
         await hass.async_block_till_done()
 
-    assert result2["type"] == "abort"
+    assert result2["type"] == data_entry_flow.FlowResultType.ABORT
     assert result2["reason"] == "reauth_successful"
 
 
@@ -141,7 +141,7 @@ async def test_form_single_instance(hass: HomeAssistant):
     with patch(
         "custom_components.mastertherm.config_flow.authenticate",
         return_value={"status": "success"},
-    ), patch("custom_components.mastertherm.async_setup", return_value=True), patch(
+    ), patch(
         "custom_components.mastertherm.async_setup_entry", return_value=True
     ):
         setup_result = await hass.config_entries.flow.async_configure(
