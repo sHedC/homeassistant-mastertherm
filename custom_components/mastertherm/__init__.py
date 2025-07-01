@@ -11,7 +11,6 @@ from homeassistant.const import (
     CONF_SCAN_INTERVAL,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import ConfigType
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import (
