@@ -93,5 +93,4 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
             configuration_url=self.get_moduleinfo["api_url"],
             sw_version=VERSION,
             hw_version=self.get_moduleinfo["output"],
-            via_device=(DOMAIN, self.get_moduleinfo["version"]),
         )
