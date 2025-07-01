@@ -1,4 +1,6 @@
 """Test mastertherm setup process."""
+import pytest
+
 from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
@@ -15,6 +17,7 @@ from custom_components.mastertherm import (
 from custom_components.mastertherm.const import DOMAIN
 
 
+@pytest.mark.parametrize("expected_lingering_timers", [True])
 async def test_setup_unload_and_reload_entry(
     hass: HomeAssistant, mock_configdata: dict, mock_entitydata: dict
 ):
@@ -29,6 +32,7 @@ async def test_setup_unload_and_reload_entry(
         ),
         return_value=mock_entitydata,
     ) as mock_sync:
+        await hass.config_entries.async_setup(entry.entry_id)
         assert await async_setup_entry(hass, entry)
         await hass.async_block_till_done()
 

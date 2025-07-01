@@ -10,7 +10,7 @@ from homeassistant.const import (
     CONF_API_VERSION,
     CONF_SCAN_INTERVAL,
 )
-from homeassistant.core import Config, HomeAssistant
+from homeassistant.core import HomeAssistant
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import (
@@ -26,13 +26,6 @@ from .const import (
 SCAN_INTERVAL = timedelta(seconds=30)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
-
-
-async def async_setup(
-    hass: HomeAssistant, config: Config
-):  # pylint: disable=unused-argument
-    """Set up this integration using YAML is not supported."""
-    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
