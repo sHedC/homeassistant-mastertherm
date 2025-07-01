@@ -3,10 +3,6 @@
     if using PODMAN, instead of DOCKER, uncomment the runArgs section
 
     Change BUILD_TYPE to "dev" to use pytests and develop and "run" to use homeassistant
-
-    NOTE: Works with 3.12, but if debugging use 3.11.
-          Python 3.12 is not stopping on breakpoints,
-          see issue #110623 on homeassistant core
 */
 {
     "name": "sHedC/homeassistant-mastertherm",
