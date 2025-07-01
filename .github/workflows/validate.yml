@@ -14,20 +14,20 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
         - name: "Checkout the repository"
-          uses: "actions/checkout@v4.1.2"
+          uses: actions/checkout@v4.2.2
 
         - name: "Run hassfest validation"
-          uses: "home-assistant/actions/hassfest@master"
+          uses: home-assistant/actions/hassfest@master
 
   hacs: # https://github.com/hacs/action
     name: "HACS Validation"
     runs-on: "ubuntu-latest"
     steps:
         - name: "Checkout the repository"
-          uses: "actions/checkout@v4.1.2"
+          uses: actions/checkout@v4.2.2
 
         - name: "Run HACS validation"
-          uses: "hacs/action@main"
+          uses: hacs/action@main
           with:
             category: "integration"
 
@@ -36,9 +36,9 @@ jobs:
     name: Run tests
     steps:
       - name: Check out code from GitHub
-        uses: "actions/checkout@v4.1.2"
+        uses: actions/checkout@v4.2.2
       - name: Setup Python
-        uses: "actions/setup-python@v5.1.0"
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.13"
 

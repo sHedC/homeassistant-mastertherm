@@ -11,10 +11,10 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
         - name: "Checkout the repository"
-          uses: "actions/checkout@v4.1.2"
+          uses: actions/checkout@v4.2.2
 
         - name: "Set up Python"
-          uses: actions/setup-python@v5.1.0
+          uses: actions/setup-python@v5.6.0
           with:
             python-version: "3.13"
             cache: "pip"
@@ -22,5 +22,8 @@ jobs:
         - name: "Install requirements"
           run: python3 -m pip install -r requirements.txt
 
-        - name: "Run"
+        - name: "Lint"
           run: python3 -m ruff check .
+
+        - name: "Format"
+          run: python3 -m ruff format . --check
