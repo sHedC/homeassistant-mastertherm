@@ -20,7 +20,7 @@ async def test_form_success(hass: HomeAssistant):
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["errors"] == {}
 
     with patch(
@@ -33,7 +33,7 @@ async def test_form_success(hass: HomeAssistant):
         )
         await hass.async_block_till_done()
 
-    assert setup_result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
+    assert setup_result["type"] == data_entry_flow.FlowResultType.CREATE_ENTRY
     assert setup_result["title"] == "user.name"
 
     assert len(mock_authenticate.mock_calls) == 1
@@ -44,7 +44,7 @@ async def test_form_invalid_auth(hass: HomeAssistant):
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["errors"] == {}
 
     with patch(
@@ -57,7 +57,7 @@ async def test_form_invalid_auth(hass: HomeAssistant):
         )
         await hass.async_block_till_done()
 
-    assert setup_result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert setup_result["type"] == data_entry_flow.FlowResultType.CREATE_ENTRY
     assert setup_result["step_id"] == "user"
     assert setup_result["errors"] == {"base": "authentication_error"}
 
@@ -85,7 +85,7 @@ async def test_form_reauth(hass: HomeAssistant):
         },
         data=entry.data,
     )
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["errors"] == {}
 
     with patch(
@@ -111,7 +111,7 @@ async def test_form_cannot_connect(hass: HomeAssistant):
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
-    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["errors"] == {}
 
     with patch(
@@ -157,7 +157,7 @@ async def test_form_single_instance(hass: HomeAssistant):
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
 
-    assert result2["type"] == data_entry_flow.RESULT_TYPE_ABORT
+    assert result2["type"] == data_entry_flow.FlowResultType.ABORT
     assert result2["reason"] == "single_instance_allowed"
 
 
