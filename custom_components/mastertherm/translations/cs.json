@@ -1,0 +1,134 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Přihlášení ke cloudové službě",
+                "description": "Přihlaste se ke cloudové službě Mastertherm, vyberte stránku, ke které se chcete přihlásit: pokud je zařízení vyrobeno před rokem 2022, pravděpodobně použijte mastertherm.vip-it.cz; pokud je novější, tak mastertherm.online.",
+                "data": {
+                    "api_verson": "Přihlašovací stránka",
+                    "username": "Uživatelské jméno",
+                    "password": "Heslo"
+                }
+            },
+            "reauth_confirm": {
+                "title": "Znovu ověřit přihlášení ke cloudové službě",
+                "description": "Znovu se přihlaste ke cloudové službě Mastertherm, protože ověření selhalo. Pokud potřebujete změnit uživatelské jméno, smažte a znovu přidejte zařízení.",
+                "data": {
+                    "password": "Heslo"
+                }
+            }
+        },
+        "error": {
+            "authentication_error": "Nesprávné uživatelské jméno nebo heslo.",
+            "connection_error": "Chyba připojení k serverům Mastertherm.",
+            "unsupported_role": "Chyba: Systémová role není touto integrací podporována.",
+            "response_error": "Došlo k chybě v JSON odpovědi.",
+            "unknown_reason": "Aktualizace selhala z neznámého důvodu."
+        },
+        "abort": {
+            "single_instance_allowed": "Je povolena pouze jedna instance."
+        }
+    },
+    "options": {
+        "step": {
+            "user": {
+                "description": "Nové Mastertherm servery 'mastertherm.online' mohou při příliš mnoha požadavcích zablokovat přístup. Pokud máte k uživatelskému jménu připojena více než 2 zařízení, zvažte frekvenci aktualizace 600 sekund nebo více. (Limity nejsou plně otestovány). Otestováno bylo 30 sekund na jednom zařízení.",
+                "data": {
+                    "scan_interval": "Interval aktualizace dat v sekundách (min: 30)",
+                    "full_refresh_interval": "Interval úplné aktualizace dat v minutách (min: 5, max: 360)",
+                    "data_refresh_offset": "Posun času poslední aktualizace dat v sekundách (min: 0, max: 30)"
+                }
+            }
+        }
+    },
+    "entity": {
+        "select": {
+            "hp_function": {
+                "state": {
+                    "auto": "Auto",
+                    "heating": "Topení",
+                    "cooling": "Chlazení"
+                }
+            },
+            "season_select": {
+                "state": {
+                    "auto": "Auto",
+                    "winter": "Zima",
+                    "summer": "Léto"
+                }
+            }
+        },
+        "sensor": {
+            "hp_type": {
+                "state": {
+                    "0": "Vzduch-voda",
+                    "1": "Země-voda",
+                    "2": "Voda-voda",
+                    "3": "Země-voda s přímým kontaktem",
+                    "4": "Vzduch-voda s chlazením",
+                    "5": "Země-voda s chlazením",
+                    "6": "Voda-voda s chlazením"
+                }
+            },
+            "hp_season": {
+                "state": {
+                    "winter": "Zima",
+                    "summer": "Léto",
+                    "auto-winter": "Zima (Auto)",
+                    "auto-summer": "Léto (Auto)"
+                }
+            },
+            "hp_operating_mode": {
+                "state": {
+                    "offline": "Čerpadlo offline",
+                    "heating": "Topení",
+                    "cooling": "Chlazení",
+                    "cooling_dpc": "Chlazení (DPC)",
+                    "pool": "Bazén",
+                    "dhw": "Teplá voda",
+                    "idle": "Nečinný",
+                    "aux_heater": "Pomocné topení"
+                }
+            },
+            "alarm_a": {
+              "name": "Počítadlo alarmu 'Nízký Tlak'"
+            },
+            "alarm_b": {
+              "name": "Počítadlo alarmu 'Vysoký Tlak od TP'"
+            },
+            "alarm_c": {
+              "name": "Počítadlo alarmu 'Vysoká Kondenzační Teplota'"
+            },
+            "alarm_d": {
+              "name": "Počítadlo alarmu 'Nízká Vypařovací Teplota'"
+            },
+            "alarm_e": {
+              "name": "Počítadlo alarmu 'Průtok'"
+            },
+            "alarm_f": {
+              "name": "Počítadlo alarmu 'Vysoká Teplota Výtlaku'"
+            },
+            "alarm_g": {
+              "name": "Počítadlo alarmu 'Teplotní Ochrana Ventilátor'"
+            },
+            "alarm_h": {
+              "name": "Počítadlo alarmu 'Teplotní Ochrana Kompresor'"
+            },
+            "alarm_i": {
+              "name": "Počítadlo alarmu 'Protimrazová Ochrana'"
+            },
+            "alarm_j": {
+              "name": "Počítadlo alarmu 'Nízký Tlak na HP'"
+            },
+            "alarm_k": {
+              "name": "Počítadlo alarmu 'Pohon Expanzního Ventilu (EVD)'"
+            },
+            "alarm_l": {
+              "name": "Počítadlo alarmu 'Vysoký Tlak Presostat'"
+            },
+            "alarm_m": {
+              "name": "Počítadlo alarmu 'DC Drive'"
+            }
+        }
+    }
+}
