@@ -22,7 +22,7 @@
             "authentication_error": "Username/ Password is incorrect.",
             "connection_error": "Error connecting to the Mastertherm servers.",
             "unsupported_role": "Error System Role is not suppored by this integration.",
-            "response_error": "There was an error in the JSON Reponse.",
+            "response_error": "There was an error in the JSON Response.",
             "unknown_reason": "Update Failed for an Unknown Reason."
         },
         "abort": {
@@ -32,7 +32,7 @@
     "options": {
         "step": {
             "user": {
-                "description": "The new mastertherm servers 'mastertherm.online' can lock out with too many requests. If you have multiple more than 2 devices attached to your username, consider 600 seconds refresh rate or higher. (Limits not fully tested). 30 seconds on single unit has been tested.",
+                "description": "The new mastertherm servers 'mastertherm.online' can lock out with too many requests. If you have more than 2 devices attached to your username, consider 600 seconds refresh rate or higher. (Limits not fully tested). 30 seconds on single unit has been tested.",
                 "data": {
                     "scan_interval": "Seconds between data refresh requests (min: 30)",
                     "full_refresh_interval": "Minutes between full data refresh (min: 5, max: 360)",
@@ -89,6 +89,45 @@
                     "idle": "Idle",
                     "aux_heater": "Aux Heater"
                 }
+            },
+            "alarm_a": {
+              "name": "Alarm 'Low Pressure' Counter"
+            },
+            "alarm_b": {
+              "name": "Alarm 'High Pressure from PT' Counter"
+            },
+            "alarm_c": {
+              "name": "Alarm 'Condenser High Temperature' Counter"
+            },
+            "alarm_d": {
+              "name": "Alarm 'Condenser Low Temperature' Counter"
+            },
+            "alarm_e": {
+              "name": "Alarm 'Low Flow Rate' Counter"
+            },
+            "alarm_f": {
+              "name": "Alarm 'High Discharge Gas Temperature' Counter"
+            },
+            "alarm_g": {
+              "name": "Alarm 'Fan Temperature Protection' Counter"
+            },
+            "alarm_h": {
+              "name": "Alarm 'Compressor Temperature Protection' Counter"
+            },
+            "alarm_i": {
+              "name": "Alarm 'Antifreeze Protection' Counter"
+            },
+            "alarm_j": {
+              "name": "Alarm 'Low-pressure on HP' Counter"
+            },
+            "alarm_k": {
+              "name": "Alarm 'Expansion Valve Driver' Counter"
+            },
+            "alarm_l": {
+              "name": "Alarm 'High-pressure switch' Counter"
+            },
+            "alarm_m": {
+              "name": "Alarm 'Inverter Drive' Counter"
             }
         }
     }
