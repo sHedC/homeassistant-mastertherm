@@ -16,6 +16,7 @@ from masterthermconnect import (
     MasterthermEntryNotFound,
 )
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
@@ -43,18 +44,19 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ConfigEntry,
         username: str,
         password: str,
         api_version: str,
         scan_interval: int,
         full_refresh_interval: int,
-        data_refresh_offset: int,
-        entry_id: str,
+        data_refresh_offset: int
     ):
         """Initialise the MasterTherm Update Coordinator class."""
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=config_entry,
             name=DOMAIN,
             update_interval=timedelta(seconds=scan_interval),
         )
@@ -91,7 +93,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Convert registries into Entity Platform and ID.
         registry_entries = async_entries_for_config_entry(
-            self.entity_registry, entry_id
+            self.entity_registry, config_entry.entry_id
         )
         for reg_entity in registry_entries:
             if reg_entity.domain not in self.old_entries:
@@ -190,7 +192,6 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
                 # If First Run check for pump offline:
                 if first_run and device_data["operating_mode"] == "offline":
-                    await self.session.close()
                     raise ConfigEntryNotReady(f"Pump {device_id} is offline.")
 
                 # Process Device Data and populate the data to pass to the Entities
