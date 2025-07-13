@@ -9,9 +9,7 @@ from homeassistant.config_entries import ConfigEntryState
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.mastertherm import (
-    async_setup_entry,
     async_reload_entry,
-    async_unload_entry,
     MasterthermDataUpdateCoordinator,
 )
 from custom_components.mastertherm.const import DOMAIN
