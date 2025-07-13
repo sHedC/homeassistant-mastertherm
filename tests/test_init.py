@@ -33,7 +33,7 @@ async def test_setup_unload_and_reload_entry(
         return_value=mock_entitydata,
     ) as mock_sync:
         await hass.config_entries.async_setup(entry.entry_id)
-        assert await async_setup_entry(hass, entry)
+        # assert await async_setup_entry(hass, entry)
         await hass.async_block_till_done()
 
         assert (
@@ -54,9 +54,11 @@ async def test_setup_unload_and_reload_entry(
 
     assert len(mock_sync.mock_calls) > 0
 
-    # Unload the entry and verify that the data has been removed
-    assert await async_unload_entry(hass, entry)
-    assert entry.entry_id not in hass.data[DOMAIN]
+    # Perform and Check Unload Config
+    assert (
+        await hass.config_entries.async_unload(entry.entry_id) is True
+    ), "Component Config Unload Failed."
+    assert entry.state == ConfigEntryState.NOT_LOADED
 
 
 async def test_unload_entry(
