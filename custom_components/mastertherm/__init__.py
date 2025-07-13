@@ -33,13 +33,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     coordinator = MasterthermDataUpdateCoordinator(
         hass,
-        entry.data.get(CONF_USERNAME),
-        entry.data.get(CONF_PASSWORD),
-        entry.data.get(CONF_API_VERSION),
-        entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
-        entry.options.get(CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH),
-        entry.options.get(CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET),
-        entry.entry_id,
+        config_entry=entry,
+        username=entry.data.get(CONF_USERNAME),
+        password=entry.data.get(CONF_PASSWORD),
+        api_version=entry.data.get(CONF_API_VERSION),
+        scan_interval=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
+        full_refresh_interval=entry.options.get(CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH),
+        data_refresh_offset=entry.options.get(CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET)
     )
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
@@ -53,15 +53,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(
-        entry, ENTITIES.values()
-    ):
-        hass.data[DOMAIN].pop(entry.entry_id)
-
-    return unload_ok
+    return await hass.config_entries.async_unload_platforms(entry, ENTITIES.values())
 
 
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Reload config entry."""
-    await async_unload_entry(hass, entry)
-    await async_setup_entry(hass, entry)
+    await hass.config_entries.async_reload(entry.entry_id)

@@ -1,7 +1,9 @@
 """MasterTherm Config Flow."""
 import logging
-from typing import Any
 import voluptuous as vol
+
+from copy import deepcopy
+from typing import Any
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.config_entries import (
@@ -153,9 +155,9 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
     """Mastertherm config options flow handler."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize HACS options flow."""
-        self.config_entry = config_entry
-        self.options = dict(config_entry.options)
+        """Initialize Mastertherm options flow."""
+        # self.config_entry = config_entry
+        self.options = deepcopy(dict(config_entry.options))
 
     async def async_step_init(
         self,
@@ -170,7 +172,9 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
         """Handle a flow initialized by the user."""
         if user_input is not None:
             self.options.update(user_input)
-            return await self._update_options()
+            return self.async_create_entry(
+                title=self.config_entry.data.get(CONF_USERNAME), data=self.options
+            )
 
         return self.async_show_form(
             step_id="user",
@@ -194,10 +198,4 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
                     ): vol.All(vol.Coerce(int), vol.Range(min=0, max=30)),
                 }
             ),
-        )
-
-    async def _update_options(self) -> FlowResult:
-        """Update config entry options."""
-        return self.async_create_entry(
-            title=self.config_entry.data.get(CONF_USERNAME), data=self.options
         )

@@ -6,7 +6,7 @@ cd "$(dirname "$0")/.."
 
 sudo apt -y update
 sudo apt -y dist-upgrade
-sudo apt -y install ffmpeg
+sudo apt -y install ffmpeg libturbojpeg0-dev libpcap-dev python3-mutagen
 
 pip install --upgrade pip
 
