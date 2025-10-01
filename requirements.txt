@@ -6,7 +6,7 @@ bumpver>=2024.1130
 ruff==0.13.2
 chardet==5.2.0
 debugpy==1.8.17
-zlib_ng==0.5.1
+zlib_ng==1.0.0
 isal==1.8.0
 mutagen==1.47.0
 pipeline==0.1.0
