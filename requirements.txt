@@ -7,7 +7,7 @@ ruff==0.12.7
 chardet==5.2.0
 debugpy==1.8.15
 zlib_ng==0.5.1
-isal==1.7.2
+isal==1.8.0
 mutagen==1.47.0
 pipeline==0.1.0
 pymicro_vad==1.0.2
