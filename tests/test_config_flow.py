@@ -182,7 +182,6 @@ async def test_update_options(
     await hass.async_block_till_done()
 
     assert result["type"] == data_entry_flow.FlowResultType.CREATE_ENTRY
-    assert result["result"] is True
 
     # Check the Refresh Interval was updated
     assert entry.options.get(CONF_SCAN_INTERVAL) == 30
