@@ -10,5 +10,5 @@ zlib_ng==1.0.0
 isal==1.8.0
 mutagen==1.47.0
 pipeline==0.1.0
-pymicro_vad==1.0.2
+pymicro_vad==2.0.0
 pyspeex_noise==2.0.0
