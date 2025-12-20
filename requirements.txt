@@ -1,4 +1,5 @@
 colorlog==6.10.1
+pycares==4.9.0 # Fix for missing ares_query_a_result.
 homeassistant==2025.10.2
 pip>=21.3.1
 numpy==2.3.4
@@ -10,5 +11,5 @@ zlib_ng==1.0.0
 isal==1.8.0
 mutagen==1.47.0
 pipeline==0.1.0
-pymicro_vad==1.0.2
-pyspeex_noise==1.0.2
+pymicro_vad==2.0.0
+pyspeex_noise==2.0.0
