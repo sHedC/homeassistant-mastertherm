@@ -6,7 +6,8 @@ from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.switch import SwitchDeviceClass
-from homeassistant.const import PERCENTAGE, UnitOfTemperature, UnitOfTime
+from homeassistant.const import PERCENTAGE, UnitOfTemperature, UnitOfTime, UnitOfElectricCurrent, \
+    UnitOfElectricPotential, UnitOfPower, UnitOfFrequency
 
 from .const import (
     MasterthermBinarySensorEntityDescription,
@@ -1026,6 +1027,43 @@ ENTITY_TYPES_MAP: dict = {
         key="compressor_running",
         name="Compressor",
         device_class=BinarySensorDeviceClass.RUNNING,
+    ),
+    "drive_rps": MasterthermSensorEntityDescription(
+        key="drive_rps",
+        name="Drive rps",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement=UnitOfFrequency.HERTZ,
+    ),
+    "drive_voltage": MasterthermSensorEntityDescription(
+        key="drive_voltage",
+        name="Drive Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+    ),
+    "drive_current": MasterthermSensorEntityDescription(
+        key="drive_current",
+        name="Drive Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
+    ),
+    "drive_power": MasterthermSensorEntityDescription(
+        key="drive_power",
+        name="Drive Power",
+        device_class=SensorDeviceClass.POWER,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        suggested_unit_of_measurement=UnitOfPower.KILO_WATT,
+    ),
+    "condensing_temp": MasterthermSensorEntityDescription(
+        key="condensing_temp",
+        name="Condensing Temp",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+    ),
+    "evaporating_temp": MasterthermSensorEntityDescription(
+        key="evaporating_temp",
+        name="Evaporating Temp",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     "compressor2_running": MasterthermBinarySensorEntityDescription(
         key="compressor2_running",
