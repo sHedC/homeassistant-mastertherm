@@ -1050,7 +1050,7 @@ ENTITY_TYPES_MAP: dict = {
         key="drive_power",
         name="Drive Power",
         device_class=SensorDeviceClass.POWER,
-        native_unit_of_measurement=UnitOfPower.WATT,
+        native_unit_of_measurement=UnitOfPower.KILO_WATT,
         suggested_unit_of_measurement=UnitOfPower.KILO_WATT,
     ),
     "condensing_temp": MasterthermSensorEntityDescription(
