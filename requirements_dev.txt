@@ -3,6 +3,6 @@ bumpver==2025.1131
 colorlog==6.10.1
 ruff==0.14.10
 chardet==5.2.0
-pycares==4.9.0 # Fix for missing ares_query_a_result.
+pycares==5.0.1 # Fix for missing ares_query_a_result.
 pytest-homeassistant-custom-component==0.13.300
 masterthermconnect==2.3.2
