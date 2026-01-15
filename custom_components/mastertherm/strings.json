@@ -90,6 +90,24 @@
                     "aux_heater": "Aux Heater"
                 }
             },
+            "drive_rps": {
+              "name": "Compressor speed"
+            },
+            "drive_voltage": {
+              "name": "Compressor voltage"
+            },
+            "drive_current": {
+              "name": "Compressor current"
+            },
+            "drive_power": {
+              "name": "Compressor power"
+            },
+            "condensing_temp": {
+              "name": "Condensing_temp"
+            },
+            "evaporating_temp": {
+              "name": "Evaporating temp"
+            },
             "alarm_a": {
               "name": "Alarm 'Low Pressure' Counter"
             },
