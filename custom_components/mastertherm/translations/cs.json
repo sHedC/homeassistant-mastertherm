@@ -90,6 +90,24 @@
                     "aux_heater": "Pomocné topení"
                 }
             },
+            "drive_rps": {
+              "name": "Rychlost kompresoru"
+            },
+            "drive_voltage": {
+              "name": "Napětí kompresoru"
+            },
+            "drive_current": {
+              "name": "Proud kompresoru"
+            },
+            "drive_power": {
+              "name": "Příkon kompresoru"
+            },
+            "condensing_temp": {
+              "name": "Kondenzační teplota"
+            },
+            "evaporating_temp": {
+              "name": "Vypařovací teplota"
+            },
             "alarm_a": {
               "name": "Počítadlo alarmu 'Nízký Tlak'"
             },
