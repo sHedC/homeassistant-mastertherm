@@ -1,6 +1,5 @@
 colorlog==6.10.1
-pycares==4.9.0 # Fix for missing ares_query_a_result.
-homeassistant==2025.12.4
+homeassistant==2026.4.2
 pip>=21.3.1
 numpy==2.4.4
 bumpver>=2024.1130
