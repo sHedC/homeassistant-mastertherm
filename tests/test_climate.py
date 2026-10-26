@@ -2,7 +2,7 @@
 from unittest.mock import patch
 import pytest
 
-from homeassistant.components.climate import (
+from homeassistant.components.climate.const import (
     DOMAIN as CLIMATE_DOMAIN,
     SERVICE_SET_TEMPERATURE,
     SERVICE_SET_HVAC_MODE,
@@ -69,6 +69,7 @@ async def test_climate_setup(hass: HomeAssistant, mock_configdata: dict):
 
         # Check the Temperature Sensor
         state = hass.states.get("climate.mt_1234_1_heating_circuits_hc1_thermostat")
+        assert state is not None
         assert state.attributes.get("current_temperature") == 20.0
         assert state.attributes.get("temperature") == 20.0
 
@@ -115,6 +116,7 @@ async def test_climate_update(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
         state = hass.states.get("climate.mt_1234_1_heating_circuits_hc1_thermostat")
+        assert state is not None
         assert state.attributes.get("temperature") == 20.2
 
 
@@ -158,6 +160,7 @@ async def test_hvac_update(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
         state = hass.states.get("climate.mt_1234_2_heating_circuits_hc1_thermostat")
+        assert state is not None
         hvac = state.state
 
         assert hvac == HVACMode.AUTO

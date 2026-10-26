@@ -34,9 +34,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = MasterthermDataUpdateCoordinator(
         hass,
         config_entry=entry,
-        username=entry.data.get(CONF_USERNAME),
-        password=entry.data.get(CONF_PASSWORD),
-        api_version=entry.data.get(CONF_API_VERSION),
+        username=entry.data.get(CONF_USERNAME, ""),
+        password=entry.data.get(CONF_PASSWORD, ""),
+        api_version=entry.data.get(CONF_API_VERSION, ""),
         scan_interval=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
         full_refresh_interval=entry.options.get(CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH),
         data_refresh_offset=entry.options.get(CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET)
