@@ -66,11 +66,13 @@ async def test_binary_sensor_setup(
 
     # Check the Temperature Sensor
     state = hass.states.get("binary_sensor.mt_1234_1_compressor_running")
+    assert state is not None
     assert state.state
-    assert state.name == "Compressor"
+    assert state.name == "Mastertherm HeatPump (Ground Source G/W) Compressor"
 
     # Verify some other sensors
     state = hass.states.get(
         "binary_sensor.mt_1234_1_heating_circuits_hc1_circulation_valve"
     )
+    assert state is not None
     assert state.state == "off"

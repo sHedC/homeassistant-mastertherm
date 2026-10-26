@@ -59,6 +59,9 @@
             }
         },
         "sensor": {
+            "compressor_running": {
+              "name": "Compressor"
+            },
             "hp_type": {
                 "state": {
                     "0": "Air Source",
