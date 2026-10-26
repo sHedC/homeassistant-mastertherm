@@ -4,8 +4,8 @@ from unittest.mock import patch
 import pytest
 
 from homeassistant.core import HomeAssistant
-from homeassistant.components.switch import (
-    DOMAIN as SWITCH_DOMAIN,
+from homeassistant.components.switch.const import DOMAIN as SWITCH_DOMAIN
+from homeassistant.const import (
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
 )
@@ -66,8 +66,9 @@ async def test_switch_setup(
 
     # Check the Power Switch
     state = hass.states.get("switch.mt_1234_1_hp_power_state")
+    assert state is not None
     assert state.state
-    assert state.name == "HP Power"
+    assert state.name == "Mastertherm HeatPump (Ground Source G/W) HP Power"
 
 
 async def test_switch_on(
@@ -102,6 +103,7 @@ async def test_switch_on(
         await hass.async_block_till_done()
 
         state = hass.states.get("switch.mt_1234_1_hp_power_state")
+        assert state is not None
         assert state.state == STATE_ON
 
         await hass.services.async_call(
@@ -113,6 +115,7 @@ async def test_switch_on(
         await hass.async_block_till_done()
 
     state = hass.states.get("switch.mt_1234_1_hp_power_state")
+    assert state is not None
     assert state.state == STATE_OFF
 
 
@@ -148,6 +151,7 @@ async def test_dot_switch_on(
         await hass.async_block_till_done()
 
         state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
+        assert state is not None
         assert state.state == STATE_OFF
 
         await hass.services.async_call(
@@ -159,4 +163,5 @@ async def test_dot_switch_on(
         await hass.async_block_till_done()
 
     state = hass.states.get("switch.mt_1234_1_heating_circuits_hc1_on")
+    assert state is not None
     assert state.state == STATE_ON

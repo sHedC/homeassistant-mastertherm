@@ -64,6 +64,7 @@ async def test_sensor_setup(
 
     # Check the Temperature Sensor
     state = hass.states.get("sensor.mt_1234_1_outside_temp")
+    assert state is not None
     assert state.state == "4.9"
-    assert state.name == "Outside Temperature"
+    assert state.name == "Mastertherm HeatPump (Ground Source G/W) Outside Temperature"
     assert state.attributes.get("unit_of_measurement") == UnitOfTemperature.CELSIUS

@@ -4,7 +4,6 @@ from unittest.mock import patch
 import pytest
 
 from homeassistant.components.select import (
-    SelectEntity,
     ATTR_OPTION,
     DOMAIN as SELECT_DOMAIN,
     SERVICE_SELECT_OPTION,
@@ -59,9 +58,10 @@ async def test_select_setup(
     ), "Selects Failed to Create"
 
     # Check the HP Function Select
-    state: SelectEntity = hass.states.get("select.mt_1234_1_hp_function")
+    state = hass.states.get("select.mt_1234_1_hp_function")
+    assert state is not None
     assert state.state == "heating"
-    assert state.name == "HP Function"
+    assert state.name == "Mastertherm HeatPump (Ground Source G/W) HP Function"
 
 
 async def test_select_change(hass: HomeAssistant, mock_configdata: dict):
@@ -93,7 +93,8 @@ async def test_select_change(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
         # Check the HP Function Select
-        state: SelectEntity = hass.states.get("select.mt_1234_2_hp_function")
+        state = hass.states.get("select.mt_1234_2_hp_function")
+        assert state is not None
         assert state.state == "heating"
 
         await hass.services.async_call(
@@ -104,7 +105,8 @@ async def test_select_change(hass: HomeAssistant, mock_configdata: dict):
         )
         await hass.async_block_till_done()
 
-        state: SelectEntity = hass.states.get("select.mt_1234_2_hp_function")
+        state = hass.states.get("select.mt_1234_2_hp_function")
+        assert state is not None
         assert state.state == "auto"
 
 
@@ -137,7 +139,8 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
         # Check the HP Function Select
-        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
+        state = hass.states.get("select.mt_1234_1_season_select")
+        assert state is not None
         assert state.state == "winter"
 
         await hass.services.async_call(
@@ -151,7 +154,8 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
         )
         await hass.async_block_till_done()
 
-        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
+        state = hass.states.get("select.mt_1234_1_season_select")
+        assert state is not None
         assert state.state == "summer"
 
         await hass.services.async_call(
@@ -165,5 +169,6 @@ async def test_season_change(hass: HomeAssistant, mock_configdata: dict):
         )
         await hass.async_block_till_done()
 
-        state: SelectEntity = hass.states.get("select.mt_1234_1_season_select")
+        state = hass.states.get("select.mt_1234_1_season_select")
+        assert state is not None
         assert state.state == "auto"
