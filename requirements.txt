@@ -1,5 +1,5 @@
 colorlog==6.10.1
-homeassistant==2026.4.2
+homeassistant==2026.10.0
 pip>=26.1.2
 numpy==2.4.6
 bumpver>=2024.1130

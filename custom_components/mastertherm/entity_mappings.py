@@ -1025,6 +1025,8 @@ ENTITY_TYPES_MAP: dict = {
     },
     "compressor_running": MasterthermBinarySensorEntityDescription(
         key="compressor_running",
+        has_entity_name=True,
+        translation_key="compressor_running",
         name="Compressor",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
