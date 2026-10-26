@@ -43,6 +43,9 @@
     },
     "entity": {
         "select": {
+            "compressor_running": {
+              "name": "Compressor"
+            },
             "hp_function": {
                 "state": {
                     "auto": "Auto",
