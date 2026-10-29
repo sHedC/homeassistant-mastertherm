@@ -115,7 +115,9 @@ async def test_pump_offline(hass: HomeAssistant, mock_configdata: dict):
         await hass.async_block_till_done()
 
     entity = hass.states.get("sensor.mt_1234_1_operating_mode")
+    assert entity is not None
     assert entity.state == "offline"
 
     entity = hass.states.get("switch.mt_1234_1_hp_power_state")
+    assert entity is not None
     assert entity.state == "unavailable"

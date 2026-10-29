@@ -4,8 +4,8 @@
 # pylint: disable=C0302
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
-from homeassistant.components.binary_sensor import BinarySensorDeviceClass
-from homeassistant.components.switch import SwitchDeviceClass
+from homeassistant.components.binary_sensor.const import BinarySensorDeviceClass
+from homeassistant.components.switch.const import SwitchDeviceClass
 from homeassistant.const import PERCENTAGE, UnitOfTemperature, UnitOfTime, UnitOfElectricCurrent, \
     UnitOfElectricPotential, UnitOfPower, UnitOfFrequency
 
@@ -850,7 +850,7 @@ ENTITY_TYPES_MAP: dict = {
         translation_key="hp_type",
         device_class=SensorDeviceClass.ENUM,
         icon="mdi:heat-pump",
-        options=[0, 1, 2, 3, 4, 5, 6],
+        options=["0", "1", "2", "3", "4", "5", "6"],
     ),
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",

@@ -2,10 +2,13 @@
 import logging
 import asyncio
 import time
+from collections.abc import Mapping
+from typing import Literal, overload, Any
 
 from datetime import timedelta
 from aiohttp import ClientSession
 
+from homeassistant.const import Platform
 from masterthermconnect import (
     MasterthermController,
     MasterthermAuthenticationError,
@@ -30,7 +33,16 @@ from homeassistant.helpers.update_coordinator import (
 )
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, ENTITIES
+from .const import (
+    DOMAIN,
+    ENTITIES,
+    MasterthermBinarySensorEntityDescription,
+    MasterthermClimateEntityDescription,
+    MasterthermNumberEntityDescription,
+    MasterthermSelectEntityDescription,
+    MasterthermSensorEntityDescription,
+    MasterthermSwitchEntityDescription,
+)
 from .entity_mappings import ENTITY_TYPES_MAP
 
 _LOGGER = logging.getLogger(__name__)
@@ -84,8 +96,8 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             full_refresh_minutes=full_refresh_interval,
         )
 
-        self.entity_types: dict[str, EntityDescription] = self.__build_entity_types(
-            ENTITY_TYPES_MAP
+        self.entity_types: dict[str, dict[str, EntityDescription]] = (
+            self.__build_entity_types(ENTITY_TYPES_MAP)
         )
         self.platforms = []
         self.old_entries: dict[str, list[str]] = {}
@@ -102,11 +114,11 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
     def __build_entity_types(
         self, entity_map: dict, parent: str = ""
-    ) -> dict[str, EntityDescription]:
+    ) -> dict[str, dict[str, EntityDescription]]:
         """Build a list of each entity type from the Main Entity Map, recursive method."""
-        entity_list = {}
-        for entity_type in ENTITIES.values():
-            entity_list[entity_type] = {}
+        entity_list: dict[str, dict[str, EntityDescription]] = {
+            entity_type: {} for entity_type in ENTITIES.values()
+        }
 
         # For each Map Entry passed to this method process.
         for entity_key, entity in entity_map.items():
@@ -127,6 +139,40 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
                     ] = entity
 
         return entity_list
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.BINARY_SENSOR]
+    ) -> dict[str, MasterthermBinarySensorEntityDescription]: ...
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.CLIMATE]
+    ) -> dict[str, MasterthermClimateEntityDescription]: ...
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.NUMBER]
+    ) -> dict[str, MasterthermNumberEntityDescription]: ...
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.SELECT]
+    ) -> dict[str, MasterthermSelectEntityDescription]: ...
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.SENSOR]
+    ) -> dict[str, MasterthermSensorEntityDescription]: ...
+
+    @overload
+    def get_entity_types(
+        self, platform: Literal[Platform.SWITCH]
+    ) -> dict[str, MasterthermSwitchEntityDescription]: ...
+
+    def get_entity_types(self, platform: Platform) -> Mapping[str, EntityDescription]:
+        """Return the entity descriptions registered for a platform."""
+        return self.entity_types[platform]
 
     def __build_entities(self, parent: str, device_data: dict) -> dict:
         """Build the Entities in dot notation, this is a nested method."""
@@ -208,7 +254,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
 
         return result_data
 
-    async def update_state(self, module_key: str, entity_key: str, state: any):
+    async def update_state(self, module_key: str, entity_key: str, state: Any):
         """Attempt to Update the State, data is in dot notation to get parent, child."""
         start = time.perf_counter()
 
@@ -244,7 +290,7 @@ class MasterthermDataUpdateCoordinator(DataUpdateCoordinator):
             # Sleep a little before returning so we don't throttle the API
             await asyncio.sleep(0.5)
 
-    def get_state(self, module_key: str, entity_key: str) -> any:
+    def get_state(self, module_key: str, entity_key: str) -> Any:
         """Get the State from the core data."""
         return self.data["modules"][module_key]["entities"][entity_key]
 

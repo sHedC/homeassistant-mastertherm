@@ -1,18 +1,18 @@
 """Mastertherm base entities."""
-import logging
+
+from propcache.api import cached_property
 
 from homeassistant.const import CONF_ENTITIES
-from homeassistant.helpers.entity import DeviceInfo, EntityDescription
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.helpers.entity import EntityDescription
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.update_coordinator import BaseCoordinatorEntity
+from homeassistant.core import callback
 from homeassistant.util import slugify
 
 from .coordinator import MasterthermDataUpdateCoordinator
 from .const import DOMAIN, VERSION
 
-_LOGGER = logging.getLogger(__package__)
-
-
-class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
+class MasterthermEntity(BaseCoordinatorEntity[MasterthermDataUpdateCoordinator]):
     """Mastertherm based Entity."""
 
     def __init__(
@@ -33,6 +33,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         self.entity_id = f"{entity_type}.{self._attr_unique_id}"
 
         self.entities = self.coordinator.data["modules"][self._module_key]["entities"]
+        self._update_available()
 
         # If the entity is found in existing entities, remove it.
         if entity_type in coordinator.old_entries:
@@ -41,13 +42,25 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
                 entity_index = entity_ids.index(self.entity_id)
                 entity_ids.pop(entity_index)
 
-    @property
-    def available(self) -> bool:
-        """Return if entity is available."""
+    def _update_available(self) -> None:
+        """Update availability from coordinator data."""
         if self.entities["operating_mode"] == "offline":
-            return self._entity_key == "operating_mode"
+            self._attr_available = self._entity_key == "operating_mode"
         else:
-            return self.coordinator.last_update_success
+            self._attr_available = self.coordinator.last_update_success
+        if "available" in self.__dict__:
+            delattr(self, "available")
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Invalidate availability before writing updated coordinator state."""
+        self._update_available()
+        super()._handle_coordinator_update()
+
+    async def async_update(self) -> None:
+        """Request a coordinator refresh when this entity is updated manually."""
+        if self.enabled:
+            await self.coordinator.async_request_refresh()
 
     @property
     def get_module(self) -> dict:
@@ -64,7 +77,7 @@ class MasterthermEntity(CoordinatorEntity[MasterthermDataUpdateCoordinator]):
         """Get the specifi Entity data."""
         return self.get_module[CONF_ENTITIES][self._entity_key]
 
-    @property
+    @cached_property
     def device_info(self):
         """Return the device_info of the device."""
         hp_type_desc = "Not Available"

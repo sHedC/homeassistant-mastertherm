@@ -7,7 +7,11 @@ from homeassistant.components.climate import (
     DEFAULT_MAX_TEMP,
     DEFAULT_MIN_TEMP,
 )
-from homeassistant.components.number import NumberEntityDescription, NumberDeviceClass
+from homeassistant.components.number import (
+    NumberEntityDescription,
+    NumberDeviceClass,
+    NumberMode,
+)
 from homeassistant.components.sensor import SensorEntityDescription
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
 from homeassistant.components.select import SelectEntityDescription
@@ -31,12 +35,12 @@ CONF_FULL_REFRESH = "full_refresh_interval"
 CONF_REFRESH_OFFSET = "data_refresh_offset"
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Description for the Mastertherm binary sensor entities."""
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermClimateEntityDescription(ClimateEntityDescription):
     """Description for the Mastertherm Climate Entity."""
 
@@ -44,29 +48,29 @@ class MasterthermClimateEntityDescription(ClimateEntityDescription):
     # in dot notation e.g. heating_circuits.hc1.ambient_requested
     # current_temperature_path and requested_temperature_path are
     # the entities to lookup the states in dot notation as above.
-    current_temperature_path: str = None
-    requested_temperature_path: str = None
-    power_state_path: str = None
+    current_temperature_path: str = ""
+    requested_temperature_path: str = ""
+    power_state_path: str = ""
     power_state_on: int | bool | None = None
     power_state_off: int | bool | None = None
     min_temp: float | str = DEFAULT_MIN_TEMP
     max_temp: float | str = DEFAULT_MAX_TEMP
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermNumberEntityDescription(NumberEntityDescription):
     """Description for the Mastertherm Number Entity."""
 
     device_class = NumberDeviceClass.TEMPERATURE
     native_unit_of_measurement = UnitOfTemperature.CELSIUS
     native_step: float = 0.5
-    mode: str = "auto"
+    mode: NumberMode = NumberMode.AUTO
 
-    min_lookup: str = None
-    max_lookup: str = None
+    min_lookup: str | None = None
+    max_lookup: str | None = None
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermSelectEntityDescription(SelectEntityDescription):
     """Description for the Mastertherm select entities."""
 
@@ -74,14 +78,14 @@ class MasterthermSelectEntityDescription(SelectEntityDescription):
     read_only: bool = False
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermSensorEntityDescription(SensorEntityDescription):
     """Description for the Mastertherm sensor entities."""
 
     icon_state_map: dict[str, str] = field(default_factory=dict[str, str])
 
 
-@dataclass
+@dataclass(frozen=True)
 class MasterthermSwitchEntityDescription(SwitchEntityDescription):
     """Description for the Mastertherm switch entities."""
 

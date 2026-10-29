@@ -1,6 +1,4 @@
 """Support for the Mastertherm Switches."""
-import logging
-
 from typing import Any
 
 from homeassistant.core import HomeAssistant, callback
@@ -13,8 +11,6 @@ from .const import DOMAIN, MasterthermSwitchEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
 from .entity import MasterthermEntity
 
-_LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -25,9 +21,9 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SwitchEntity] = []
-    for entity_key, entity_description in coordinator.entity_types[
+    for entity_key, entity_description in coordinator.get_entity_types(
         Platform.SWITCH
-    ].items():
+    ).items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(
@@ -42,6 +38,8 @@ async def async_setup_entry(
 
 class MasterthermSwitch(MasterthermEntity, SwitchEntity):
     """Representation of a MasterTherm Switch, e.g. ."""
+
+    _switch_description: MasterthermSwitchEntityDescription
 
     def __init__(
         self,
@@ -58,18 +56,21 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
             entity_type=Platform.SWITCH,
             entity_description=entity_description,
         )
+        self._switch_description = entity_description
+        self._read_only = self._switch_description.read_only
 
-        self._read_only = entity_description.read_only
+        self._update_switch_state()
 
-    @property
-    def is_on(self) -> bool | None:
-        """Return if switch is on or off."""
-        return self.coordinator.get_state(self._module_key, self._entity_key)
+    @callback
+    def _update_switch_state(self) -> None:
+        """Update the switch state."""
+        self._attr_is_on = self.coordinator.get_state(self._module_key, self._entity_key)
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        self.async_write_ha_state()
+        self._update_switch_state()
+        super()._handle_coordinator_update()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Update to turn on the given switch."""
@@ -77,6 +78,7 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
             await self.coordinator.update_state(
                 self._module_key, self._entity_key, True
             )
+        self._update_switch_state()
         self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
@@ -85,4 +87,5 @@ class MasterthermSwitch(MasterthermEntity, SwitchEntity):
             await self.coordinator.update_state(
                 self._module_key, self._entity_key, False
             )
+        self._update_switch_state()
         self.async_write_ha_state()

@@ -4,7 +4,7 @@ import logging
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ENTITIES, Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN, MasterthermBinarySensorEntityDescription
@@ -23,9 +23,9 @@ async def async_setup_entry(
     coordinator: MasterthermDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[BinarySensorEntity] = []
-    for entity_key, entity_description in coordinator.entity_types[
+    for entity_key, entity_description in coordinator.get_entity_types(
         Platform.BINARY_SENSOR
-    ].items():
+    ).items():
         for module_key, module in coordinator.data["modules"].items():
             if entity_key in module[CONF_ENTITIES]:
                 entities.append(
@@ -57,9 +57,15 @@ class MasterthermBinarySensor(MasterthermEntity, BinarySensorEntity):
             entity_description=entity_description,
         )
 
-    @property
-    def is_on(self) -> bool:
-        """Return the Value."""
-        return self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
+        self._update_binary_sensor_state()
+
+    @callback
+    def _update_binary_sensor_state(self) -> None:
+        """Update the binary sensor state."""
+        self._attr_is_on = self.coordinator.get_state(self._module_key, self._entity_key)
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Update the state."""
+        self._update_binary_sensor_state()
+        self.async_write_ha_state()

@@ -1,14 +1,13 @@
 """MasterTherm Config Flow."""
-import logging
-import voluptuous as vol
-
 from copy import deepcopy
 from typing import Any
 
-import homeassistant.helpers.config_validation as cv
+import probatio
+
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
+    ConfigFlowResult,
     OptionsFlow,
     CONN_CLASS_CLOUD_POLL,
 )
@@ -19,7 +18,6 @@ from homeassistant.const import (
     CONF_API_VERSION,
     CONF_SCAN_INTERVAL,
 )
-from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
     CONF_FULL_REFRESH,
@@ -31,8 +29,6 @@ from .const import (
     DEFAULT_REFRESH,
 )
 from .coordinator import authenticate
-
-_LOGGER = logging.getLogger(__name__)
 
 MASTERTHERM_OUR = {""}
 DEFAULT_PORT = 80
@@ -52,7 +48,7 @@ class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle a flow initialized by the user."""
         self._errors = {}
 
@@ -88,7 +84,7 @@ class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_reauth_confirm(
         self,
         user_input: dict[str, Any] | None = None,  # pylint: disable=unused-argument
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle reauth confirmation."""
         assert self.reauth_entry is not None
 
@@ -111,17 +107,16 @@ class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="reauth_confirm",
-            data_schema=vol.Schema({vol.Required(CONF_PASSWORD): cv.string}),
+            data_schema=probatio.Schema({probatio.Required(CONF_PASSWORD): str}),
             errors=self._errors,
         )
 
     async def async_step_reauth(
-        self, user_input: dict[str, Any]  # pylint: disable=unused-argument
-    ) -> FlowResult:
+        self, entry_data: dict[str, Any]
+    ) -> ConfigFlowResult:
         """Handle configuration by re-auth."""
-        self.reauth_entry = self.hass.config_entries.async_get_entry(
-            self.context["entry_id"]
-        )
+        _ = entry_data
+        self.reauth_entry = self._get_reauth_entry()
         return await self.async_step_reauth_confirm()
 
     @staticmethod
@@ -134,17 +129,17 @@ class MasterthermFlowHandler(ConfigFlow, domain=DOMAIN):
         """Show the configuration form to edit location data."""
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Required(
+                    probatio.Required(
                         CONF_API_VERSION, default=user_input[CONF_API_VERSION]
-                    ): vol.In(API_VERSIONS),
-                    vol.Required(
+                    ): probatio.In(API_VERSIONS),
+                    probatio.Required(
                         CONF_USERNAME, default=user_input[CONF_USERNAME]
-                    ): cv.string,
-                    vol.Required(
+                    ): str,
+                    probatio.Required(
                         CONF_PASSWORD, default=user_input[CONF_PASSWORD]
-                    ): cv.string,
+                    ): str,
                 }
             ),
             errors=self._errors,
@@ -161,14 +156,14 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
 
     async def async_step_init(
         self,
-        user_input: dict[str, Any] | None = None,  # pylint: disable=unused-argument
-    ) -> FlowResult:
+        user_input: dict[str, Any] | None = None,
+    ) -> ConfigFlowResult:
         """Manage the options."""
-        return await self.async_step_user()
+        return await self.async_step_user(user_input)
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle a flow initialized by the user."""
         if user_input is not None:
             self.options.update(user_input)
@@ -178,24 +173,28 @@ class MasterthermOptionsFlowHandler(OptionsFlow):
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Required(
+                    probatio.Required(
                         CONF_SCAN_INTERVAL,
                         default=self.options.get(CONF_SCAN_INTERVAL, DEFAULT_REFRESH),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=30)),
-                    vol.Required(
+                    ): probatio.All(probatio.Coerce(int), probatio.Range(min=30)),
+                    probatio.Required(
                         CONF_FULL_REFRESH,
                         default=self.options.get(
                             CONF_FULL_REFRESH, DEFAULT_FULL_REFRESH
                         ),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=5, max=360)),
-                    vol.Required(
+                    ): probatio.All(
+                        probatio.Coerce(int), probatio.Range(min=5, max=360)
+                    ),
+                    probatio.Required(
                         CONF_REFRESH_OFFSET,
                         default=self.options.get(
                             CONF_REFRESH_OFFSET, DEFAULT_REFRESH_OFFSET
                         ),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=0, max=30)),
+                    ): probatio.All(
+                        probatio.Coerce(int), probatio.Range(min=0, max=30)
+                    ),
                 }
             ),
         )

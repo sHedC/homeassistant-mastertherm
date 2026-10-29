@@ -1,13 +1,12 @@
-"""Mastertherm Switch Tests."""
+"""Mastertherm Number Tests."""
 from unittest.mock import patch
 
 import pytest
 
 from homeassistant.core import HomeAssistant
-from homeassistant.components.number import (
-    DOMAIN as NUMBER_DOMAIN,
-    SERVICE_SET_VALUE,
-)
+from homeassistant.components.number import DOMAIN as NUMBER_DOMAIN
+
+from homeassistant.components.number.const import SERVICE_SET_VALUE
 from homeassistant.const import Platform, ATTR_ENTITY_ID
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -67,11 +66,13 @@ async def test_number_setup(
 
     # Check the Power Switch
     state = hass.states.get("number.mt_1234_1_control_curve_heating_setpoint_a_outside")
+    assert state is not None
     assert state.state == "20.0"
     assert state.attributes.get("min") == -30.0
     state = hass.states.get(
         "number.mt_1234_1_control_curve_heating_setpoint_a_requested"
     )
+    assert state is not None
     assert state.state == "20.0"
 
 
@@ -122,4 +123,5 @@ async def test_set_temp(
         await hass.async_block_till_done()
 
     state = hass.states.get("number.mt_1234_1_control_curve_heating_setpoint_a_outside")
+    assert state is not None
     assert state.state == "20.2"

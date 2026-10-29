@@ -1,6 +1,7 @@
 """Global fixtures for mastertherm integration."""
 import json
 import os
+from typing import Any
 from unittest.mock import patch
 import pytest
 
@@ -71,14 +72,14 @@ TEST_ENTITIES = {
 }
 
 
-def load_fixture(folder, filename):
+def load_fixture(folder: str, filename: str) -> str:
     """Load a JSON fixture for testing."""
     try:
         path = os.path.join(os.path.dirname(__file__), "fixtures", folder, filename)
         with open(path, encoding="utf-8") as fptr:
             return fptr.read()
     except OSError:
-        return None
+        return ""
 
 
 @pytest.fixture(autouse=True)
@@ -129,7 +130,7 @@ class APIMock:
 
     # pylint: disable=unused-argument
     async def set_device_data_item(
-        self, module_id: str, unit_id: str, entry: str, value: any
+        self, module_id: str, unit_id: str, entry: str, value: Any
     ) -> bool:
         """Set the Device Data."""
         return True
