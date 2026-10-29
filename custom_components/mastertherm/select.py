@@ -7,7 +7,6 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ENTITIES, Platform
 from homeassistant.core import callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from propcache import cached_property
 
 from .const import DOMAIN, MasterthermSelectEntityDescription
 from .coordinator import MasterthermDataUpdateCoordinator
@@ -88,21 +87,9 @@ class MasterthermSelect(MasterthermEntity, SelectEntity):
         ]
         self._attr_current_option = self._reverse_map.get(state)
 
-    @cached_property[str | None]
-    def current_option(self) -> str | None:
-        """Return the current select option."""
-        state = self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
-        return self._reverse_map.get(state)
-
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        state = self.coordinator.data["modules"][self._module_key]["entities"][
-            self._entity_key
-        ]
-        self._attr_current_option = self._reverse_map.get(state)
         self._update_select_state()
         super()._handle_coordinator_update()
 
@@ -150,33 +137,26 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
         else:
             self._attr_current_option = "auto"
 
-    @cached_property[str | None]
-    def current_option(self) -> str | None:
-        """Return the current season option."""
-        entities = self.coordinator.data["modules"][self._module_key]["entities"]
-        if entities["season.manual_set"]:
-            return "winter" if entities["season.winter"] else "summer"
-        else:
-            return "auto"
-
     async def async_select_option(self, option: str) -> None:
         """Update the Current Option, but don't send update."""
         if option == "auto":
             await self.coordinator.update_state(
                 self._module_key, "season.manual_set", False
             )
-        elif option == "winter":
-            await self.coordinator.update_state(
-                self._module_key, "season.manual_set", True
-            )
-            await self.coordinator.update_state(self._module_key, "season.winter", True)
         else:
+            if self.coordinator.data["modules"][self._module_key]["entities"]["season.manual_set"] is False:
+                await self.coordinator.update_state(
+                    self._module_key, "season.manual_set", True
+                )
             await self.coordinator.update_state(
-                self._module_key, "season.manual_set", True
-            )
-            await self.coordinator.update_state(
-                self._module_key, "season.winter", False
+                self._module_key, "season.winter", True if option == "winter" else False
             )
 
+        self._update_select_state()
+        self.async_write_ha_state()
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Update the state."""
         self._update_select_state()
         self.async_write_ha_state()

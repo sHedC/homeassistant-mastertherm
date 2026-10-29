@@ -848,9 +848,7 @@ ENTITY_TYPES_MAP: dict = {
         key="hp_type",
         name="HP Type",
         translation_key="hp_type",
-        device_class=SensorDeviceClass.ENUM,
         icon="mdi:heat-pump",
-        options=["0", "1", "2", "3", "4", "5", "6"],
     ),
     "hp_power_state": MasterthermSwitchEntityDescription(
         key="hp_power_state",
