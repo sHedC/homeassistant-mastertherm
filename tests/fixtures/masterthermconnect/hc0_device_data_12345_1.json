@@ -52,8 +52,7 @@
         "aux2_runtime": 0
     },
     "season_info": {
-        "manual_set": true,
-        "winter": true,
+        "mode_set": 1,
         "winter_temp": 13.0,
         "summer_temp": 17.0
     },

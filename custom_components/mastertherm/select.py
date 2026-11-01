@@ -130,33 +130,37 @@ class MasterthermSeasonSelect(MasterthermEntity, SelectEntity):
     def _update_select_state(self) -> None:
         """Update the select state."""
         entities = self.coordinator.data["modules"][self._module_key]["entities"]
-        if entities["season.manual_set"]:
-            self._attr_current_option = (
-                "winter" if entities["season.winter"] else "summer"
-            )
-        else:
-            self._attr_current_option = "auto"
-
-    async def async_select_option(self, option: str) -> None:
-        """Update the Current Option, but don't send update."""
-        if option == "auto":
-            await self.coordinator.update_state(
-                self._module_key, "season.manual_set", False
-            )
-        else:
-            if self.coordinator.data["modules"][self._module_key]["entities"]["season.manual_set"] is False:
-                await self.coordinator.update_state(
-                    self._module_key, "season.manual_set", True
-                )
-            await self.coordinator.update_state(
-                self._module_key, "season.winter", True if option == "winter" else False
-            )
-
-        self._update_select_state()
-        self.async_write_ha_state()
+        match entities["season.mode_set"]:
+            case 0:
+                self._attr_current_option = "auto"
+            case 1:
+                self._attr_current_option = "winter"
+            case 2:
+                self._attr_current_option = "summer"
+            case _:
+                self._attr_current_option = None
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Update the state."""
+        self._update_select_state()
+        super()._handle_coordinator_update()
+
+    async def async_select_option(self, option: str) -> None:
+        """Update the Current Option, but don't send update."""
+        match option:
+            case "auto":
+                await self.coordinator.update_state(
+                    self._module_key, "season.mode_set", 0
+                )
+            case "winter":
+                await self.coordinator.update_state(
+                    self._module_key, "season.mode_set", 1
+                )
+            case "summer":
+                await self.coordinator.update_state(
+                    self._module_key, "season.mode_set", 2
+                )
+
         self._update_select_state()
         self.async_write_ha_state()

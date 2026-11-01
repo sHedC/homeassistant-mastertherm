@@ -4,8 +4,7 @@
     "operating_mode": "heating",
     "season": {
         "mode": "winter",
-        "manual_set": true,
-        "winter": true,
+        "mode_set": 1,
         "winter_temp": 14.0,
         "summer_temp": 19.0
     },

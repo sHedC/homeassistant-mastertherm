@@ -5,8 +5,7 @@
     "operating_mode": "dhw",
     "season": {
         "mode": "winter",
-        "manual_set": true,
-        "winter": true,
+        "mode_set": 1,
         "winter_temp": 13.0,
         "summer_temp": 17.0
     },

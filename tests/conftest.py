@@ -59,8 +59,7 @@ TEST_ENTITIES = {
                 "hp_power_state": True,
                 "operating_mode": "idle",
                 "season.mode": "auto-winter",
-                "season.manual_set": False,
-                "season.winter": True,
+                "season.mode_set": 0,
                 "season.winter_temp": 11.0,
                 "season.summer_temp": 14.0,
                 "compressor_running": True,
@@ -102,8 +101,9 @@ class APIMock:
         """Simulate the Connect and Update method."""
         return True
 
-    def refresh(self, full_load=False):  # pylint: disable=unused-argument
+    def refresh(self, full_load=False):
         """Mock the Refresh Method."""
+        _ = full_load
         return True
 
     def get_devices(self):
@@ -128,11 +128,11 @@ class APIMock:
 
         return info
 
-    # pylint: disable=unused-argument
     async def set_device_data_item(
         self, module_id: str, unit_id: str, entry: str, value: Any
     ) -> bool:
         """Set the Device Data."""
+        _ = module_id, unit_id, entry, value
         return True
 
 
