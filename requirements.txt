@@ -5,7 +5,7 @@ numpy==2.5.0
 ruff==0.15.20
 bumpver>=2026.1132
 chardet==7.4.3
-debugpy==1.8.20
+debugpy==1.8.22
 zlib_ng==1.0.0
 isal==1.8.0
 mutagen==1.47.0
